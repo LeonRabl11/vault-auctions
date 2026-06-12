@@ -1,0 +1,13 @@
+{
+  "Metadata": {
+    "title": "Auction Platform",
+    "description": "Auktionsplattform — Grundgerüst"
+  },
+  "HomePage": {
+    "title": "Auction Platform"
+  },
+  "LocaleSwitcher": {
+    "label": "Sprache",
+    "locale": "{locale, select, de {Deutsch} en {English} other {Unbekannt}}"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "Metadata": {
+    "title": "Auction Platform",
+    "description": "Auction platform — scaffold"
+  },
+  "HomePage": {
+    "title": "Auction Platform"
+  },
+  "LocaleSwitcher": {
+    "label": "Language",
+    "locale": "{locale, select, de {German} en {English} other {Unknown}}"
+  }
+}

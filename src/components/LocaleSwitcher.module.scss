@@ -3,20 +3,26 @@
 .switcher {
   display: inline-flex;
   align-items: center;
-  gap: $spacing-sm;
+  gap: $space-2;
 }
 
 .label {
-  color: $color-muted;
+  color: $color-text-muted;
   font-size: 0.875rem;
 }
 
 .select {
-  background-color: $color-surface;
+  padding: $space-1 $space-2;
+  border: 1px solid $color-border;
+  border-radius: $radius;
+  background-color: $color-bg;
   color: $color-text;
-  border: 1px solid $color-muted;
-  border-radius: 4px;
-  padding: $spacing-xs $spacing-sm;
+  font: inherit;
   font-size: 0.875rem;
   cursor: pointer;
+
+  &:focus-visible {
+    outline: 2px solid $color-primary;
+    outline-offset: 2px;
+  }
 }

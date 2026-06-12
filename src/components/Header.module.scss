@@ -1,0 +1,36 @@
+@use "../styles/variables" as *;
+
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background-color: $color-bg;
+  border-bottom: 1px solid $color-border;
+}
+
+.inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: $space-3;
+  padding-block: $space-3;
+}
+
+.brand {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: $color-text;
+
+  &:hover {
+    color: $color-primary;
+    text-decoration: none;
+  }
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: $space-3;
+}

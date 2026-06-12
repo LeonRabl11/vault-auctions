@@ -3,7 +3,6 @@
 import {useTranslations} from "next-intl";
 import {useRouter} from "@/i18n/navigation";
 import {authClient} from "@/lib/auth-client";
-import styles from "./Nav.module.scss";
 
 export default function LogoutButton() {
   const t = useTranslations("Nav");
@@ -16,7 +15,7 @@ export default function LogoutButton() {
   }
 
   return (
-    <button className={styles.button} type="button" onClick={onLogout}>
+    <button className="btn" type="button" onClick={onLogout}>
       {t("logout")}
     </button>
   );

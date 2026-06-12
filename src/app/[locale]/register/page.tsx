@@ -14,15 +14,15 @@ export default async function RegisterPage({params}: Props) {
   const t = await getTranslations("Auth");
 
   return (
-    <main className={styles.main}>
-      <div className={styles.card}>
-        <h1 className={styles.title}>{t("register.title")}</h1>
+    <div className={styles.auth}>
+      <h1 className={styles.title}>{t("register.title")}</h1>
+      <div className="card">
         <RegisterForm />
-        <p className={styles.links}>
-          {t("register.hasAccount")}{" "}
-          <Link href="/login">{t("register.loginLink")}</Link>
-        </p>
       </div>
-    </main>
+      <p className={styles.links}>
+        {t("register.hasAccount")}{" "}
+        <Link href="/login">{t("register.loginLink")}</Link>
+      </p>
+    </div>
   );
 }

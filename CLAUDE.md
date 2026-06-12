@@ -60,6 +60,20 @@ Phasen-Roadmap: **docs/KONZEPT.md** (Langfassung — nicht hierher kopieren).
 **Dependencies**
 - Minimalistisch, wenig Code, keine unnötigen Pakete. Neue Dependencies vorher nennen.
 
+## Design
+Minimalistischer, heller Look — durchgängig über die ganze Seite. Damit Features denselben
+Look erben:
+- **Tokens** aus `styles/_variables.scss` nutzen (Farben `$color-*`, Spacing-Skala
+  `$space-1..6`, `$radius`, `$font-sans`) — keine rohen Hex-Werte / Magic-Numbers im Code.
+- **Geteilte Primitive** als globale Klassen aus `styles/globals.scss` wiederverwenden:
+  `.container`, `.btn` / `.btn--primary`, `.card`, `.input` (inkl. `:hover`/`:focus`).
+  `globals.scss` schlank halten — nur Reset, Basis-Styles und diese Primitive.
+- **Seiten-Hülle**: `[locale]/layout.tsx` rendert `<Header>` + `<main class="container">`.
+  Jede Seite erbt diesen Rahmen und liefert nur Inhalt (kein eigenes `<header>`/`<main>`).
+- **Komponenten-Styling** in `*.module.scss` (gescopt), das die Tokens via
+  `@use "../styles/variables" as *;` referenziert (relativer Pfad, kein `@/`-Alias).
+- Responsive/mobilfreundlich umsetzen.
+
 ## Domänen-Logik (kurz)
 - **Bieten** server-seitig validieren (Server Action / Route Handler, nie nur Frontend):
   Auktion aktiv (`status==='active'` & `endsAt > jetzt`), Bieter ≠ Verkäufer,

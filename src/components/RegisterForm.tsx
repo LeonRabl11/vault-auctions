@@ -40,30 +40,30 @@ export default function RegisterForm() {
 
   return (
     <form className={styles.form} onSubmit={onSubmit}>
-      <label className={styles.label}>
+      <label className={styles.field}>
         {t("fields.name")}
         <input
-          className={styles.input}
+          className="input"
           type="text"
           name="name"
           required
           autoComplete="name"
         />
       </label>
-      <label className={styles.label}>
+      <label className={styles.field}>
         {t("fields.email")}
         <input
-          className={styles.input}
+          className="input"
           type="email"
           name="email"
           required
           autoComplete="email"
         />
       </label>
-      <label className={styles.label}>
+      <label className={styles.field}>
         {t("fields.password")}
         <input
-          className={styles.input}
+          className="input"
           type="password"
           name="password"
           required
@@ -72,7 +72,7 @@ export default function RegisterForm() {
         />
       </label>
       {error && <p className={styles.error}>{t(`errors.${error}`)}</p>}
-      <button className={styles.button} type="submit" disabled={pending}>
+      <button className="btn btn--primary" type="submit" disabled={pending}>
         {t("register.submit")}
       </button>
     </form>

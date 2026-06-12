@@ -3,30 +3,16 @@
 .nav {
   display: inline-flex;
   align-items: center;
-  gap: $spacing-md;
+  gap: $space-3;
 }
 
 .link {
-  color: $color-primary;
-  font-size: 0.875rem;
-  text-decoration: none;
-
-  &:hover {
-    text-decoration: underline;
-  }
-}
-
-.button {
-  background-color: transparent;
-  color: $color-muted;
-  border: 1px solid $color-muted;
-  border-radius: 4px;
-  padding: $spacing-xs $spacing-sm;
-  font-size: 0.875rem;
-  cursor: pointer;
+  color: $color-text-muted;
+  font-size: 0.9375rem;
+  font-weight: 500;
 
   &:hover {
     color: $color-text;
-    border-color: $color-text;
+    text-decoration: none;
   }
 }

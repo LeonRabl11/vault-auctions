@@ -1,0 +1,87 @@
+@use "../styles/variables" as *;
+
+.main {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: $spacing-lg;
+  padding: $spacing-lg;
+}
+
+.card {
+  width: 100%;
+  max-width: 22rem;
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-md;
+  background-color: $color-surface;
+  border: 1px solid $color-muted;
+  border-radius: 8px;
+  padding: $spacing-lg;
+}
+
+.title {
+  color: $color-primary;
+  font-size: 1.75rem;
+  font-weight: 700;
+  text-align: center;
+  margin: 0;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-md;
+}
+
+.label {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-xs;
+  font-size: 0.875rem;
+  color: $color-muted;
+}
+
+.input {
+  background-color: $color-background;
+  color: $color-text;
+  border: 1px solid $color-muted;
+  border-radius: 4px;
+  padding: $spacing-sm;
+  font-size: 1rem;
+}
+
+.button {
+  background-color: $color-primary;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: $spacing-sm $spacing-md;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+.error {
+  color: #f87171;
+  font-size: 0.875rem;
+  margin: 0;
+}
+
+.links {
+  font-size: 0.875rem;
+  color: $color-muted;
+  text-align: center;
+  margin: 0;
+
+  a {
+    color: $color-primary;
+  }
+}

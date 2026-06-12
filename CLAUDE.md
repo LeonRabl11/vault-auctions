@@ -13,7 +13,8 @@ Phasen-Roadmap: **docs/KONZEPT.md** (Langfassung — nicht hierher kopieren).
 - **pnpm** (Package Manager)
 - **i18n: next-intl 4** (`de` default ohne Prefix, `en` unter `/en`)
 - **DB: Drizzle ORM 0.45 + PostgreSQL** (Supabase als reine DB, Treiber `postgres`)
-- Geplant (lt. Konzept, noch nicht installiert): NextAuth, Zod, Stripe, AWS S3, Brevo
+- **Auth: Better Auth 1.6** (E-Mail + Passwort, JWT/Session, Drizzle-Adapter) — **nicht** NextAuth
+- Geplant (lt. Konzept, noch nicht installiert): Stripe, AWS S3, Brevo
 
 ## Befehle
 - `pnpm dev` — Dev-Server (Turbopack)
@@ -29,10 +30,13 @@ Phasen-Roadmap: **docs/KONZEPT.md** (Langfassung — nicht hierher kopieren).
 - `app/[locale]/` — App Router mit i18n-Routing (Layout rendert `<html lang>`, Pages)
 - `components/` — wiederverwendbare React-Komponenten (z. B. `LocaleSwitcher`)
 - `i18n/` — next-intl-Config (`routing.ts`, `request.ts`, `navigation.ts`)
-- `lib/db/` — Drizzle: `schema.ts` (Tabellen), `index.ts` (Connection `db`)
+- `lib/db/` — Drizzle: `schema.ts` (Domain-Tabellen), `auth-schema.ts` (Better-Auth-Tabellen, generiert), `index.ts` (Connection `db`)
+- `lib/auth.ts` — Better-Auth-Server-Instanz; `lib/auth-client.ts` — Client (`authClient`)
+- `app/api/auth/[...all]/` — Better-Auth-Route-Handler
+- `app/[locale]/{login,register,dashboard}/` — Auth-Seiten (dashboard ist geschützt)
 - `lib/` — sonstige Utilities / Server-Logik (Validierung, Helpers)
 - `styles/` — `_variables.scss` (Partial), `globals.scss` (global)
-- `proxy.ts` — next-intl Locale-Routing (Next-16-Konvention statt `middleware.ts`)
+- `proxy.ts` — next-intl Locale-Routing **+** Better-Auth-Schutz (Next-16-Konvention statt `middleware.ts`)
 - Außerhalb `src/`: `messages/de.json` + `messages/en.json` (ICU), `drizzle/` (Migrationen)
 
 ## Konventionen

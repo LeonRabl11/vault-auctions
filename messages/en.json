@@ -9,5 +9,39 @@
   "LocaleSwitcher": {
     "label": "Language",
     "locale": "{locale, select, de {German} en {English} other {Unknown}}"
+  },
+  "Auth": {
+    "login": {
+      "title": "Sign in",
+      "submit": "Sign in",
+      "noAccount": "No account yet?",
+      "registerLink": "Register"
+    },
+    "register": {
+      "title": "Register",
+      "submit": "Create account",
+      "hasAccount": "Already have an account?",
+      "loginLink": "Sign in"
+    },
+    "fields": {
+      "name": "Name",
+      "email": "Email",
+      "password": "Password"
+    },
+    "errors": {
+      "invalidCredentials": "Email or password is incorrect.",
+      "emailTaken": "This email is already registered.",
+      "generic": "Something went wrong. Please try again."
+    }
+  },
+  "Nav": {
+    "login": "Sign in",
+    "register": "Register",
+    "logout": "Sign out",
+    "dashboard": "Dashboard"
+  },
+  "Dashboard": {
+    "title": "Dashboard",
+    "welcome": "Welcome, {name}!"
   }
 }

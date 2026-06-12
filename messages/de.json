@@ -9,5 +9,39 @@
   "LocaleSwitcher": {
     "label": "Sprache",
     "locale": "{locale, select, de {Deutsch} en {English} other {Unbekannt}}"
+  },
+  "Auth": {
+    "login": {
+      "title": "Anmelden",
+      "submit": "Anmelden",
+      "noAccount": "Noch kein Konto?",
+      "registerLink": "Registrieren"
+    },
+    "register": {
+      "title": "Registrieren",
+      "submit": "Konto erstellen",
+      "hasAccount": "Schon ein Konto?",
+      "loginLink": "Anmelden"
+    },
+    "fields": {
+      "name": "Name",
+      "email": "E-Mail",
+      "password": "Passwort"
+    },
+    "errors": {
+      "invalidCredentials": "E-Mail oder Passwort ist falsch.",
+      "emailTaken": "Diese E-Mail ist bereits registriert.",
+      "generic": "Etwas ist schiefgelaufen. Bitte erneut versuchen."
+    }
+  },
+  "Nav": {
+    "login": "Anmelden",
+    "register": "Registrieren",
+    "logout": "Abmelden",
+    "dashboard": "Dashboard"
+  },
+  "Dashboard": {
+    "title": "Dashboard",
+    "welcome": "Willkommen, {name}!"
   }
 }

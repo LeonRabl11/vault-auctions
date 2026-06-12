@@ -1,5 +1,6 @@
 import {getTranslations, setRequestLocale} from "next-intl/server";
 import LocaleSwitcher from "@/components/LocaleSwitcher";
+import Nav from "@/components/Nav";
 import styles from "./page.module.scss";
 
 type Props = {
@@ -15,6 +16,7 @@ export default async function Home({params}: Props) {
   return (
     <main className={styles.main}>
       <LocaleSwitcher />
+      <Nav />
       <h1 className={styles.title}>{t("title")}</h1>
     </main>
   );

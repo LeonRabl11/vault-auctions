@@ -11,22 +11,29 @@ Phasen-Roadmap: **docs/KONZEPT.md** (Langfassung — nicht hierher kopieren).
 - **Styling: SCSS** (Next.js built-in Sass, `sass ^1.100.0`) — **kein Tailwind**
 - **ESLint 9** (Flat Config: `eslint-config-next` core-web-vitals + typescript)
 - **pnpm** (Package Manager)
-- Geplant (lt. Konzept, noch nicht installiert): next-intl, Drizzle ORM + PostgreSQL
-  (Supabase), NextAuth, Zod, Stripe, AWS S3, Brevo
+- **i18n: next-intl 4** (`de` default ohne Prefix, `en` unter `/en`)
+- **DB: Drizzle ORM 0.45 + PostgreSQL** (Supabase als reine DB, Treiber `postgres`)
+- Geplant (lt. Konzept, noch nicht installiert): NextAuth, Zod, Stripe, AWS S3, Brevo
 
 ## Befehle
 - `pnpm dev` — Dev-Server (Turbopack)
 - `pnpm build` — Production-Build
 - `pnpm start` — Production-Server
 - `pnpm lint` — ESLint
-- *(DB, sobald Drizzle eingerichtet: `drizzle-kit generate` / `migrate` — noch nicht vorhanden)*
+- `pnpm db:generate` — Migration aus Schema generieren (offline)
+- `pnpm db:migrate` — Migrationen auf die DB anwenden (braucht `DATABASE_URL`)
+- `pnpm db:push` — Schema direkt pushen (Prototyping)
+- `pnpm db:studio` — Drizzle Studio
 
 ## Struktur (src/)
-- `app/` — App Router (Routen, Layouts, Pages). Globale Texte/Styles via Root-Layout.
-- `components/` — wiederverwendbare React-Komponenten
-- `lib/` — Utilities / Server-Logik (Validierung, DB-Zugriff, Helpers)
+- `app/[locale]/` — App Router mit i18n-Routing (Layout rendert `<html lang>`, Pages)
+- `components/` — wiederverwendbare React-Komponenten (z. B. `LocaleSwitcher`)
+- `i18n/` — next-intl-Config (`routing.ts`, `request.ts`, `navigation.ts`)
+- `lib/db/` — Drizzle: `schema.ts` (Tabellen), `index.ts` (Connection `db`)
+- `lib/` — sonstige Utilities / Server-Logik (Validierung, Helpers)
 - `styles/` — `_variables.scss` (Partial), `globals.scss` (global)
-- Geplant: `app/[locale]/` (i18n-Routing) + `messages/de.json` / `messages/en.json`
+- `proxy.ts` — next-intl Locale-Routing (Next-16-Konvention statt `middleware.ts`)
+- Außerhalb `src/`: `messages/de.json` + `messages/en.json` (ICU), `drizzle/` (Migrationen)
 
 ## Konventionen
 **Styling**

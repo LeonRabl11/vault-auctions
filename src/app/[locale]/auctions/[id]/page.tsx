@@ -1,13 +1,18 @@
 import Image from "next/image";
+import {headers} from "next/headers";
 import {notFound} from "next/navigation";
-import {eq} from "drizzle-orm";
+import {desc, eq} from "drizzle-orm";
 import {
   getFormatter,
   getTranslations,
   setRequestLocale,
 } from "next-intl/server";
-import {auctions, db, user} from "@/lib/db";
+import {auctions, bids, db, user} from "@/lib/db";
+import {auth} from "@/lib/auth";
+import {Link} from "@/i18n/navigation";
 import Countdown from "@/components/Countdown";
+import BidForm from "@/components/BidForm";
+import BidHistory from "@/components/BidHistory";
 import styles from "./page.module.scss";
 
 type Props = {
@@ -34,6 +39,8 @@ export default async function AuctionDetailPage({params}: Props) {
       imageUrl: auctions.imageUrl,
       currentPrice: auctions.currentPrice,
       endsAt: auctions.endsAt,
+      status: auctions.status,
+      sellerId: auctions.sellerId,
       sellerName: user.name,
     })
     .from(auctions)
@@ -45,57 +52,103 @@ export default async function AuctionDetailPage({params}: Props) {
     notFound();
   }
 
+  // Gebotsverlauf (neuestes zuerst), inkl. Bietername
+  const bidList = await db
+    .select({
+      id: bids.id,
+      amount: bids.amount,
+      createdAt: bids.createdAt,
+      bidderName: user.name,
+    })
+    .from(bids)
+    .innerJoin(user, eq(bids.bidderId, user.id))
+    .where(eq(bids.auctionId, id))
+    .orderBy(desc(bids.createdAt));
+
+  const session = await auth.api.getSession({headers: await headers()});
+
+  const isActive =
+    auction.status === "active" &&
+    auction.endsAt.getTime() > new Date().getTime();
+  const isSeller = session?.user.id === auction.sellerId;
+  const canBid = Boolean(session) && !isSeller && isActive;
+
   const t = await getTranslations("Auctions");
   const format = await getFormatter();
 
   return (
-    <article className={styles.detail}>
-      <div className={styles.imageWrap}>
-        <Image
-          src={auction.imageUrl}
-          alt={auction.title}
-          fill
-          sizes="(min-width: 768px) 50vw, 100vw"
-          className={styles.image}
-          priority
-        />
-      </div>
+    <div className={styles.page}>
+      <article className={styles.detail}>
+        <div className={styles.imageWrap}>
+          <Image
+            src={auction.imageUrl}
+            alt={auction.title}
+            fill
+            sizes="(min-width: 768px) 50vw, 100vw"
+            className={styles.image}
+            priority
+          />
+        </div>
 
-      <div className={styles.info}>
-        <h1>{auction.title}</h1>
-        <p className={styles.seller}>
-          {t("detail.seller", {name: auction.sellerName})}
-        </p>
+        <div className={styles.info}>
+          <h1>{auction.title}</h1>
+          <p className={styles.seller}>
+            {t("detail.seller", {name: auction.sellerName})}
+          </p>
 
-        <p className={styles.price}>
-          <span className={styles.priceLabel}>{t("detail.currentBid")}</span>
-          <span className={styles.priceValue}>
-            {format.number(auction.currentPrice / 100, {
-              style: "currency",
-              currency: "EUR",
+          <p className={styles.price}>
+            <span className={styles.priceLabel}>{t("detail.currentBid")}</span>
+            <span className={styles.priceValue}>
+              {format.number(auction.currentPrice / 100, {
+                style: "currency",
+                currency: "EUR",
+              })}
+            </span>
+          </p>
+
+          <div className={styles.countdown}>
+            <span className={styles.countdownLabel}>
+              {t("detail.timeLeft")}
+            </span>
+            <Countdown endsAt={auction.endsAt.toISOString()} />
+          </div>
+
+          <p className={styles.endsAt}>
+            {t("detail.endsAt", {
+              date: format.dateTime(auction.endsAt, {
+                dateStyle: "medium",
+                timeStyle: "short",
+              }),
             })}
-          </span>
-        </p>
+          </p>
 
-        <div className={styles.countdown}>
-          <span className={styles.countdownLabel}>{t("detail.timeLeft")}</span>
-          <Countdown endsAt={auction.endsAt.toISOString()} />
+          {/* Bieten: nur eingeloggt, nicht Verkäufer, Auktion aktiv */}
+          <div className={`card ${styles.bidBox}`}>
+            {canBid ? (
+              <BidForm
+                auctionId={auction.id}
+                currentPrice={auction.currentPrice}
+              />
+            ) : !isActive ? (
+              <p className={styles.bidNote}>{t("bid.endedHint")}</p>
+            ) : isSeller ? (
+              <p className={styles.bidNote}>{t("bid.sellerHint")}</p>
+            ) : (
+              <p className={styles.bidNote}>
+                {t("bid.loginPrompt")}{" "}
+                <Link href="/login">{t("bid.loginLink")}</Link>
+              </p>
+            )}
+          </div>
+
+          <div className={styles.description}>
+            <h2>{t("detail.description")}</h2>
+            <p>{auction.description}</p>
+          </div>
         </div>
+      </article>
 
-        <p className={styles.endsAt}>
-          {t("detail.endsAt", {
-            date: format.dateTime(auction.endsAt, {
-              dateStyle: "medium",
-              timeStyle: "short",
-            }),
-          })}
-        </p>
-
-        <div className={styles.description}>
-          <h2>{t("detail.description")}</h2>
-          <p>{auction.description}</p>
-        </div>
-      </div>
-    </article>
+      <BidHistory bids={bidList} />
+    </div>
   );
 }

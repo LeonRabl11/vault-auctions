@@ -1,0 +1,30 @@
+@use "../styles/variables" as *;
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+}
+
+.hint {
+  margin: 0;
+  font-size: 0.875rem;
+  color: $color-text-muted;
+}
+
+.row {
+  display: flex;
+  gap: $space-2;
+  align-items: stretch;
+}
+
+.row .input,
+.row input {
+  flex: 1;
+}
+
+.error {
+  margin: 0;
+  color: $color-danger;
+  font-size: 0.875rem;
+}

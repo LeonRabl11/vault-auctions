@@ -1,9 +1,25 @@
 @use "../../../../styles/variables" as *;
 
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: $space-5;
+}
+
 .detail {
   display: grid;
   grid-template-columns: 1fr;
   gap: $space-4;
+}
+
+.bidBox {
+  display: flex;
+  flex-direction: column;
+}
+
+.bidNote {
+  margin: 0;
+  color: $color-text-muted;
 }
 
 .imageWrap {

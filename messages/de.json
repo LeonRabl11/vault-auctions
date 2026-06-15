@@ -66,6 +66,28 @@
       "endsAt": "Endet am {date}",
       "description": "Beschreibung"
     },
+    "bid": {
+      "title": "Mitbieten",
+      "submit": "Bieten",
+      "min": "Dein Gebot muss höher als {amount} sein.",
+      "loginPrompt": "Melde dich an, um mitzubieten.",
+      "loginLink": "Anmelden",
+      "sellerHint": "Das ist deine eigene Auktion.",
+      "endedHint": "Diese Auktion ist beendet.",
+      "errors": {
+        "tooLow": "Dein Gebot muss höher als das aktuelle Höchstgebot sein.",
+        "auctionEnded": "Diese Auktion ist nicht mehr aktiv.",
+        "ownAuction": "Du kannst nicht auf deine eigene Auktion bieten.",
+        "unauthorized": "Bitte melde dich an, um zu bieten.",
+        "notFound": "Auktion nicht gefunden.",
+        "invalid": "Ungültige Eingabe.",
+        "generic": "Etwas ist schiefgelaufen. Bitte erneut versuchen."
+      }
+    },
+    "history": {
+      "title": "Gebotsverlauf",
+      "empty": "Noch keine Gebote. Sei der Erste!"
+    },
     "countdown": {
       "days": "Tage",
       "hours": "Std",

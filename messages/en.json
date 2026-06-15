@@ -66,6 +66,28 @@
       "endsAt": "Ends on {date}",
       "description": "Description"
     },
+    "bid": {
+      "title": "Place a bid",
+      "submit": "Bid",
+      "min": "Your bid must be higher than {amount}.",
+      "loginPrompt": "Sign in to place a bid.",
+      "loginLink": "Sign in",
+      "sellerHint": "This is your own auction.",
+      "endedHint": "This auction has ended.",
+      "errors": {
+        "tooLow": "Your bid must be higher than the current top bid.",
+        "auctionEnded": "This auction is no longer active.",
+        "ownAuction": "You cannot bid on your own auction.",
+        "unauthorized": "Please sign in to bid.",
+        "notFound": "Auction not found.",
+        "invalid": "Invalid input.",
+        "generic": "Something went wrong. Please try again."
+      }
+    },
+    "history": {
+      "title": "Bid history",
+      "empty": "No bids yet. Be the first!"
+    },
     "countdown": {
       "days": "Days",
       "hours": "Hrs",

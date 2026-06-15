@@ -7,7 +7,7 @@ import {routing} from "./i18n/routing";
 const handleI18nRouting = createMiddleware(routing);
 
 // Pfade (ohne Locale-Prefix), die eine Session erfordern
-const protectedPathnames = ["/dashboard"];
+const protectedPathnames = ["/dashboard", "/auctions/new"];
 
 export default function proxy(request: NextRequest) {
   const {pathname} = request.nextUrl;

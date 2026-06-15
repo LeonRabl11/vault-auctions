@@ -38,10 +38,40 @@
     "login": "Anmelden",
     "register": "Registrieren",
     "logout": "Abmelden",
-    "dashboard": "Dashboard"
+    "dashboard": "Dashboard",
+    "createAuction": "Auktion erstellen"
   },
   "Dashboard": {
     "title": "Dashboard",
     "welcome": "Willkommen, {name}!"
+  },
+  "Auctions": {
+    "new": {
+      "title": "Auktion erstellen",
+      "submit": "Auktion einstellen",
+      "uploading": "Wird hochgeladen…"
+    },
+    "fields": {
+      "title": "Titel",
+      "description": "Beschreibung",
+      "image": "Bild",
+      "startPrice": "Startpreis (€)",
+      "endsAt": "Enddatum"
+    },
+    "hints": {
+      "image": "JPG, PNG, WebP oder GIF — max. 5 MB."
+    },
+    "errors": {
+      "titleRequired": "Bitte einen Titel eingeben.",
+      "descriptionRequired": "Bitte eine Beschreibung eingeben.",
+      "pricePositive": "Der Startpreis muss größer als 0 sein.",
+      "endInFuture": "Das Enddatum muss in der Zukunft liegen.",
+      "imageRequired": "Bitte ein Bild auswählen.",
+      "imageType": "Nur Bilddateien sind erlaubt (JPG, PNG, WebP, GIF).",
+      "imageTooLarge": "Das Bild darf maximal 5 MB groß sein.",
+      "uploadFailed": "Der Upload ist fehlgeschlagen. Bitte erneut versuchen.",
+      "unauthorized": "Bitte melde dich an.",
+      "generic": "Etwas ist schiefgelaufen. Bitte erneut versuchen."
+    }
   }
 }

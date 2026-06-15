@@ -38,10 +38,40 @@
     "login": "Sign in",
     "register": "Register",
     "logout": "Sign out",
-    "dashboard": "Dashboard"
+    "dashboard": "Dashboard",
+    "createAuction": "Create auction"
   },
   "Dashboard": {
     "title": "Dashboard",
     "welcome": "Welcome, {name}!"
+  },
+  "Auctions": {
+    "new": {
+      "title": "Create auction",
+      "submit": "List auction",
+      "uploading": "Uploading…"
+    },
+    "fields": {
+      "title": "Title",
+      "description": "Description",
+      "image": "Image",
+      "startPrice": "Starting price (€)",
+      "endsAt": "End date"
+    },
+    "hints": {
+      "image": "JPG, PNG, WebP or GIF — max. 5 MB."
+    },
+    "errors": {
+      "titleRequired": "Please enter a title.",
+      "descriptionRequired": "Please enter a description.",
+      "pricePositive": "The starting price must be greater than 0.",
+      "endInFuture": "The end date must be in the future.",
+      "imageRequired": "Please select an image.",
+      "imageType": "Only image files are allowed (JPG, PNG, WebP, GIF).",
+      "imageTooLarge": "The image must be at most 5 MB.",
+      "uploadFailed": "The upload failed. Please try again.",
+      "unauthorized": "Please sign in.",
+      "generic": "Something went wrong. Please try again."
+    }
   }
 }

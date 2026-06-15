@@ -1,0 +1,9 @@
+@use "../../../../styles/variables" as *;
+
+.page {
+  max-width: 32rem;
+  margin-inline: auto;
+  display: flex;
+  flex-direction: column;
+  gap: $space-4;
+}

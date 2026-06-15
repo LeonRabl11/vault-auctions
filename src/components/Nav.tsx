@@ -13,6 +13,9 @@ export default async function Nav() {
     <nav className={styles.nav}>
       {session ? (
         <>
+          <Link className={styles.link} href="/auctions/new">
+            {t("createAuction")}
+          </Link>
           <Link className={styles.link} href="/dashboard">
             {t("dashboard")}
           </Link>

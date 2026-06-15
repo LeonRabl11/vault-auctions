@@ -1,0 +1,45 @@
+@use "../styles/variables" as *;
+
+.card {
+  padding: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  color: inherit;
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.15s ease;
+
+  &:hover {
+    text-decoration: none;
+    border-color: $color-text-muted;
+  }
+}
+
+.imageWrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  background-color: $color-surface;
+}
+
+.image {
+  object-fit: cover;
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+  padding: $space-3;
+}
+
+.title {
+  font-size: 1.125rem;
+}
+
+.price {
+  margin: 0;
+  font-size: 0.875rem;
+  color: $color-text-muted;
+}

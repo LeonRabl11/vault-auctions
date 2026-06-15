@@ -39,6 +39,7 @@
     "register": "Register",
     "logout": "Sign out",
     "dashboard": "Dashboard",
+    "auctions": "Auctions",
     "createAuction": "Create auction"
   },
   "Dashboard": {
@@ -50,6 +51,27 @@
       "title": "Create auction",
       "submit": "List auction",
       "uploading": "Uploading…"
+    },
+    "list": {
+      "title": "Auctions",
+      "empty": "There are no active auctions right now. Check back later!"
+    },
+    "card": {
+      "currentBid": "Top bid"
+    },
+    "detail": {
+      "seller": "Seller: {name}",
+      "currentBid": "Current top bid",
+      "timeLeft": "Time left",
+      "endsAt": "Ends on {date}",
+      "description": "Description"
+    },
+    "countdown": {
+      "days": "Days",
+      "hours": "Hrs",
+      "minutes": "Min",
+      "seconds": "Sec",
+      "ended": "Ended"
     },
     "fields": {
       "title": "Title",

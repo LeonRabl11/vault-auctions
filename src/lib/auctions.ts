@@ -11,9 +11,12 @@ import {auctions, bids, db} from "@/lib/db";
  *
  * Gewinner = Bieter des höchsten Gebots (Gleichstand kann nicht auftreten, da
  * jedes Gebot das vorige übersteigen muss). Ohne Gebote bleibt winnerId null.
+ *
+ * Gibt true zurück, wenn diese Aufruf die Auktion abgeschlossen hat, sonst false
+ * (z. B. bereits beendet oder noch nicht abgelaufen).
  */
-export async function finalizeAuction(id: string): Promise<void> {
-  await db.transaction(async (tx) => {
+export async function finalizeAuction(id: string): Promise<boolean> {
+  return db.transaction(async (tx) => {
     const [auction] = await tx
       .select({status: auctions.status, endsAt: auctions.endsAt})
       .from(auctions)
@@ -21,8 +24,8 @@ export async function finalizeAuction(id: string): Promise<void> {
       .for("update")
       .limit(1);
 
-    if (!auction || auction.status !== "active") return;
-    if (auction.endsAt.getTime() >= Date.now()) return;
+    if (!auction || auction.status !== "active") return false;
+    if (auction.endsAt.getTime() >= Date.now()) return false;
 
     const [top] = await tx
       .select({bidderId: bids.bidderId})
@@ -35,5 +38,7 @@ export async function finalizeAuction(id: string): Promise<void> {
       .update(auctions)
       .set({status: "ended", winnerId: top?.bidderId ?? null})
       .where(eq(auctions.id, id));
+
+    return true;
   });
 }

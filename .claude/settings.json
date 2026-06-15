@@ -1,0 +1,36 @@
+{
+  "permissions": {
+    "deny": [
+      "Read(.env.local)",
+      "Read(./.env*)",
+      "Read(**/.env*)",
+      "Edit(**/.env*)",
+      "Write(**/.env*)"
+    ]
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Read|Edit|Write|MultiEdit|Bash",
+        "hooks": [
+          { "type": "command", "command": "node .claude/hooks/protect-env.js" }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write|MultiEdit",
+        "hooks": [
+          { "type": "command", "command": "pnpm exec prettier --write \"$CLAUDE_FILE_PATHS\" 2>/dev/null || true" }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          { "type": "command", "command": "pnpm lint" }
+        ]
+      }
+    ]
+  }
+}

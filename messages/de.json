@@ -73,7 +73,6 @@
       "loginPrompt": "Melde dich an, um mitzubieten.",
       "loginLink": "Anmelden",
       "sellerHint": "Das ist deine eigene Auktion.",
-      "endedHint": "Diese Auktion ist beendet.",
       "errors": {
         "tooLow": "Dein Gebot muss höher als das aktuelle Höchstgebot sein.",
         "auctionEnded": "Diese Auktion ist nicht mehr aktiv.",
@@ -87,6 +86,13 @@
     "history": {
       "title": "Gebotsverlauf",
       "empty": "Noch keine Gebote. Sei der Erste!"
+    },
+    "result": {
+      "ended": "Auktion beendet",
+      "winner": "Gewinner: {name}",
+      "youWon": "Du hast gewonnen! 🎉",
+      "youWonHint": "Der Bezahl-Button folgt in Kürze.",
+      "noBids": "Beendet — es gab keine Gebote."
     },
     "countdown": {
       "days": "Tage",

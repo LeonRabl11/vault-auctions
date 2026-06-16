@@ -39,6 +39,16 @@
   color: $color-success;
 }
 
+.paidBanner {
+  margin: 0;
+  padding: $space-3;
+  border: 1px solid $color-success;
+  border-radius: $radius;
+  background-color: rgba(22, 163, 74, 0.08);
+  color: $color-success;
+  font-weight: 600;
+}
+
 .imageWrap {
   position: relative;
   width: 100%;

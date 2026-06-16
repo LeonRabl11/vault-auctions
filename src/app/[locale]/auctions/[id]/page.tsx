@@ -7,17 +7,19 @@ import {
   getTranslations,
   setRequestLocale,
 } from "next-intl/server";
-import {auctions, bids, db, user} from "@/lib/db";
+import {auctions, bids, db, orders, user} from "@/lib/db";
 import {auth} from "@/lib/auth";
 import {finalizeAuction} from "@/lib/auctions";
 import {Link} from "@/i18n/navigation";
 import Countdown from "@/components/Countdown";
 import BidForm from "@/components/BidForm";
 import BidHistory from "@/components/BidHistory";
+import PayButton from "@/components/PayButton";
 import styles from "./page.module.scss";
 
 type Props = {
   params: Promise<{locale: string; id: string}>;
+  searchParams: Promise<{paid?: string}>;
 };
 
 const UUID_RE =
@@ -43,8 +45,9 @@ function loadAuction(id: string) {
     .limit(1);
 }
 
-export default async function AuctionDetailPage({params}: Props) {
+export default async function AuctionDetailPage({params, searchParams}: Props) {
   const {locale, id} = await params;
+  const {paid} = await searchParams;
   setRequestLocale(locale);
 
   // Ungültige IDs gar nicht erst an die DB geben
@@ -69,15 +72,28 @@ export default async function AuctionDetailPage({params}: Props) {
     }
   }
 
-  // Gewinner-Name (nur wenn beendet und es einen Gewinner gibt)
-  let winnerName: string | null = null;
-  if (auction.winnerId) {
-    const [winner] = await db
+  // Order zur Auktion (falls vorhanden) — Quelle der Wahrheit für den Abschluss
+  const [order] = await db
+    .select({
+      id: orders.id,
+      status: orders.status,
+      buyerId: orders.buyerId,
+      paymentDueAt: orders.paymentDueAt,
+    })
+    .from(orders)
+    .where(eq(orders.auctionId, id))
+    .limit(1);
+
+  // Gewinner-/Käufer-Name (Order bevorzugt; nach Ablauf ist winnerId null)
+  const buyerOrWinnerId = order?.buyerId ?? auction.winnerId;
+  let buyerName: string | null = null;
+  if (buyerOrWinnerId) {
+    const [u] = await db
       .select({name: user.name})
       .from(user)
-      .where(eq(user.id, auction.winnerId))
+      .where(eq(user.id, buyerOrWinnerId))
       .limit(1);
-    winnerName = winner?.name ?? null;
+    buyerName = u?.name ?? null;
   }
 
   // Gebotsverlauf (neuestes zuerst), inkl. Bietername
@@ -99,8 +115,8 @@ export default async function AuctionDetailPage({params}: Props) {
     auction.status === "active" &&
     auction.endsAt.getTime() > new Date().getTime();
   const isSeller = session?.user.id === auction.sellerId;
-  const isWinner = Boolean(
-    auction.winnerId && session?.user.id === auction.winnerId,
+  const isViewerBuyer = Boolean(
+    buyerOrWinnerId && session?.user.id === buyerOrWinnerId,
   );
 
   const t = await getTranslations("Auctions");
@@ -108,6 +124,10 @@ export default async function AuctionDetailPage({params}: Props) {
 
   return (
     <div className={styles.page}>
+      {paid === "1" && order?.status === "paid" && (
+        <p className={styles.paidBanner}>{t("result.paidBanner")}</p>
+      )}
+
       <article className={styles.detail}>
         <div className={styles.imageWrap}>
           <Image
@@ -170,21 +190,41 @@ export default async function AuctionDetailPage({params}: Props) {
                   <Link href="/login">{t("bid.loginLink")}</Link>
                 </p>
               )
-            ) : auction.winnerId ? (
-              // Beendet mit Gewinner
-              isWinner ? (
-                <div className={styles.result}>
-                  <p className={styles.win}>{t("result.youWon")}</p>
-                  <p className={styles.bidNote}>{t("result.youWonHint")}</p>
-                </div>
+            ) : order ? (
+              // Beendet mit Order
+              order.status === "paid" ? (
+                <p className={styles.win}>
+                  {isViewerBuyer ? t("result.paidYou") : t("result.paid")}
+                </p>
+              ) : order.status === "pending" ? (
+                isViewerBuyer ? (
+                  <div className={styles.result}>
+                    <p className={styles.win}>{t("result.youWon")}</p>
+                    <p className={styles.bidNote}>
+                      {t("result.payBy", {
+                        date: format.dateTime(order.paymentDueAt, {
+                          dateStyle: "medium",
+                          timeStyle: "short",
+                        }),
+                      })}
+                    </p>
+                    <PayButton orderId={order.id} />
+                  </div>
+                ) : (
+                  <p className={styles.bidNote}>{t("result.soldPending")}</p>
+                )
               ) : (
-                <div className={styles.result}>
-                  <p className={styles.resultTitle}>{t("result.ended")}</p>
-                  <p className={styles.bidNote}>
-                    {t("result.winner", {name: winnerName ?? ""})}
-                  </p>
-                </div>
+                // expired
+                <p className={styles.bidNote}>{t("result.expired")}</p>
               )
+            ) : auction.winnerId ? (
+              // Beendet mit Gewinner, aber (noch) ohne Order
+              <div className={styles.result}>
+                <p className={styles.resultTitle}>{t("result.ended")}</p>
+                <p className={styles.bidNote}>
+                  {t("result.winner", {name: buyerName ?? ""})}
+                </p>
+              </div>
             ) : (
               // Beendet ohne Gebote
               <p className={styles.bidNote}>{t("result.noBids")}</p>

@@ -1,6 +1,9 @@
 import "server-only";
 import {asc, desc, eq} from "drizzle-orm";
-import {auctions, bids, db} from "@/lib/db";
+import {auctions, bids, db, orders} from "@/lib/db";
+
+// Zahlungsfrist des Gewinners nach Auktionsende
+const PAYMENT_WINDOW_MS = 48 * 60 * 60 * 1000; // 48 Stunden
 
 /**
  * Lazy Expiration: Schließt eine abgelaufene, noch aktive Auktion ab.
@@ -18,7 +21,11 @@ import {auctions, bids, db} from "@/lib/db";
 export async function finalizeAuction(id: string): Promise<boolean> {
   return db.transaction(async (tx) => {
     const [auction] = await tx
-      .select({status: auctions.status, endsAt: auctions.endsAt})
+      .select({
+        status: auctions.status,
+        endsAt: auctions.endsAt,
+        currentPrice: auctions.currentPrice,
+      })
       .from(auctions)
       .where(eq(auctions.id, id))
       .for("update")
@@ -34,10 +41,27 @@ export async function finalizeAuction(id: string): Promise<boolean> {
       .orderBy(desc(bids.amount), asc(bids.createdAt))
       .limit(1);
 
+    const winnerId = top?.bidderId ?? null;
+
     await tx
       .update(auctions)
-      .set({status: "ended", winnerId: top?.bidderId ?? null})
+      .set({status: "ended", winnerId})
       .where(eq(auctions.id, id));
+
+    // Bei Gewinner: Order anlegen (Schlusspreis, 48h Zahlungsfrist).
+    // onConflictDoNothing schützt gegen Doppelanlage (unique auctionId).
+    if (winnerId) {
+      await tx
+        .insert(orders)
+        .values({
+          auctionId: id,
+          buyerId: winnerId,
+          amount: auction.currentPrice,
+          status: "pending",
+          paymentDueAt: new Date(Date.now() + PAYMENT_WINDOW_MS),
+        })
+        .onConflictDoNothing();
+    }
 
     return true;
   });

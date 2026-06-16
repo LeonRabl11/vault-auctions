@@ -91,8 +91,22 @@
       "ended": "Auction ended",
       "winner": "Winner: {name}",
       "youWon": "You won! 🎉",
-      "youWonHint": "The payment button is coming soon.",
-      "noBids": "Ended — there were no bids."
+      "payBy": "Please pay by {date}.",
+      "pay": "Pay now",
+      "payPending": "Redirecting …",
+      "soldPending": "Sold — waiting for the winner's payment.",
+      "paid": "Sold — paid.",
+      "paidYou": "Paid ✓ — thank you!",
+      "paidBanner": "Payment successful. Thank you!",
+      "expired": "Payment window expired — the auction remains unsold.",
+      "noBids": "Ended — there were no bids.",
+      "errors": {
+        "unauthorized": "Please sign in.",
+        "notFound": "Order not found.",
+        "notPayable": "This order can no longer be paid.",
+        "invalid": "Invalid input.",
+        "generic": "Something went wrong. Please try again."
+      }
     },
     "countdown": {
       "days": "Days",

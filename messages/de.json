@@ -91,8 +91,22 @@
       "ended": "Auktion beendet",
       "winner": "Gewinner: {name}",
       "youWon": "Du hast gewonnen! 🎉",
-      "youWonHint": "Der Bezahl-Button folgt in Kürze.",
-      "noBids": "Beendet — es gab keine Gebote."
+      "payBy": "Bitte bis {date} bezahlen.",
+      "pay": "Jetzt bezahlen",
+      "payPending": "Weiterleitung …",
+      "soldPending": "Verkauft — wartet auf Zahlung des Gewinners.",
+      "paid": "Verkauft — bezahlt.",
+      "paidYou": "Bezahlt ✓ — vielen Dank!",
+      "paidBanner": "Zahlung erfolgreich. Vielen Dank!",
+      "expired": "Zahlungsfrist abgelaufen — die Auktion bleibt unverkauft.",
+      "noBids": "Beendet — es gab keine Gebote.",
+      "errors": {
+        "unauthorized": "Bitte melde dich an.",
+        "notFound": "Order nicht gefunden.",
+        "notPayable": "Diese Order kann nicht (mehr) bezahlt werden.",
+        "invalid": "Ungültige Eingabe.",
+        "generic": "Etwas ist schiefgelaufen. Bitte erneut versuchen."
+      }
     },
     "countdown": {
       "days": "Tage",

@@ -1,7 +1,7 @@
 import {createHash, timingSafeEqual} from "node:crypto";
 import {NextResponse} from "next/server";
 import {and, eq, lte} from "drizzle-orm";
-import {auctions, db} from "@/lib/db";
+import {auctions, db, orders} from "@/lib/db";
 import {finalizeAuction} from "@/lib/auctions";
 
 // Kein Caching; Postgres-Treiber braucht die Node-Runtime
@@ -39,5 +39,26 @@ export async function GET(request: Request) {
     }
   }
 
-  return NextResponse.json({finalized});
+  // Offene Orders mit verstrichener Zahlungsfrist ablaufen lassen und die
+  // jeweilige Auktion als unverkauft markieren (winnerId zurücksetzen).
+  const expiredOrders = await db.transaction(async (tx) => {
+    const updated = await tx
+      .update(orders)
+      .set({status: "expired"})
+      .where(
+        and(eq(orders.status, "pending"), lte(orders.paymentDueAt, new Date())),
+      )
+      .returning({auctionId: orders.auctionId});
+
+    for (const {auctionId} of updated) {
+      await tx
+        .update(auctions)
+        .set({winnerId: null})
+        .where(eq(auctions.id, auctionId));
+    }
+
+    return updated.length;
+  });
+
+  return NextResponse.json({finalized, expiredOrders});
 }

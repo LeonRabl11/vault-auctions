@@ -11,7 +11,11 @@ export const auctionStatus = pgEnum("auction_status", [
   "ended",
   "paid",
 ]);
-export const orderStatus = pgEnum("order_status", ["pending", "paid"]);
+export const orderStatus = pgEnum("order_status", [
+  "pending",
+  "paid",
+  "expired",
+]);
 
 // Auction — Beträge immer als Integer in Cent, FKs auf Better Auths user.id (text)
 export const auctions = pgTable("auctions", {
@@ -49,17 +53,20 @@ export const bids = pgTable("bids", {
     .defaultNow(),
 });
 
-// Order — buyerId = winnerId der Auktion
+// Order — eine pro Auktion (unique auctionId); buyerId = winnerId der Auktion
 export const orders = pgTable("orders", {
   id: uuid("id").primaryKey().defaultRandom(),
   auctionId: uuid("auction_id")
     .notNull()
+    .unique()
     .references(() => auctions.id, {onDelete: "cascade"}),
   buyerId: text("buyer_id")
     .notNull()
     .references(() => user.id, {onDelete: "cascade"}),
-  stripeSessionId: text("stripe_session_id").notNull().unique(),
+  amount: integer("amount").notNull(), // Schlusspreis in Cent
+  stripeSessionId: text("stripe_session_id").unique(), // erst beim Checkout gesetzt
   status: orderStatus("status").notNull().default("pending"),
+  paymentDueAt: timestamp("payment_due_at", {withTimezone: true}).notNull(),
   createdAt: timestamp("created_at", {withTimezone: true})
     .notNull()
     .defaultNow(),

@@ -2,7 +2,7 @@ import {createHash, timingSafeEqual} from "node:crypto";
 import {NextResponse} from "next/server";
 import {and, eq, lte} from "drizzle-orm";
 import {auctions, db, orders} from "@/lib/db";
-import {finalizeAuction} from "@/lib/auctions";
+import {finalizeAuctionAndNotify} from "@/lib/auctions";
 
 // Kein Caching; Postgres-Treiber braucht die Node-Runtime
 export const runtime = "nodejs";
@@ -31,10 +31,11 @@ export async function GET(request: Request) {
     .where(and(eq(auctions.status, "active"), lte(auctions.endsAt, new Date())));
 
   // Sequenziell finalisieren (jede Auktion mit Transaktion + FOR UPDATE in
-  // finalizeAuction — keine Logik-Duplizierung, schont den Connection-Pool)
+  // finalizeAuction — keine Logik-Duplizierung, schont den Connection-Pool).
+  // Der Wrapper verschickt zugleich die "Gewonnen"-Mail (nur beim echten Abschluss).
   let finalized = 0;
   for (const {id} of expired) {
-    if (await finalizeAuction(id)) {
+    if (await finalizeAuctionAndNotify(id)) {
       finalized++;
     }
   }

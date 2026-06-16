@@ -9,7 +9,7 @@ import {
 } from "next-intl/server";
 import {auctions, bids, db, orders, user} from "@/lib/db";
 import {auth} from "@/lib/auth";
-import {finalizeAuction} from "@/lib/auctions";
+import {finalizeAuctionAndNotify} from "@/lib/auctions";
 import {Link} from "@/i18n/navigation";
 import Countdown from "@/components/Countdown";
 import BidForm from "@/components/BidForm";
@@ -65,7 +65,7 @@ export default async function AuctionDetailPage({params, searchParams}: Props) {
     auction.status === "active" &&
     auction.endsAt.getTime() < new Date().getTime()
   ) {
-    await finalizeAuction(id);
+    await finalizeAuctionAndNotify(id);
     [auction] = await loadAuction(id);
     if (!auction) {
       notFound();

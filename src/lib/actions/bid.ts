@@ -2,10 +2,11 @@
 
 import {revalidatePath} from "next/cache";
 import {headers} from "next/headers";
-import {eq} from "drizzle-orm";
+import {asc, desc, eq} from "drizzle-orm";
 import {auth} from "@/lib/auth";
-import {auctions, bids, db} from "@/lib/db";
+import {auctions, bids, db, user} from "@/lib/db";
 import {bidInputSchema} from "@/lib/validation/bid";
+import {sendOutbidEmail} from "@/lib/email";
 
 export type PlaceBidResult = {ok: true} | {ok: false; error: string};
 
@@ -56,6 +57,14 @@ export async function placeBid(input: unknown): Promise<PlaceBidResult> {
         return {ok: false, error: "tooLow"} as const;
       }
 
+      // Bisherigen Höchstbieter merken (vor dem Insert) — für die Überboten-Mail
+      const [prevTop] = await tx
+        .select({bidderId: bids.bidderId})
+        .from(bids)
+        .where(eq(bids.auctionId, auctionId))
+        .orderBy(desc(bids.amount), asc(bids.createdAt))
+        .limit(1);
+
       // Bid anlegen UND currentPrice aktualisieren — in einer Transaktion
       await tx.insert(bids).values({auctionId, bidderId: userId, amount});
       await tx
@@ -63,12 +72,41 @@ export async function placeBid(input: unknown): Promise<PlaceBidResult> {
         .set({currentPrice: amount})
         .where(eq(auctions.id, auctionId));
 
-      return {ok: true} as const;
+      return {
+        ok: true,
+        previousBidderId: prevTop?.bidderId ?? null,
+        auctionTitle: auction.title,
+      } as const;
     });
 
     if (result.ok) {
       // Detailseite neu rendern (neuer Preis + Historie)
       revalidatePath("/[locale]/auctions/[id]", "page");
+
+      // Überboten-Mail NACH dem Commit, außerhalb der Transaktion, tolerant.
+      // Nur wenn es einen vorherigen, anderen Höchstbieter gab.
+      if (result.previousBidderId && result.previousBidderId !== userId) {
+        try {
+          const [prev] = await db
+            .select({email: user.email, name: user.name})
+            .from(user)
+            .where(eq(user.id, result.previousBidderId))
+            .limit(1);
+          if (prev) {
+            await sendOutbidEmail({
+              to: prev.email,
+              name: prev.name,
+              auctionTitle: result.auctionTitle,
+              newPrice: amount,
+              auctionId,
+            });
+          }
+        } catch (e) {
+          console.error("[email] outbid notification failed", e);
+        }
+      }
+
+      return {ok: true} as const;
     }
     return result;
   } catch {

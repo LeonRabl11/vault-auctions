@@ -46,6 +46,13 @@
     "title": "Dashboard",
     "welcome": "Willkommen, {name}!"
   },
+  "Verify": {
+    "hint": "Bitte bestätige deine E-Mail-Adresse.",
+    "resend": "Mail erneut senden",
+    "sending": "Wird gesendet…",
+    "sent": "Gesendet ✓",
+    "error": "Senden fehlgeschlagen. Bitte später erneut versuchen."
+  },
   "Auctions": {
     "new": {
       "title": "Auktion erstellen",

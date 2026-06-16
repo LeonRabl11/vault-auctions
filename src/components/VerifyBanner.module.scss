@@ -1,0 +1,19 @@
+@use "../styles/variables" as *;
+
+.bar {
+  background-color: $color-surface;
+  border-top: 1px solid $color-border;
+}
+
+.banner {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: $space-3;
+  padding-block: $space-2;
+}
+
+.text {
+  color: $color-text-muted;
+  font-size: 0.875rem;
+}

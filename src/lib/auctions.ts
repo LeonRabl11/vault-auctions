@@ -1,6 +1,7 @@
 import "server-only";
 import {asc, desc, eq} from "drizzle-orm";
-import {auctions, bids, db, orders} from "@/lib/db";
+import {auctions, bids, db, orders, user} from "@/lib/db";
+import {sendWonEmail} from "@/lib/email";
 
 // Zahlungsfrist des Gewinners nach Auktionsende
 const PAYMENT_WINDOW_MS = 48 * 60 * 60 * 1000; // 48 Stunden
@@ -65,4 +66,43 @@ export async function finalizeAuction(id: string): Promise<boolean> {
 
     return true;
   });
+}
+
+/**
+ * finalizeAuction + Gewinner-Benachrichtigung an EINER zentralen Stelle.
+ *
+ * Cron-Job und Lazy Expiration nutzen ausschließlich diesen Wrapper, damit die
+ * "Gewonnen"-Mail genau einmal rausgeht: finalizeAuction liefert nur beim
+ * tatsächlichen Abschluss true (atomar, Row-Lock) — alle Folgeaufrufe sehen
+ * status='ended' und kehren mit false zurück, ohne erneut zu mailen.
+ *
+ * Der Mailversand läuft NACH dem Commit, außerhalb der Transaktion, in try/catch
+ * — ein Fehler bricht die Finalisierung nicht ab.
+ */
+export async function finalizeAuctionAndNotify(id: string): Promise<boolean> {
+  const finalized = await finalizeAuction(id);
+  if (!finalized) return false;
+
+  try {
+    // Gewinner laden (innerJoin -> ohne winnerId/Gebote kein Treffer, keine Mail)
+    const [row] = await db
+      .select({title: auctions.title, email: user.email, name: user.name})
+      .from(auctions)
+      .innerJoin(user, eq(auctions.winnerId, user.id))
+      .where(eq(auctions.id, id))
+      .limit(1);
+
+    if (row) {
+      await sendWonEmail({
+        to: row.email,
+        name: row.name,
+        auctionTitle: row.title,
+        auctionId: id,
+      });
+    }
+  } catch (e) {
+    console.error("[email] won notification failed", e);
+  }
+
+  return true;
 }

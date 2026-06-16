@@ -6,6 +6,7 @@ import {z} from "zod";
 import {auth} from "@/lib/auth";
 import {auctions, db, orders} from "@/lib/db";
 import {stripe} from "@/lib/stripe";
+import {auctionUrl} from "@/lib/urls";
 import {routing} from "@/i18n/routing";
 
 export type CheckoutResult =
@@ -16,10 +17,6 @@ const inputSchema = z.object({
   orderId: z.string().uuid(),
   locale: z.enum(routing.locales),
 });
-
-function baseUrl(): string {
-  return process.env.BETTER_AUTH_URL ?? "http://localhost:3000";
-}
 
 export async function startCheckout(input: unknown): Promise<CheckoutResult> {
   const session = await auth.api.getSession({headers: await headers()});
@@ -55,9 +52,8 @@ export async function startCheckout(input: unknown): Promise<CheckoutResult> {
     return {ok: false, error: "notPayable"};
   }
 
-  // Detailseite mit Locale-Prefix (de = Default ohne Prefix)
-  const prefix = locale === routing.defaultLocale ? "" : `/${locale}`;
-  const detailUrl = `${baseUrl()}${prefix}/auctions/${order.auctionId}`;
+  // Detailseite (absolute URL inkl. Locale-Prefix)
+  const detailUrl = auctionUrl(order.auctionId, locale);
 
   try {
     const checkout = await stripe.checkout.sessions.create({

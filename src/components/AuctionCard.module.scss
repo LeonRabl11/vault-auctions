@@ -7,12 +7,15 @@
   flex-direction: column;
   color: inherit;
   transition:
+    transform 0.15s ease,
     border-color 0.15s ease,
     box-shadow 0.15s ease;
 
   &:hover {
     text-decoration: none;
-    border-color: $color-text-muted;
+    transform: translateY(-2px);
+    border-color: $color-border-strong;
+    box-shadow: $shadow-md;
   }
 }
 
@@ -35,11 +38,17 @@
 }
 
 .title {
-  font-size: 1.125rem;
+  font-size: $text-lg;
+  letter-spacing: -0.01em;
 }
 
 .price {
   margin: 0;
-  font-size: 0.875rem;
+  font-size: $text-sm;
   color: $color-text-muted;
+
+  strong {
+    color: $color-text;
+    font-weight: $weight-semibold;
+  }
 }

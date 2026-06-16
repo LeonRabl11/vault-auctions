@@ -1,34 +1,72 @@
 // === Design Tokens ===
+// Konsistenzkette: diese Tokens -> Primitives in globals.scss -> *.module.scss.
+// Keine rohen Hex-/Magic-Werte außerhalb dieser Datei.
 
-// Akzent / Primary
+// --- Akzent (ein klarer Blau-Akzent) ---
 $color-primary: #2563eb;
 $color-primary-hover: #1d4ed8;
+$color-primary-fg: #ffffff; // Text auf Akzentflächen
+$color-primary-soft: #eff6ff; // dezente Akzent-Tönung (Hintergründe)
 
-// Neutrale Skala
+// --- Neutrale Skala (ruhig, leicht kühl – Slate) ---
 $color-bg: #ffffff;
-$color-surface: #f8fafc;
-$color-border: #e5e7eb;
-$color-text: #111827;
-$color-text-muted: #6b7280;
+$color-surface: #f8fafc; // leicht abgesetzte Flächen
+$color-surface-2: #f1f5f9; // zweite Stufe (Hover/aktive Segmente)
+$color-border: #e2e8f0;
+$color-border-strong: #cbd5e1; // Hover-/Fokus-Ränder
+$color-text: #0f172a; // Headlines / starker Text
+$color-text-muted: #64748b; // Sekundärtext
 
-// Semantik
+// --- Semantik ---
 $color-success: #16a34a;
+$color-success-soft: #f0fdf4;
 $color-danger: #dc2626;
+$color-danger-soft: #fef2f2;
 
-// Spacing-Skala (4 / 8 / 16 / 24 / 32 / 48 px)
+// --- Typografie ---
+$font-sans: var(--font-sans), system-ui, -apple-system, "Segoe UI", Roboto,
+  Helvetica, Arial, sans-serif;
+
+// Größenskala
+$text-xs: 0.75rem;
+$text-sm: 0.875rem;
+$text-base: 1rem;
+$text-lg: 1.125rem;
+$text-xl: 1.25rem;
+$text-2xl: 1.5rem;
+$text-3xl: 1.875rem;
+$text-4xl: 2.25rem;
+
+// Gewichte
+$weight-normal: 400;
+$weight-medium: 500;
+$weight-semibold: 600;
+$weight-bold: 700;
+
+// Zeilenhöhen
+$leading-tight: 1.2;
+$leading-snug: 1.4;
+$leading-normal: 1.6;
+
+// --- Abstands-Skala (4 / 8 / 16 / 24 / 32 / 48 / 64 / 96 px) ---
 $space-1: 0.25rem;
 $space-2: 0.5rem;
 $space-3: 1rem;
 $space-4: 1.5rem;
 $space-5: 2rem;
 $space-6: 3rem;
+$space-7: 4rem;
+$space-8: 6rem;
 
-// Radius
-$radius: 8px;
+// --- Radien ---
+$radius-sm: 6px;
+$radius: 10px;
+$radius-lg: 14px;
+$radius-full: 999px;
 
-// Typografie
-$font-sans: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial,
-  sans-serif;
+// --- Schatten (dezent, 2 Stufen) ---
+$shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.04), 0 1px 3px rgba(15, 23, 42, 0.06);
+$shadow-md: 0 6px 16px rgba(15, 23, 42, 0.08), 0 2px 6px rgba(15, 23, 42, 0.05);
 
-// Layout
-$container-max: 64rem;
+// --- Layout ---
+$container-max: 68rem;

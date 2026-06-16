@@ -4,7 +4,37 @@
     "description": "Auktionsplattform — Grundgerüst"
   },
   "HomePage": {
-    "title": "Auction Platform"
+    "hero": {
+      "headline": "Ersteigere Besonderes. Zum besten Preis.",
+      "subline": "Stelle Artikel ein, biete in Echtzeit mit und gewinne bei Ablauf der Auktion — einfach, transparent und ohne Schnickschnack.",
+      "ctaPrimary": "Auktionen entdecken",
+      "ctaSecondary": "Auktion erstellen"
+    },
+    "auctions": {
+      "title": "Aktuelle Auktionen",
+      "viewAll": "Alle ansehen",
+      "empty": "Aktuell gibt es keine aktiven Auktionen. Schau bald wieder vorbei!"
+    },
+    "how": {
+      "title": "So funktioniert's",
+      "step1": {
+        "title": "Stöbern",
+        "text": "Entdecke laufende Auktionen und finde, was dich interessiert."
+      },
+      "step2": {
+        "title": "Bieten",
+        "text": "Gib dein Gebot ab und behalte die Restzeit im Blick."
+      },
+      "step3": {
+        "title": "Gewinnen & bezahlen",
+        "text": "Als Höchstbietender gewinnst du bei Ablauf und bezahlst sicher."
+      }
+    },
+    "cta": {
+      "title": "Bereit mitzubieten?",
+      "text": "Sieh dir die laufenden Auktionen an oder stelle deinen eigenen Artikel ein.",
+      "button": "Auktionen entdecken"
+    }
   },
   "LocaleSwitcher": {
     "label": "Sprache",
@@ -40,7 +70,8 @@
     "logout": "Abmelden",
     "dashboard": "Dashboard",
     "auctions": "Auktionen",
-    "createAuction": "Auktion erstellen"
+    "createAuction": "Auktion erstellen",
+    "menu": "Menü"
   },
   "Dashboard": {
     "title": "Dashboard",

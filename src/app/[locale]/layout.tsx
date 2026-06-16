@@ -1,10 +1,19 @@
 import type {Metadata} from "next";
+import {Inter} from "next/font/google";
 import {notFound} from "next/navigation";
 import {hasLocale, NextIntlClientProvider} from "next-intl";
 import {getTranslations, setRequestLocale} from "next-intl/server";
 import {routing} from "@/i18n/routing";
 import Header from "@/components/Header";
 import "@/styles/globals.scss";
+
+// Selbst gehostet über next/font (kein externer Request, DSGVO-konform).
+// Stellt --font-sans bereit; _variables.scss referenziert die Variable.
+const inter = Inter({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-sans",
+});
 
 type Props = {
   children: React.ReactNode;
@@ -40,7 +49,7 @@ export default async function LocaleLayout({children, params}: Props) {
   setRequestLocale(locale);
 
   return (
-    <html lang={locale}>
+    <html lang={locale} className={inter.variable}>
       <body>
         <NextIntlClientProvider>
           <Header />

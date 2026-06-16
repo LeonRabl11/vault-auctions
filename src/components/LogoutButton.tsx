@@ -15,7 +15,7 @@ export default function LogoutButton() {
   }
 
   return (
-    <button className="btn" type="button" onClick={onLogout}>
+    <button className="btn btn--ghost" type="button" onClick={onLogout}>
       {t("logout")}
     </button>
   );

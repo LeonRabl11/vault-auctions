@@ -19,8 +19,10 @@ body {
   background-color: $color-bg;
   color: $color-text;
   font-family: $font-sans;
-  line-height: 1.5;
+  font-size: $text-base;
+  line-height: $leading-normal;
   -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
 img,
@@ -29,24 +31,32 @@ svg {
   max-width: 100%;
 }
 
+::selection {
+  background-color: $color-primary-soft;
+}
+
 /* === Basis-Typografie === */
 h1,
 h2,
 h3,
 h4 {
-  line-height: 1.2;
-  font-weight: 700;
+  line-height: $leading-tight;
+  font-weight: $weight-bold;
   color: $color-text;
+  letter-spacing: -0.011em;
 }
 
 h1 {
-  font-size: 1.75rem;
+  font-size: $text-3xl;
 }
 h2 {
-  font-size: 1.375rem;
+  font-size: $text-2xl;
 }
 h3 {
-  font-size: 1.125rem;
+  font-size: $text-xl;
+}
+h4 {
+  font-size: $text-lg;
 }
 
 a {
@@ -60,7 +70,13 @@ a {
 }
 
 main {
-  padding-block: $space-6;
+  padding-block: $space-7;
+}
+
+/* Sichtbarer, konsistenter Tastatur-Fokus auf allen interaktiven Elementen */
+:focus-visible {
+  outline: 2px solid $color-primary;
+  outline-offset: 2px;
 }
 
 /* === Wiederverwendbare Primitive === */
@@ -68,7 +84,7 @@ main {
   width: 100%;
   max-width: $container-max;
   margin-inline: auto;
-  padding-inline: $space-3;
+  padding-inline: $space-4;
 }
 
 .btn {
@@ -82,24 +98,22 @@ main {
   background-color: $color-bg;
   color: $color-text;
   font: inherit;
-  font-weight: 600;
+  font-size: $text-sm;
+  font-weight: $weight-semibold;
   line-height: 1.25;
   text-decoration: none;
+  white-space: nowrap;
   cursor: pointer;
   transition:
     background-color 0.15s ease,
     border-color 0.15s ease,
-    color 0.15s ease;
+    color 0.15s ease,
+    box-shadow 0.15s ease;
 
   &:hover {
     background-color: $color-surface;
-    border-color: $color-text-muted;
+    border-color: $color-border-strong;
     text-decoration: none;
-  }
-
-  &:focus-visible {
-    outline: 2px solid $color-primary;
-    outline-offset: 2px;
   }
 
   &:disabled {
@@ -111,20 +125,44 @@ main {
 .btn--primary {
   background-color: $color-primary;
   border-color: $color-primary;
-  color: #fff;
+  color: $color-primary-fg;
+  box-shadow: $shadow-sm;
 
   &:hover {
     background-color: $color-primary-hover;
     border-color: $color-primary-hover;
-    color: #fff;
+    color: $color-primary-fg;
+  }
+}
+
+.btn--ghost {
+  border-color: transparent;
+  background-color: transparent;
+
+  &:hover {
+    background-color: $color-surface;
+    border-color: transparent;
+  }
+}
+
+.btn--danger {
+  border-color: $color-danger;
+  color: $color-danger;
+  background-color: $color-bg;
+
+  &:hover {
+    background-color: $color-danger;
+    border-color: $color-danger;
+    color: $color-primary-fg;
   }
 }
 
 .card {
   background-color: $color-bg;
   border: 1px solid $color-border;
-  border-radius: $radius;
+  border-radius: $radius-lg;
   padding: $space-4;
+  box-shadow: $shadow-sm;
 }
 
 .input {
@@ -136,13 +174,18 @@ main {
   background-color: $color-bg;
   color: $color-text;
   font: inherit;
-  line-height: 1.25;
+  font-size: $text-sm;
+  line-height: 1.4;
   transition:
     border-color 0.15s ease,
     box-shadow 0.15s ease;
 
   &::placeholder {
     color: $color-text-muted;
+  }
+
+  &:hover {
+    border-color: $color-border-strong;
   }
 
   &:focus {
@@ -155,7 +198,7 @@ main {
 
 /* === Responsive === */
 @media (min-width: 640px) {
-  .container {
-    padding-inline: $space-4;
+  h1 {
+    font-size: $text-4xl;
   }
 }

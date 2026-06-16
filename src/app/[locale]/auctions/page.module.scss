@@ -3,7 +3,7 @@
 .page {
   display: flex;
   flex-direction: column;
-  gap: $space-4;
+  gap: $space-5;
 }
 
 .grid {
@@ -13,7 +13,13 @@
 }
 
 .empty {
+  margin: 0;
+  padding: $space-6;
+  text-align: center;
   color: $color-text-muted;
+  background-color: $color-surface;
+  border: 1px solid $color-border;
+  border-radius: $radius-lg;
 }
 
 @media (min-width: 640px) {

@@ -91,7 +91,7 @@ export default function AuctionForm() {
         return;
       }
 
-      router.push("/dashboard");
+      router.push("/auctions");
       router.refresh();
     } catch {
       setError("generic");

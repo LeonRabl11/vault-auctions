@@ -44,7 +44,41 @@
   },
   "Dashboard": {
     "title": "Dashboard",
-    "welcome": "Welcome, {name}!"
+    "welcome": "Welcome, {name}!",
+    "selling": {
+      "title": "My auctions",
+      "empty": "You haven't listed any auctions yet.",
+      "bids": "{count, plural, =0 {No bids} one {# bid} other {# bids}}",
+      "status": {
+        "active": "Active",
+        "sold": "Sold",
+        "awaitingPayment": "Awaiting payment",
+        "unsold": "Unsold"
+      }
+    },
+    "bidding": {
+      "title": "My bids",
+      "empty": "You haven't bid on any auction yet.",
+      "yourBid": "Your top bid",
+      "currentBid": "Current top bid",
+      "status": {
+        "leading": "Leading",
+        "outbid": "Outbid",
+        "won": "Won",
+        "lost": "Not won"
+      }
+    },
+    "won": {
+      "title": "Won items",
+      "empty": "You haven't won any auction yet.",
+      "amount": "Amount",
+      "payBy": "Please pay by {date}.",
+      "status": {
+        "toPay": "To pay",
+        "paid": "Paid",
+        "expired": "Window expired"
+      }
+    }
   },
   "Verify": {
     "hint": "Please confirm your email address.",
@@ -93,6 +127,17 @@
     "history": {
       "title": "Bid history",
       "empty": "No bids yet. Be the first!"
+    },
+    "delete": {
+      "submit": "Delete",
+      "pending": "Deleting…",
+      "confirm": "Really delete this auction?",
+      "errors": {
+        "unauthorized": "Please sign in.",
+        "notAllowed": "Cannot delete (no permission or bids already exist).",
+        "invalid": "Invalid input.",
+        "generic": "Something went wrong. Please try again."
+      }
     },
     "result": {
       "ended": "Auction ended",

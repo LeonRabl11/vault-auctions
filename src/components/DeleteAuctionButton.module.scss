@@ -1,0 +1,26 @@
+@use "../styles/variables" as *;
+
+.wrap {
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+  align-items: flex-start;
+}
+
+// Dezenter Danger-Button: roter Rahmen/Text, beim Hover gefüllt.
+.delete {
+  border-color: $color-danger;
+  color: $color-danger;
+
+  &:hover {
+    background-color: $color-danger;
+    border-color: $color-danger;
+    color: #fff;
+  }
+}
+
+.error {
+  margin: 0;
+  color: $color-danger;
+  font-size: 0.875rem;
+}

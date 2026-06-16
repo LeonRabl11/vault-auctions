@@ -3,5 +3,115 @@
 .page {
   display: flex;
   flex-direction: column;
-  gap: $space-4;
+  gap: $space-5;
+}
+
+.head {
+  display: flex;
+  flex-direction: column;
+  gap: $space-1;
+}
+
+.welcome {
+  margin: 0;
+  color: $color-text-muted;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: $space-3;
+}
+
+.sectionTitle {
+  font-size: 1.25rem;
+}
+
+.empty {
+  margin: 0;
+  color: $color-text-muted;
+}
+
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: $space-3;
+  padding: $space-3;
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  gap: $space-1;
+  min-width: 0;
+}
+
+.rowTitle {
+  font-weight: 600;
+  color: $color-text;
+
+  &:hover {
+    color: $color-primary;
+  }
+}
+
+.meta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: $space-2;
+  margin: 0;
+  font-size: 0.875rem;
+  color: $color-text-muted;
+}
+
+.dot {
+  color: $color-border;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: $space-3;
+}
+
+// === Status-Badges ===
+.badge {
+  display: inline-block;
+  padding: $space-1 $space-2;
+  border-radius: $radius;
+  font-size: 0.75rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.success {
+  background-color: rgba($color-success, 0.12);
+  color: $color-success;
+}
+
+.danger {
+  background-color: rgba($color-danger, 0.12);
+  color: $color-danger;
+}
+
+.accent {
+  background-color: rgba($color-primary, 0.12);
+  color: $color-primary;
+}
+
+.muted {
+  background-color: $color-surface;
+  color: $color-text-muted;
 }

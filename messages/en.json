@@ -5,8 +5,8 @@
   },
   "HomePage": {
     "hero": {
-      "headline": "Bid on the extraordinary. At the best price.",
-      "subline": "List items, bid in real time and win when the auction ends — simple, transparent and free of clutter.",
+      "headline": "Bid online and win.",
+      "subline": "List items, place your bids and win the lot when the auction ends.",
       "ctaPrimary": "Explore auctions",
       "ctaSecondary": "Create auction"
     },
@@ -29,11 +29,6 @@
         "title": "Win & pay",
         "text": "As the highest bidder you win when it ends and pay securely."
       }
-    },
-    "cta": {
-      "title": "Ready to bid?",
-      "text": "Take a look at the live auctions or list your own item.",
-      "button": "Explore auctions"
     }
   },
   "LocaleSwitcher": {

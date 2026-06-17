@@ -130,15 +130,6 @@ export default async function Home({params}: Props) {
           ))}
         </ol>
       </section>
-
-      {/* 4. Abschließender CTA */}
-      <section className={`card ${styles.finalCta}`}>
-        <h2>{t("cta.title")}</h2>
-        <p className={styles.finalText}>{t("cta.text")}</p>
-        <Link href="/auctions" className="btn btn--primary">
-          {t("cta.button")}
-        </Link>
-      </section>
     </div>
   );
 }

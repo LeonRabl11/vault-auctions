@@ -5,8 +5,8 @@
   },
   "HomePage": {
     "hero": {
-      "headline": "Ersteigere Besonderes. Zum besten Preis.",
-      "subline": "Stelle Artikel ein, biete in Echtzeit mit und gewinne bei Ablauf der Auktion — einfach, transparent und ohne Schnickschnack.",
+      "headline": "Online bieten und gewinnen.",
+      "subline": "Stell Artikel ein, biete mit und sichere dir bei Ablauf den Zuschlag.",
       "ctaPrimary": "Auktionen entdecken",
       "ctaSecondary": "Auktion erstellen"
     },
@@ -29,11 +29,6 @@
         "title": "Gewinnen & bezahlen",
         "text": "Als Höchstbietender gewinnst du bei Ablauf und bezahlst sicher."
       }
-    },
-    "cta": {
-      "title": "Bereit mitzubieten?",
-      "text": "Sieh dir die laufenden Auktionen an oder stelle deinen eigenen Artikel ein.",
-      "button": "Auktionen entdecken"
     }
   },
   "LocaleSwitcher": {

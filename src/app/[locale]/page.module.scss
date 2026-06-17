@@ -105,17 +105,25 @@
   margin-top: $space-2;
 }
 
-// Sekundärer CTA als weißer Outline-Button, damit er auf dem Bild sichtbar ist.
+// Sekundärer CTA: dauerhaft weiß mit dunkler Schrift (keine Farbänderung beim
+// Hover). Hover bringt nur Lift + Schatten wie der Primär-Button.
 // Höhere Spezifität (.hero .secondaryBtn) überschreibt das globale .btn.
 .hero .secondaryBtn {
-  background-color: transparent;
+  background-color: $color-bg;
   border-color: $color-bg;
-  color: $color-bg;
+  color: $color-text;
 
   &:hover {
     background-color: $color-bg;
     border-color: $color-bg;
     color: $color-text;
+    box-shadow: $shadow-md;
+    transform: translateY(-1px);
+  }
+
+  &:active {
+    box-shadow: $shadow-sm;
+    transform: translateY(0);
   }
 }
 

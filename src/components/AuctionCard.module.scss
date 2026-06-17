@@ -6,16 +6,14 @@
   display: flex;
   flex-direction: column;
   color: inherit;
-  transition:
-    transform 0.2s ease,
-    border-color 0.2s ease,
-    box-shadow 0.2s ease;
+  // Nur ein weicher Border-Übergang — sonst keine Hover-Effekte.
+  transition: border-color 0.2s ease;
 
+  // Border-Breite bleibt 1px (vom globalen .card), daher kein Layout-Sprung;
+  // beim Hover wechselt nur die Farbe auf den Akzent.
   &:hover {
     text-decoration: none;
-    transform: translateY(-4px);
-    border-color: $color-border-strong;
-    box-shadow: $shadow-lg;
+    border-color: $color-primary;
   }
 }
 
@@ -29,12 +27,6 @@
 
 .image {
   object-fit: cover;
-  transition: transform 0.4s ease;
-
-  // Sanfter Bild-Zoom beim Hover über die Card.
-  .card:hover & {
-    transform: scale(1.05);
-  }
 }
 
 .body {
@@ -47,11 +39,6 @@
 .title {
   font-size: $text-lg;
   letter-spacing: -0.01em;
-  transition: color 0.2s ease;
-
-  .card:hover & {
-    color: $color-primary;
-  }
 }
 
 .price {

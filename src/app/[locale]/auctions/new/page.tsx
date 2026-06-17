@@ -24,7 +24,10 @@ export default async function NewAuctionPage({params}: Props) {
 
   return (
     <div className={styles.page}>
-      <h1>{t("new.title")}</h1>
+      <header className={styles.head}>
+        <h1>{t("new.title")}</h1>
+        <p className={styles.subline}>{t("new.subline")}</p>
+      </header>
       <div className="card">
         <AuctionForm />
       </div>

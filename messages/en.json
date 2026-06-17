@@ -11,11 +11,13 @@
       "ctaSecondary": "Create auction"
     },
     "auctions": {
+      "eyebrow": "Marketplace",
       "title": "Current auctions",
       "viewAll": "View all",
       "empty": "There are no active auctions right now. Check back soon!"
     },
     "how": {
+      "eyebrow": "In three steps",
       "title": "How it works",
       "step1": {
         "title": "Browse",
@@ -31,19 +33,20 @@
       }
     },
     "features": {
+      "eyebrow": "Why Vault",
       "title": "What you can rely on",
-      "intro": "Every auction is backed by a thought-through process — from payment to the closing time, everything runs securely and transparently.",
+      "intro": "From payment to the closing time, everything runs securely and transparently.",
       "item1": {
         "title": "Secure payment processing",
-        "text": "Payments run through Stripe — protected, with no payment details ever stored on our side."
+        "text": "Runs through Stripe — your payment details never touch us."
       },
       "item2": {
         "title": "Automatic notifications",
-        "text": "You get an email the moment you're outbid or win an auction."
+        "text": "An email the moment you're outbid or win."
       },
       "item3": {
         "title": "Fair auction close",
-        "text": "Every auction ends automatically at its set time — transparent and the same for everyone."
+        "text": "Ends automatically at the set time, the same for everyone."
       }
     }
   },
@@ -114,9 +117,16 @@
   "Dashboard": {
     "title": "Dashboard",
     "welcome": "Welcome, {name}!",
+    "newAuction": "Create auction",
+    "stats": {
+      "activeAuctions": "Active auctions",
+      "activeBids": "Active bids",
+      "wonItems": "Items won"
+    },
     "selling": {
       "title": "My auctions",
       "empty": "You haven't listed any auctions yet.",
+      "emptyCta": "Create one now",
       "bids": "{count, plural, =0 {No bids} one {# bid} other {# bids}}",
       "status": {
         "active": "Active",
@@ -128,6 +138,7 @@
     "bidding": {
       "title": "My bids",
       "empty": "You haven't bid on any auction yet.",
+      "emptyCta": "Explore auctions",
       "yourBid": "Your top bid",
       "currentBid": "Current top bid",
       "status": {
@@ -140,6 +151,7 @@
     "won": {
       "title": "Won items",
       "empty": "You haven't won any auction yet.",
+      "emptyCta": "Explore auctions",
       "amount": "Amount",
       "payBy": "Please pay by {date}.",
       "status": {
@@ -159,8 +171,14 @@
   "Auctions": {
     "new": {
       "title": "Create auction",
+      "subline": "Describe your item, set a starting price and duration, and add an image.",
       "submit": "List auction",
       "uploading": "Uploading…"
+    },
+    "upload": {
+      "cta": "Drag an image here or click to choose",
+      "change": "Change",
+      "remove": "Remove"
     },
     "list": {
       "title": "Auctions",

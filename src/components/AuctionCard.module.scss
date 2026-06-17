@@ -7,15 +7,15 @@
   flex-direction: column;
   color: inherit;
   transition:
-    transform 0.15s ease,
-    border-color 0.15s ease,
-    box-shadow 0.15s ease;
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
 
   &:hover {
     text-decoration: none;
-    transform: translateY(-2px);
+    transform: translateY(-4px);
     border-color: $color-border-strong;
-    box-shadow: $shadow-md;
+    box-shadow: $shadow-lg;
   }
 }
 
@@ -23,23 +23,35 @@
   position: relative;
   width: 100%;
   aspect-ratio: 4 / 3;
+  overflow: hidden;
   background-color: $color-surface;
 }
 
 .image {
   object-fit: cover;
+  transition: transform 0.4s ease;
+
+  // Sanfter Bild-Zoom beim Hover über die Card.
+  .card:hover & {
+    transform: scale(1.05);
+  }
 }
 
 .body {
   display: flex;
   flex-direction: column;
   gap: $space-2;
-  padding: $space-3;
+  padding: $space-4;
 }
 
 .title {
   font-size: $text-lg;
   letter-spacing: -0.01em;
+  transition: color 0.2s ease;
+
+  .card:hover & {
+    color: $color-primary;
+  }
 }
 
 .price {

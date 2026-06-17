@@ -65,6 +65,7 @@ h4 {
 a {
   color: $color-primary;
   text-decoration: none;
+  transition: color 0.15s ease;
 
   &:hover {
     color: $color-primary-hover;
@@ -112,6 +113,7 @@ main {
     background-color 0.15s ease,
     border-color 0.15s ease,
     color 0.15s ease,
+    transform 0.15s ease,
     box-shadow 0.15s ease;
 
   &:hover {
@@ -136,6 +138,13 @@ main {
     background-color: $color-primary-hover;
     border-color: $color-primary-hover;
     color: $color-primary-fg;
+    box-shadow: $shadow-md;
+    transform: translateY(-1px);
+  }
+
+  &:active {
+    box-shadow: $shadow-sm;
+    transform: translateY(0);
   }
 }
 

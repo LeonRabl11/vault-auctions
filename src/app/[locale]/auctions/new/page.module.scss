@@ -1,9 +1,20 @@
 @use "../../../../styles/variables" as *;
 
 .page {
-  max-width: 32rem;
+  max-width: 34rem;
   margin-inline: auto;
   display: flex;
   flex-direction: column;
-  gap: $space-4;
+  gap: $space-5;
+}
+
+.head {
+  display: flex;
+  flex-direction: column;
+  gap: $space-1;
+}
+
+.subline {
+  margin: 0;
+  color: $color-text-muted;
 }

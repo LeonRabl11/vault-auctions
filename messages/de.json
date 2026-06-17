@@ -11,11 +11,13 @@
       "ctaSecondary": "Auktion erstellen"
     },
     "auctions": {
+      "eyebrow": "Marktplatz",
       "title": "Aktuelle Auktionen",
       "viewAll": "Alle ansehen",
       "empty": "Aktuell gibt es keine aktiven Auktionen. Schau bald wieder vorbei!"
     },
     "how": {
+      "eyebrow": "In drei Schritten",
       "title": "So funktioniert's",
       "step1": {
         "title": "Stöbern",
@@ -31,19 +33,20 @@
       }
     },
     "features": {
+      "eyebrow": "Warum Vault",
       "title": "Worauf du dich verlassen kannst",
-      "intro": "Hinter jeder Auktion steht eine durchdachte Abwicklung — von der Bezahlung bis zum Auktionsende läuft alles sicher und nachvollziehbar.",
+      "intro": "Von der Bezahlung bis zum Auktionsende läuft alles sicher und nachvollziehbar.",
       "item1": {
         "title": "Sichere Zahlungsabwicklung",
-        "text": "Die Bezahlung läuft über Stripe — abgesichert, ohne dass Zahlungsdaten bei uns liegen."
+        "text": "Läuft über Stripe — deine Zahlungsdaten liegen nie bei uns."
       },
       "item2": {
         "title": "Automatische Benachrichtigungen",
-        "text": "Du bekommst eine E-Mail, sobald du überboten wirst oder eine Auktion gewinnst."
+        "text": "E-Mail, sobald du überboten wirst oder gewinnst."
       },
       "item3": {
         "title": "Fairer Auktionsschluss",
-        "text": "Jede Auktion endet automatisch zur festgelegten Endzeit — transparent und für alle gleich."
+        "text": "Endet automatisch zur festgelegten Zeit, für alle gleich."
       }
     }
   },
@@ -114,9 +117,16 @@
   "Dashboard": {
     "title": "Dashboard",
     "welcome": "Willkommen, {name}!",
+    "newAuction": "Auktion erstellen",
+    "stats": {
+      "activeAuctions": "Aktive Auktionen",
+      "activeBids": "Laufende Gebote",
+      "wonItems": "Gewonnene Artikel"
+    },
     "selling": {
       "title": "Meine Auktionen",
       "empty": "Du hast noch keine Auktionen eingestellt.",
+      "emptyCta": "Jetzt erstellen",
       "bids": "{count, plural, =0 {Keine Gebote} one {# Gebot} other {# Gebote}}",
       "status": {
         "active": "Aktiv",
@@ -128,6 +138,7 @@
     "bidding": {
       "title": "Meine Gebote",
       "empty": "Du hast noch auf keine Auktion geboten.",
+      "emptyCta": "Auktionen entdecken",
       "yourBid": "Dein Höchstgebot",
       "currentBid": "Aktuelles Höchstgebot",
       "status": {
@@ -140,6 +151,7 @@
     "won": {
       "title": "Gewonnene Artikel",
       "empty": "Du hast noch keine Auktion gewonnen.",
+      "emptyCta": "Auktionen entdecken",
       "amount": "Betrag",
       "payBy": "Bitte bis {date} bezahlen.",
       "status": {
@@ -159,8 +171,14 @@
   "Auctions": {
     "new": {
       "title": "Auktion erstellen",
+      "subline": "Beschreibe deinen Artikel, lege Startpreis und Laufzeit fest und füge ein Bild hinzu.",
       "submit": "Auktion einstellen",
       "uploading": "Wird hochgeladen…"
+    },
+    "upload": {
+      "cta": "Bild hierher ziehen oder klicken zum Auswählen",
+      "change": "Ändern",
+      "remove": "Entfernen"
     },
     "list": {
       "title": "Auktionen",

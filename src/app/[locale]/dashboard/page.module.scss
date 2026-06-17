@@ -3,10 +3,19 @@
 .page {
   display: flex;
   flex-direction: column;
-  gap: $space-5;
+  gap: $space-6;
 }
 
+/* === Seiten-Header === */
 .head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: $space-3;
+}
+
+.headText {
   display: flex;
   flex-direction: column;
   gap: $space-1;
@@ -17,37 +26,97 @@
   color: $color-text-muted;
 }
 
-.section {
-  display: flex;
-  flex-direction: column;
+/* === Übersicht / Stat-Cards === */
+.stats {
+  display: grid;
+  grid-template-columns: 1fr;
   gap: $space-3;
 }
 
-.sectionTitle {
-  font-size: 1.25rem;
+.stat {
+  display: flex;
+  flex-direction: column;
+  gap: $space-1;
+  padding: $space-4;
 }
 
-.empty {
-  margin: 0;
+.statValue {
+  font-size: $text-3xl;
+  font-weight: $weight-bold;
+  line-height: $leading-tight;
+  letter-spacing: -0.02em;
+}
+
+.statLabel {
+  font-size: $text-sm;
   color: $color-text-muted;
 }
 
+/* === Sektionen === */
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: $space-4;
+}
+
+.sectionHead {
+  display: flex;
+  align-items: baseline;
+  gap: $space-2;
+  padding-bottom: $space-2;
+  border-bottom: 1px solid $color-border;
+}
+
+.sectionTitle {
+  font-size: $text-xl;
+}
+
+.count {
+  font-size: $text-sm;
+  font-weight: $weight-semibold;
+  color: $color-text-muted;
+}
+
+/* === Listen / Zeilen === */
 .list {
   list-style: none;
   margin: 0;
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: $space-2;
+  gap: $space-3;
 }
 
 .row {
   display: flex;
   align-items: center;
-  justify-content: space-between;
   flex-wrap: wrap;
   gap: $space-3;
   padding: $space-3;
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.15s ease;
+
+  // Ruhiger Hover-State: dezente Abgrenzung, kein Anheben.
+  &:hover {
+    border-color: $color-border-strong;
+    box-shadow: $shadow-md;
+  }
+}
+
+.thumb {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 3rem;
+  height: 3rem;
+  border-radius: $radius;
+  background-color: $color-surface;
+  border: 1px solid $color-border;
+  color: $color-text-muted;
+  font-size: $text-lg;
+  font-weight: $weight-bold;
 }
 
 .main {
@@ -55,10 +124,11 @@
   flex-direction: column;
   gap: $space-1;
   min-width: 0;
+  flex: 1 1 12rem;
 }
 
 .rowTitle {
-  font-weight: 600;
+  font-weight: $weight-semibold;
   color: $color-text;
 
   &:hover {
@@ -72,27 +142,34 @@
   flex-wrap: wrap;
   gap: $space-2;
   margin: 0;
-  font-size: 0.875rem;
+  font-size: $text-sm;
   color: $color-text-muted;
+
+  strong {
+    color: $color-text;
+    font-weight: $weight-semibold;
+  }
 }
 
 .dot {
-  color: $color-border;
+  color: $color-border-strong;
 }
 
-.actions {
+.trailing {
   display: flex;
   align-items: center;
   gap: $space-3;
+  margin-left: auto;
 }
 
-// === Status-Badges ===
+/* === Status-Badges (Pills) === */
 .badge {
-  display: inline-block;
-  padding: $space-1 $space-2;
-  border-radius: $radius;
-  font-size: 0.75rem;
-  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  padding: $space-1 $space-3;
+  border-radius: $radius-full;
+  font-size: $text-xs;
+  font-weight: $weight-semibold;
   white-space: nowrap;
 }
 
@@ -106,12 +183,63 @@
   color: $color-danger;
 }
 
+.warning {
+  background-color: rgba($color-warning, 0.14);
+  color: $color-warning;
+}
+
 .accent {
   background-color: rgba($color-primary, 0.12);
   color: $color-primary;
 }
 
 .muted {
-  background-color: $color-surface;
+  background-color: $color-surface-2;
   color: $color-text-muted;
+}
+
+/* === Empty States === */
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: $space-2;
+  padding: $space-6 $space-4;
+  background-color: $color-surface;
+  border: 1px dashed $color-border-strong;
+  border-radius: $radius-lg;
+}
+
+.emptyIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  margin-bottom: $space-1;
+  border-radius: $radius-full;
+  background-color: $color-surface-2;
+  color: $color-text-muted;
+
+  svg {
+    width: 1.375rem;
+    height: 1.375rem;
+  }
+}
+
+.emptyText {
+  margin: 0;
+  color: $color-text-muted;
+}
+
+.emptyLink {
+  font-weight: $weight-semibold;
+}
+
+/* === Responsive === */
+@media (min-width: 640px) {
+  .stats {
+    grid-template-columns: repeat(3, 1fr);
+  }
 }

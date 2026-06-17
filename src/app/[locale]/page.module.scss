@@ -3,25 +3,90 @@
 .page {
   display: flex;
   flex-direction: column;
-  gap: $space-8;
+  gap: $space-6; // gleichmäßiger Rhythmus zwischen den Sektionen
 }
 
-/* === 1. Hero === */
+/* === Einheitliches Sektions-System === */
+// Jede Sektion teilt sich denselben Aufbau: Kopf (Eyebrow + Titel) + Inhalt.
+.section {
+  scroll-margin-top: $space-7;
+}
+
+// Dezent abgesetzte Sektion (alternierender Hintergrund-Rhythmus).
+.surface {
+  padding: $space-6 $space-4;
+  background-color: $color-surface;
+  border: 1px solid $color-border;
+  border-radius: $radius-lg;
+}
+
+.sectionHead {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: $space-3;
+  margin-bottom: $space-5;
+}
+
+.heading {
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+  max-width: 44rem;
+}
+
+.eyebrow {
+  margin: 0;
+  font-size: $text-sm;
+  font-weight: $weight-semibold;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: $color-primary;
+}
+
+.title {
+  font-size: $text-2xl;
+  letter-spacing: -0.01em;
+}
+
+.intro {
+  margin: 0;
+  max-width: 42rem;
+  color: $color-text-muted;
+}
+
+.viewAll {
+  font-size: $text-sm;
+  font-weight: $weight-semibold;
+  white-space: nowrap;
+}
+
+/* === 1. Hero (Bild-Hintergrund + dezenter dunkler Scrim) === */
 .hero {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   text-align: center;
   gap: $space-4;
-  padding-block: $space-6 $space-3;
-  max-width: 44rem;
-  margin-inline: auto;
+  min-height: clamp(20rem, 38vw, 30rem);
+  padding: $space-7 $space-4;
+  border: 1px solid $color-border;
+  border-radius: $radius-lg;
+  // Dunkles Neutral-Token mit Alpha als Scrim über dem Bild → Text bleibt lesbar.
+  background-image: 
+    url("/background.jpg");
+  background-size: cover;
+  background-position: center;
 }
 
 .headline {
-  font-size: clamp(2.25rem, 6vw, 3.5rem);
+  max-width: 44rem;
+  font-size: clamp(2.5rem, 6vw, 4rem);
   line-height: $leading-tight;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.03em;
+  color: $color-bg; // helles White-Token auf dunklem Scrim
 }
 
 .subline {
@@ -29,7 +94,7 @@
   max-width: 36rem;
   font-size: $text-lg;
   line-height: $leading-snug;
-  color: $color-text-muted;
+  color: rgba($color-bg, 0.85);
 }
 
 .ctas {
@@ -40,25 +105,26 @@
   margin-top: $space-2;
 }
 
+// Sekundärer CTA als weißer Outline-Button, damit er auf dem Bild sichtbar ist.
+// Höhere Spezifität (.hero .secondaryBtn) überschreibt das globale .btn.
+.hero .secondaryBtn {
+  background-color: transparent;
+  border-color: $color-bg;
+  color: $color-bg;
+
+  &:hover {
+    background-color: $color-bg;
+    border-color: $color-bg;
+    color: $color-text;
+  }
+}
+
 /* === 2. Aktuelle Auktionen === */
-.sectionHead {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: $space-3;
-  margin-bottom: $space-4;
-}
-
-.viewAll {
-  font-size: $text-sm;
-  font-weight: $weight-semibold;
-  white-space: nowrap;
-}
-
 .grid {
   display: grid;
   grid-template-columns: 1fr;
   gap: $space-4;
+  align-items: stretch; // gleich hohe Cards
 }
 
 .empty {
@@ -72,10 +138,6 @@
 }
 
 /* === 3. So funktioniert's === */
-.howTitle {
-  margin-bottom: $space-5;
-}
-
 .steps {
   list-style: none;
   margin: 0;
@@ -121,12 +183,6 @@
 }
 
 /* === 4. Stärken / Info === */
-.featuresIntro {
-  margin: $space-2 0 $space-5;
-  max-width: 42rem;
-  color: $color-text-muted;
-}
-
 .featureList {
   list-style: none;
   margin: 0;
@@ -134,6 +190,7 @@
   display: grid;
   grid-template-columns: 1fr;
   gap: $space-4;
+  align-items: stretch;
 }
 
 .feature {
@@ -155,6 +212,18 @@
 
 /* === Responsive === */
 @media (min-width: 640px) {
+  .page {
+    gap: $space-7;
+  }
+
+  .surface {
+    padding: $space-7 $space-6;
+  }
+
+  .title {
+    font-size: $text-3xl;
+  }
+
   .grid {
     grid-template-columns: repeat(2, 1fr);
   }

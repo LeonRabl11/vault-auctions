@@ -89,28 +89,31 @@ export default async function Home({params}: Props) {
 
   return (
     <div className={styles.page}>
-      {/* 1. Hero */}
-      <section className={styles.hero}>
+      {/* 1. Hero — klarer Einstieg mit Bild-Hintergrund + dunklem Scrim */}
+      <section className={`${styles.section} ${styles.hero}`}>
         <h1 className={styles.headline}>{t("hero.headline")}</h1>
         <p className={styles.subline}>{t("hero.subline")}</p>
         <div className={styles.ctas}>
           <Link href="/auctions" className="btn btn--primary">
             {t("hero.ctaPrimary")}
           </Link>
-          <Link href="/auctions/new" className="btn">
+          <Link href="/auctions/new" className={`btn ${styles.secondaryBtn}`}>
             {t("hero.ctaSecondary")}
           </Link>
         </div>
       </section>
 
-      {/* 2. Aktuelle Auktionen */}
-      <section>
-        <div className={styles.sectionHead}>
-          <h2>{t("auctions.title")}</h2>
+      {/* 2. Aktuelle Auktionen — anschaulicher Kern */}
+      <section className={styles.section}>
+        <header className={styles.sectionHead}>
+          <div className={styles.heading}>
+            <p className={styles.eyebrow}>{t("auctions.eyebrow")}</p>
+            <h2 className={styles.title}>{t("auctions.title")}</h2>
+          </div>
           <Link href="/auctions" className={styles.viewAll}>
             {t("auctions.viewAll")} →
           </Link>
-        </div>
+        </header>
         {latest.length === 0 ? (
           <p className={styles.empty}>{t("auctions.empty")}</p>
         ) : (
@@ -123,8 +126,13 @@ export default async function Home({params}: Props) {
       </section>
 
       {/* 3. So funktioniert's */}
-      <section>
-        <h2 className={styles.howTitle}>{t("how.title")}</h2>
+      <section className={`${styles.section} ${styles.surface}`}>
+        <header className={styles.sectionHead}>
+          <div className={styles.heading}>
+            <p className={styles.eyebrow}>{t("how.eyebrow")}</p>
+            <h2 className={styles.title}>{t("how.title")}</h2>
+          </div>
+        </header>
         <ol className={styles.steps}>
           {steps.map((step, i) => (
             <li key={i} className={styles.step}>
@@ -137,9 +145,14 @@ export default async function Home({params}: Props) {
       </section>
 
       {/* 4. Stärken / Info (rein informativ, kein CTA) */}
-      <section>
-        <h2>{t("features.title")}</h2>
-        <p className={styles.featuresIntro}>{t("features.intro")}</p>
+      <section className={styles.section}>
+        <header className={styles.sectionHead}>
+          <div className={styles.heading}>
+            <p className={styles.eyebrow}>{t("features.eyebrow")}</p>
+            <h2 className={styles.title}>{t("features.title")}</h2>
+            <p className={styles.intro}>{t("features.intro")}</p>
+          </div>
+        </header>
         <ul className={styles.featureList}>
           {features.map((feature, i) => (
             <li key={i} className={`card ${styles.feature}`}>

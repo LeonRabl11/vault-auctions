@@ -29,6 +29,49 @@
         "title": "Gewinnen & bezahlen",
         "text": "Als Höchstbietender gewinnst du bei Ablauf und bezahlst sicher."
       }
+    },
+    "features": {
+      "title": "Worauf du dich verlassen kannst",
+      "intro": "Hinter jeder Auktion steht eine durchdachte Abwicklung — von der Bezahlung bis zum Auktionsende läuft alles sicher und nachvollziehbar.",
+      "item1": {
+        "title": "Sichere Zahlungsabwicklung",
+        "text": "Die Bezahlung läuft über Stripe — abgesichert, ohne dass Zahlungsdaten bei uns liegen."
+      },
+      "item2": {
+        "title": "Automatische Benachrichtigungen",
+        "text": "Du bekommst eine E-Mail, sobald du überboten wirst oder eine Auktion gewinnst."
+      },
+      "item3": {
+        "title": "Fairer Auktionsschluss",
+        "text": "Jede Auktion endet automatisch zur festgelegten Endzeit — transparent und für alle gleich."
+      }
+    }
+  },
+  "Footer": {
+    "platform": {
+      "title": "Plattform",
+      "auctions": "Auktionen",
+      "createAuction": "Auktion erstellen",
+      "dashboard": "Dashboard"
+    },
+    "legal": {
+      "title": "Rechtliches",
+      "imprint": "Impressum",
+      "privacy": "Datenschutz",
+      "terms": "AGB"
+    }
+  },
+  "Legal": {
+    "badge": "Platzhalter",
+    "placeholder": "Diese Seite ist ein Platzhalter für ein Portfolio-Projekt und enthält noch keine rechtsverbindlichen Inhalte.",
+    "imprint": {
+      "title": "Impressum"
+    },
+    "privacy": {
+      "title": "Datenschutz"
+    },
+    "terms": {
+      "title": "AGB"
     }
   },
   "LocaleSwitcher": {

@@ -29,6 +29,49 @@
         "title": "Win & pay",
         "text": "As the highest bidder you win when it ends and pay securely."
       }
+    },
+    "features": {
+      "title": "What you can rely on",
+      "intro": "Every auction is backed by a thought-through process — from payment to the closing time, everything runs securely and transparently.",
+      "item1": {
+        "title": "Secure payment processing",
+        "text": "Payments run through Stripe — protected, with no payment details ever stored on our side."
+      },
+      "item2": {
+        "title": "Automatic notifications",
+        "text": "You get an email the moment you're outbid or win an auction."
+      },
+      "item3": {
+        "title": "Fair auction close",
+        "text": "Every auction ends automatically at its set time — transparent and the same for everyone."
+      }
+    }
+  },
+  "Footer": {
+    "platform": {
+      "title": "Platform",
+      "auctions": "Auctions",
+      "createAuction": "Create auction",
+      "dashboard": "Dashboard"
+    },
+    "legal": {
+      "title": "Legal",
+      "imprint": "Imprint",
+      "privacy": "Privacy",
+      "terms": "Terms"
+    }
+  },
+  "Legal": {
+    "badge": "Placeholder",
+    "placeholder": "This page is a placeholder for a portfolio project and does not yet contain legally binding content.",
+    "imprint": {
+      "title": "Imprint"
+    },
+    "privacy": {
+      "title": "Privacy"
+    },
+    "terms": {
+      "title": "Terms"
     }
   },
   "LocaleSwitcher": {

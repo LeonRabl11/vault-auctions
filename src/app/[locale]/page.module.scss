@@ -120,6 +120,39 @@
   color: $color-text-muted;
 }
 
+/* === 4. Stärken / Info === */
+.featuresIntro {
+  margin: $space-2 0 $space-5;
+  max-width: 42rem;
+  color: $color-text-muted;
+}
+
+.featureList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: $space-4;
+}
+
+.feature {
+  display: flex;
+  flex-direction: column;
+  gap: $space-1;
+}
+
+.featureTitle {
+  font-size: $text-base;
+}
+
+.featureText {
+  margin: 0;
+  font-size: $text-sm;
+  line-height: $leading-snug;
+  color: $color-text-muted;
+}
+
 /* === Responsive === */
 @media (min-width: 640px) {
   .grid {
@@ -129,6 +162,10 @@
   .steps {
     grid-template-columns: repeat(3, 1fr);
     gap: $space-4;
+  }
+
+  .featureList {
+    grid-template-columns: repeat(3, 1fr);
   }
 }
 

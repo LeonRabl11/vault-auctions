@@ -1,0 +1,90 @@
+@use "../styles/variables" as *;
+
+.footer {
+  margin-top: $space-8;
+  background-color: $color-surface;
+  border-top: 1px solid $color-border;
+}
+
+.inner {
+  display: flex;
+  flex-direction: column;
+  gap: $space-5;
+  padding-block: $space-6;
+}
+
+.brand {
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+}
+
+.brandLink {
+  display: inline-flex;
+  width: fit-content;
+
+  &:hover {
+    text-decoration: none;
+  }
+}
+
+.logo {
+  width: auto;
+  height: 1.75rem;
+}
+
+.copy {
+  margin: 0;
+  font-size: $text-sm;
+  color: $color-text-muted;
+}
+
+.groups {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: $space-5;
+}
+
+.group {
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+}
+
+.groupTitle {
+  font-size: $text-sm;
+  font-weight: $weight-semibold;
+  color: $color-text;
+  letter-spacing: 0;
+}
+
+.links {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: $space-1;
+}
+
+.link {
+  font-size: $text-sm;
+  color: $color-text-muted;
+
+  &:hover {
+    color: $color-text;
+  }
+}
+
+@media (min-width: 640px) {
+  .inner {
+    flex-direction: row;
+    justify-content: space-between;
+    gap: $space-7;
+  }
+
+  .groups {
+    grid-template-columns: repeat(2, auto);
+    gap: $space-7;
+  }
+}

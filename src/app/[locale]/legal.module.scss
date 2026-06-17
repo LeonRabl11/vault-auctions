@@ -1,0 +1,23 @@
+@use "../../styles/variables" as *;
+
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: $space-3;
+  max-width: 44rem;
+}
+
+.badge {
+  align-self: flex-start;
+  padding: $space-1 $space-2;
+  border-radius: $radius-full;
+  background-color: $color-surface-2;
+  color: $color-text-muted;
+  font-size: $text-xs;
+  font-weight: $weight-semibold;
+}
+
+.note {
+  margin: 0;
+  color: $color-text-muted;
+}

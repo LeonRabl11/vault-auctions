@@ -82,6 +82,11 @@ export default async function Home({params}: Props) {
     text: t(`how.step${i + 1}.text`),
   }));
 
+  const features = [1, 2, 3].map((i) => ({
+    title: t(`features.item${i}.title`),
+    text: t(`features.item${i}.text`),
+  }));
+
   return (
     <div className={styles.page}>
       {/* 1. Hero */}
@@ -129,6 +134,20 @@ export default async function Home({params}: Props) {
             </li>
           ))}
         </ol>
+      </section>
+
+      {/* 4. Stärken / Info (rein informativ, kein CTA) */}
+      <section>
+        <h2>{t("features.title")}</h2>
+        <p className={styles.featuresIntro}>{t("features.intro")}</p>
+        <ul className={styles.featureList}>
+          {features.map((feature, i) => (
+            <li key={i} className={`card ${styles.feature}`}>
+              <h3 className={styles.featureTitle}>{feature.title}</h3>
+              <p className={styles.featureText}>{feature.text}</p>
+            </li>
+          ))}
+        </ul>
       </section>
     </div>
   );

@@ -4,7 +4,7 @@
   position: sticky;
   top: 0;
   z-index: 50;
-  background-color: $color-bg;
+  background-color: $color-surface;
   border-bottom: 1px solid $color-border;
   transition: box-shadow 0.2s ease;
 }
@@ -26,25 +26,13 @@
 .brand {
   display: inline-flex;
   align-items: center;
-  gap: $space-2;
-  color: $color-text;
-  font-weight: $weight-bold;
 
   &:hover {
-    color: $color-text;
     text-decoration: none;
   }
 }
 
-.mark {
-  width: 1.5rem;
-  height: 1.5rem;
-  border-radius: $radius-sm;
-  background: linear-gradient(135deg, $color-primary, $color-primary-hover);
-  box-shadow: $shadow-sm;
-}
-
-.brandText {
-  font-size: $text-lg;
-  letter-spacing: -0.01em;
+.logo {
+  width: auto;
+  height: 2.25rem; // ~36px
 }

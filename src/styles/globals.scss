@@ -16,6 +16,9 @@ html {
 }
 
 body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
   background-color: $color-bg;
   color: $color-text;
   font-family: $font-sans;
@@ -70,6 +73,7 @@ a {
 }
 
 main {
+  flex: 1;
   padding-block: $space-7;
 }
 

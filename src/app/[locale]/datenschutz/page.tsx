@@ -1,0 +1,21 @@
+import {getTranslations, setRequestLocale} from "next-intl/server";
+import styles from "../legal.module.scss";
+
+type Props = {
+  params: Promise<{locale: string}>;
+};
+
+export default async function PrivacyPage({params}: Props) {
+  const {locale} = await params;
+  setRequestLocale(locale);
+
+  const t = await getTranslations("Legal");
+
+  return (
+    <article className={styles.page}>
+      <span className={styles.badge}>{t("badge")}</span>
+      <h1>{t("privacy.title")}</h1>
+      <p className={styles.note}>{t("placeholder")}</p>
+    </article>
+  );
+}

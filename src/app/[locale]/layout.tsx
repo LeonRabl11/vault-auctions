@@ -5,6 +5,7 @@ import {hasLocale, NextIntlClientProvider} from "next-intl";
 import {getTranslations, setRequestLocale} from "next-intl/server";
 import {routing} from "@/i18n/routing";
 import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 import "@/styles/globals.scss";
 
 // Selbst gehostet über next/font (kein externer Request, DSGVO-konform).
@@ -54,6 +55,7 @@ export default async function LocaleLayout({children, params}: Props) {
         <NextIntlClientProvider>
           <Header />
           <main className="container">{children}</main>
+          <Footer />
         </NextIntlClientProvider>
       </body>
     </html>

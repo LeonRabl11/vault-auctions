@@ -185,7 +185,9 @@
       "empty": "Aktuell gibt es keine aktiven Auktionen. Schau später wieder vorbei!"
     },
     "card": {
-      "currentBid": "Höchstgebot"
+      "currentBid": "Höchstgebot",
+      "bids": "{count, plural, =0 {Noch keine Gebote} one {# Gebot} other {# Gebote}}",
+      "endingSoon": "Endet bald"
     },
     "detail": {
       "seller": "Verkäufer: {name}",

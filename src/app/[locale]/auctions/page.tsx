@@ -1,6 +1,6 @@
-import {and, desc, eq, gt} from "drizzle-orm";
+import {and, desc, eq, gt, sql} from "drizzle-orm";
 import {getTranslations, setRequestLocale} from "next-intl/server";
-import {auctions, db} from "@/lib/db";
+import {auctions, bids, db} from "@/lib/db";
 import AuctionCard from "@/components/AuctionCard";
 import styles from "./page.module.scss";
 
@@ -22,9 +22,13 @@ export default async function AuctionsPage({params}: Props) {
       imageUrl: auctions.imageUrl,
       currentPrice: auctions.currentPrice,
       endsAt: auctions.endsAt,
+      status: auctions.status,
+      bidCount: sql<number>`count(${bids.id})::int`,
     })
     .from(auctions)
+    .leftJoin(bids, eq(bids.auctionId, auctions.id))
     .where(and(eq(auctions.status, "active"), gt(auctions.endsAt, new Date())))
+    .groupBy(auctions.id)
     .orderBy(desc(auctions.createdAt));
 
   return (

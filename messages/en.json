@@ -185,7 +185,9 @@
       "empty": "There are no active auctions right now. Check back later!"
     },
     "card": {
-      "currentBid": "Top bid"
+      "currentBid": "Top bid",
+      "bids": "{count, plural, =0 {No bids yet} one {# bid} other {# bids}}",
+      "endingSoon": "Ending soon"
     },
     "detail": {
       "seller": "Seller: {name}",

@@ -29,6 +29,20 @@
   object-fit: cover;
 }
 
+/* === Overlay auf dem Bild === */
+.endingSoon {
+  position: absolute;
+  top: $space-2;
+  right: $space-2;
+  padding: $space-1 $space-2;
+  border-radius: $radius-full;
+  background-color: $color-bg;
+  color: $color-warning;
+  font-size: $text-xs;
+  font-weight: $weight-semibold;
+  box-shadow: $shadow-sm;
+}
+
 .body {
   display: flex;
   flex-direction: column;
@@ -50,4 +64,18 @@
     color: $color-text;
     font-weight: $weight-semibold;
   }
+}
+
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: $space-2;
+  margin-top: $space-1;
+}
+
+.bids {
+  font-size: $text-xs;
+  font-weight: $weight-semibold;
+  color: $color-text-muted;
 }

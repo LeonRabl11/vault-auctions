@@ -1,0 +1,23 @@
+@use "../styles/variables" as *;
+
+// Standard: sichtbar (greift bei reduzierter Bewegung und ohne JS).
+.reveal {
+  opacity: 1;
+}
+
+// Nur wenn Bewegung erwünscht ist: erst verborgen, dann sanft einblenden.
+@media (prefers-reduced-motion: no-preference) {
+  .reveal {
+    opacity: 0;
+    transform: translateY($space-3);
+    transition:
+      opacity 0.5s ease,
+      transform 0.5s ease;
+    will-change: opacity, transform;
+  }
+
+  .visible {
+    opacity: 1;
+    transform: none;
+  }
+}

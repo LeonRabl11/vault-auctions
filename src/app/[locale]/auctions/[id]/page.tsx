@@ -13,6 +13,7 @@ import {finalizeAuctionAndNotify} from "@/lib/auctions";
 import {Link} from "@/i18n/navigation";
 import Countdown from "@/components/Countdown";
 import BidForm from "@/components/BidForm";
+import BuyNowButton from "@/components/BuyNowButton";
 import BidHistory from "@/components/BidHistory";
 import PayButton from "@/components/PayButton";
 import DeleteAuctionButton from "@/components/DeleteAuctionButton";
@@ -35,6 +36,7 @@ function loadAuction(id: string) {
       imageUrl: auctions.imageUrl,
       currentPrice: auctions.currentPrice,
       endsAt: auctions.endsAt,
+      buyNowPrice: auctions.buyNowPrice,
       status: auctions.status,
       sellerId: auctions.sellerId,
       sellerName: user.name,
@@ -120,6 +122,8 @@ export default async function AuctionDetailPage({params, searchParams}: Props) {
     auction.status === "active" &&
     auction.endsAt != null &&
     auction.endsAt.getTime() > new Date().getTime();
+  // Sofort-Kauf möglich, solange die Anzeige aktiv ist (auch mit laufenden Geboten)
+  const canBuyNow = auction.status === "active" && auction.buyNowPrice != null;
   const isSeller = session?.user.id === auction.sellerId;
   const isViewerBuyer = Boolean(
     buyerOrWinnerId && session?.user.id === buyerOrWinnerId,
@@ -186,22 +190,30 @@ export default async function AuctionDetailPage({params, searchParams}: Props) {
           )}
 
           <div className={`card ${styles.bidBox}`}>
-            {isActive ? (
-              // Aktiv: bieten (nur eingeloggt + nicht Verkäufer)
-              session ? (
-                isSeller ? (
-                  <p className={styles.bidNote}>{t("bid.sellerHint")}</p>
-                ) : (
-                  <BidForm
-                    auctionId={auction.id}
-                    currentPrice={auction.currentPrice ?? 0}
-                  />
-                )
-              ) : (
+            {auction.status === "active" ? (
+              // Aktiv: bieten und/oder sofort kaufen (nur eingeloggt + nicht Verkäufer)
+              !session ? (
                 <p className={styles.bidNote}>
                   {t("bid.loginPrompt")}{" "}
                   <Link href="/login">{t("bid.loginLink")}</Link>
                 </p>
+              ) : isSeller ? (
+                <p className={styles.bidNote}>{t("bid.sellerHint")}</p>
+              ) : (
+                <div className={styles.actions}>
+                  {isActive && (
+                    <BidForm
+                      auctionId={auction.id}
+                      currentPrice={auction.currentPrice ?? 0}
+                    />
+                  )}
+                  {canBuyNow && auction.buyNowPrice != null && (
+                    <BuyNowButton
+                      auctionId={auction.id}
+                      price={auction.buyNowPrice}
+                    />
+                  )}
+                </div>
               )
             ) : order ? (
               // Beendet mit Order

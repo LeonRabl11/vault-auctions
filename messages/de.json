@@ -219,6 +219,19 @@
         "generic": "Etwas ist schiefgelaufen. Bitte erneut versuchen."
       }
     },
+    "buyNow": {
+      "label": "Sofort kaufen für {amount}",
+      "pending": "Weiterleitung …",
+      "errors": {
+        "notAvailable": "Diese Anzeige ist nicht mehr verfügbar.",
+        "ownAuction": "Du kannst deine eigene Anzeige nicht kaufen.",
+        "unauthorized": "Bitte melde dich an, um zu kaufen.",
+        "notFound": "Anzeige nicht gefunden.",
+        "notPayable": "Diese Order kann nicht (mehr) bezahlt werden.",
+        "invalid": "Ungültige Eingabe.",
+        "generic": "Etwas ist schiefgelaufen. Bitte erneut versuchen."
+      }
+    },
     "history": {
       "title": "Gebotsverlauf",
       "empty": "Noch keine Gebote. Sei der Erste!"

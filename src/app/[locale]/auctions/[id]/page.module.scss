@@ -17,6 +17,13 @@
   flex-direction: column;
 }
 
+// Aktionen einer aktiven Anzeige (Bieten und/oder Sofort-Kauf) untereinander
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: $space-4;
+}
+
 .bidNote {
   margin: 0;
   color: $color-text-muted;

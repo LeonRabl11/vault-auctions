@@ -219,6 +219,19 @@
         "generic": "Something went wrong. Please try again."
       }
     },
+    "buyNow": {
+      "label": "Buy now for {amount}",
+      "pending": "Redirecting …",
+      "errors": {
+        "notAvailable": "This listing is no longer available.",
+        "ownAuction": "You cannot buy your own listing.",
+        "unauthorized": "Please sign in to buy.",
+        "notFound": "Listing not found.",
+        "notPayable": "This order can no longer be paid.",
+        "invalid": "Invalid input.",
+        "generic": "Something went wrong. Please try again."
+      }
+    },
     "history": {
       "title": "Bid history",
       "empty": "No bids yet. Be the first!"

@@ -26,9 +26,12 @@ export const auctions = pgTable("auctions", {
   title: text("title").notNull(),
   description: text("description").notNull(),
   imageUrl: text("image_url").notNull(),
-  startPrice: integer("start_price").notNull(), // in Cent
-  currentPrice: integer("current_price").notNull(), // aktuelles Höchstgebot, in Cent
-  endsAt: timestamp("ends_at", {withTimezone: true}).notNull(),
+  // Auktionsteil — optional. Nur gesetzt, wenn die Anzeige eine Auktion ist.
+  startPrice: integer("start_price"), // in Cent, null = keine Auktion
+  currentPrice: integer("current_price"), // aktuelles Höchstgebot in Cent, null = keine Auktion
+  endsAt: timestamp("ends_at", {withTimezone: true}), // null = keine Auktion (kein Auto-Ende)
+  // Festpreis / Sofort-Kauf — optional. Mindestens einer von Auktion/buyNowPrice ist gesetzt.
+  buyNowPrice: integer("buy_now_price"), // in Cent, null = kein Sofort-Kauf
   status: auctionStatus("status").notNull().default("active"),
   winnerId: text("winner_id").references(() => user.id, {
     onDelete: "set null",

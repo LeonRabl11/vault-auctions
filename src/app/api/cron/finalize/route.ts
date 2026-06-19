@@ -1,6 +1,6 @@
 import {createHash, timingSafeEqual} from "node:crypto";
 import {NextResponse} from "next/server";
-import {and, eq, lte} from "drizzle-orm";
+import {and, eq, isNotNull, lte} from "drizzle-orm";
 import {auctions, db, orders} from "@/lib/db";
 import {finalizeAuctionAndNotify} from "@/lib/auctions";
 
@@ -24,11 +24,18 @@ export async function GET(request: Request) {
     return NextResponse.json({error: "unauthorized"}, {status: 401});
   }
 
-  // Abgelaufene, noch aktive Auktionen einsammeln
+  // Abgelaufene, noch aktive Auktionen einsammeln. Nur Anzeigen MIT Laufzeit
+  // (endsAt gesetzt) — reine Festpreis-Anzeigen laufen nie ab.
   const expired = await db
     .select({id: auctions.id})
     .from(auctions)
-    .where(and(eq(auctions.status, "active"), lte(auctions.endsAt, new Date())));
+    .where(
+      and(
+        eq(auctions.status, "active"),
+        isNotNull(auctions.endsAt),
+        lte(auctions.endsAt, new Date()),
+      ),
+    );
 
   // Sequenziell finalisieren (jede Auktion mit Transaktion + FOR UPDATE in
   // finalizeAuction — keine Logik-Duplizierung, schont den Connection-Pool).

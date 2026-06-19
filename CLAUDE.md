@@ -2,7 +2,8 @@
 
 ## Projekt
 eBay-inspirierte Auktionsplattform (Portfolio-Projekt): Artikel einstellen, bieten,
-Höchstbietender gewinnt bei Ablauf und bezahlt. Vollständige Spec, Datenmodell und
+Höchstbietender gewinnt bei Ablauf und bezahlt — **oder** zum Festpreis sofort kaufen.
+Eine Anzeige ist Auktion, Festpreis oder beides. Vollständige Spec, Datenmodell und
 Phasen-Roadmap: **docs/KONZEPT.md** (Langfassung — nicht hierher kopieren).
 
 ## Tech-Stack
@@ -75,16 +76,25 @@ Look erben:
 - Responsive/mobilfreundlich umsetzen.
 
 ## Domänen-Logik (kurz)
+- **Anzeige-Modell**: Auktion (`startPrice` + `endsAt`) und Festpreis (`buyNowPrice`)
+  sind je optional (alle in Cent, nullable) — mindestens eines ist gesetzt. Reine
+  Festpreis-Anzeigen haben kein `endsAt`/`currentPrice`.
 - **Bieten** server-seitig validieren (Server Action / Route Handler, nie nur Frontend):
   Auktion aktiv (`status==='active'` & `endsAt > jetzt`), Bieter ≠ Verkäufer,
   Gebot > `currentPrice`. `Bid` anlegen **und** `currentPrice`-Update in **einer
   DB-Transaktion**.
+- **Sofort-Kauf** (`buyNow`, Server Action): Transaktion mit `SELECT … FOR UPDATE`,
+  prüft aktiv + Käufer ≠ Verkäufer + `buyNowPrice` gesetzt; beendet die Anzeige sofort
+  (`status='ended'` + `winnerId`) und legt eine pending Order an — **gleicher Zustand
+  wie eine gewonnene Auktion**, daher Checkout/Webhook/Bezahl-Button unverändert. Der
+  Lock serialisiert konkurrierende Käufe (nur der erste gewinnt).
 - **Auktionsende**: Lazy Expiration (MVP) — beim Laden der Seite prüfen, ob abgelaufen,
-  dann `status='ended'` + `winnerId` setzen. Cron-Job optional/später.
+  dann `status='ended'` + `winnerId` setzen. Cron-Job finalisiert nur Anzeigen mit
+  `endsAt` (reine Festpreis-Anzeigen laufen nie ab).
 - **Status-Fluss**: `active → ended → paid`. Details siehe docs/KONZEPT.md.
 
 ## Nicht im Scope
-Sofort-Kauf, Rating-System, tiefe Kategorien/Filter, Versand/Logistik, Käufer-Verkäufer-
+Rating-System, tiefe Kategorien/Filter, Versand/Logistik, Käufer-Verkäufer-
 Nachrichten, Echtzeit-WebSockets (Realtime nur als optionaler Bonus).
 
 ## Arbeitsweise

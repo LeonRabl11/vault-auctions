@@ -5,16 +5,16 @@
   },
   "HomePage": {
     "hero": {
-      "headline": "Bid online and win.",
-      "subline": "List items, place your bids and win the lot when the auction ends.",
-      "ctaPrimary": "Explore auctions",
-      "ctaSecondary": "Create auction"
+      "headline": "Bid, buy, win — online.",
+      "subline": "List items, place your bids or buy instantly at a fixed price.",
+      "ctaPrimary": "Browse marketplace",
+      "ctaSecondary": "Create listing"
     },
     "auctions": {
       "eyebrow": "Marketplace",
-      "title": "Current auctions",
+      "title": "Current listings",
       "viewAll": "View all",
-      "empty": "There are no active auctions right now. Check back soon!"
+      "empty": "There are no active listings right now. Check back soon!"
     },
     "how": {
       "eyebrow": "In three steps",
@@ -53,8 +53,8 @@
   "Footer": {
     "platform": {
       "title": "Platform",
-      "auctions": "Auctions",
-      "createAuction": "Create auction",
+      "auctions": "Marketplace",
+      "createAuction": "Create listing",
       "dashboard": "Dashboard"
     },
     "legal": {
@@ -110,8 +110,8 @@
     "register": "Register",
     "logout": "Sign out",
     "dashboard": "Dashboard",
-    "auctions": "Auctions",
-    "createAuction": "Create auction",
+    "auctions": "Marketplace",
+    "createAuction": "Create listing",
     "menu": "Menu"
   },
   "Dashboard": {
@@ -170,9 +170,9 @@
   },
   "Auctions": {
     "new": {
-      "title": "Create auction",
-      "subline": "Describe your item, set a starting price and duration, and add an image.",
-      "submit": "List auction",
+      "title": "Create listing",
+      "subline": "Describe your item, set up an auction and/or a fixed price, and add an image.",
+      "submit": "Publish listing",
       "uploading": "Uploading…"
     },
     "upload": {
@@ -187,8 +187,8 @@
       "buyNowHint": "Optional: a fixed price at which the listing can be bought instantly."
     },
     "list": {
-      "title": "Auctions",
-      "empty": "There are no active auctions right now. Check back later!"
+      "title": "Marketplace",
+      "empty": "There are no active listings right now. Check back later!"
     },
     "card": {
       "currentBid": "Top bid",

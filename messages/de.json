@@ -5,16 +5,16 @@
   },
   "HomePage": {
     "hero": {
-      "headline": "Online bieten und gewinnen.",
-      "subline": "Stell Artikel ein, biete mit und sichere dir bei Ablauf den Zuschlag.",
-      "ctaPrimary": "Auktionen entdecken",
-      "ctaSecondary": "Auktion erstellen"
+      "headline": "Online bieten, kaufen, gewinnen.",
+      "subline": "Stell Artikel ein, biete mit oder kaufe direkt zum Festpreis.",
+      "ctaPrimary": "Marktplatz entdecken",
+      "ctaSecondary": "Anzeige erstellen"
     },
     "auctions": {
       "eyebrow": "Marktplatz",
-      "title": "Aktuelle Auktionen",
+      "title": "Aktuelle Anzeigen",
       "viewAll": "Alle ansehen",
-      "empty": "Aktuell gibt es keine aktiven Auktionen. Schau bald wieder vorbei!"
+      "empty": "Aktuell gibt es keine aktiven Anzeigen. Schau bald wieder vorbei!"
     },
     "how": {
       "eyebrow": "In drei Schritten",
@@ -53,8 +53,8 @@
   "Footer": {
     "platform": {
       "title": "Plattform",
-      "auctions": "Auktionen",
-      "createAuction": "Auktion erstellen",
+      "auctions": "Marktplatz",
+      "createAuction": "Anzeige erstellen",
       "dashboard": "Dashboard"
     },
     "legal": {
@@ -110,8 +110,8 @@
     "register": "Registrieren",
     "logout": "Abmelden",
     "dashboard": "Dashboard",
-    "auctions": "Auktionen",
-    "createAuction": "Auktion erstellen",
+    "auctions": "Marktplatz",
+    "createAuction": "Anzeige erstellen",
     "menu": "Menü"
   },
   "Dashboard": {
@@ -170,9 +170,9 @@
   },
   "Auctions": {
     "new": {
-      "title": "Auktion erstellen",
-      "subline": "Beschreibe deinen Artikel, lege Startpreis und Laufzeit fest und füge ein Bild hinzu.",
-      "submit": "Auktion einstellen",
+      "title": "Anzeige erstellen",
+      "subline": "Beschreibe deinen Artikel, lege eine Auktion und/oder einen Festpreis fest und füge ein Bild hinzu.",
+      "submit": "Anzeige einstellen",
       "uploading": "Wird hochgeladen…"
     },
     "upload": {
@@ -187,8 +187,8 @@
       "buyNowHint": "Optional: Festpreis, zu dem die Anzeige sofort gekauft werden kann."
     },
     "list": {
-      "title": "Auktionen",
-      "empty": "Aktuell gibt es keine aktiven Auktionen. Schau später wieder vorbei!"
+      "title": "Marktplatz",
+      "empty": "Aktuell gibt es keine aktiven Anzeigen. Schau später wieder vorbei!"
     },
     "card": {
       "currentBid": "Höchstgebot",

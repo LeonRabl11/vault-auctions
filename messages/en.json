@@ -258,7 +258,9 @@
     "delete": {
       "submit": "Delete",
       "pending": "Deleting…",
-      "confirm": "Really delete this auction?",
+      "title": "Delete listing?",
+      "confirm": "This listing will be permanently removed. This cannot be undone.",
+      "cancel": "Cancel",
       "errors": {
         "unauthorized": "Please sign in.",
         "notAllowed": "Cannot delete (no permission or bids already exist).",

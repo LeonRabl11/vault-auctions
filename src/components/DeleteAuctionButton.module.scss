@@ -24,3 +24,80 @@
   color: $color-danger;
   font-size: 0.875rem;
 }
+
+/* === Bestätigungs-Modal (natives <dialog>) === */
+.dialog {
+  margin: auto; // im Viewport zentriert
+  padding: 0;
+  border: none;
+  background: transparent; // sichtbare Fläche ist .modal
+  overflow: visible;
+
+  &::backdrop {
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+
+  &[open] {
+    animation: modalIn 0.15s ease;
+  }
+
+  &[open]::backdrop {
+    animation: backdropIn 0.15s ease;
+  }
+}
+
+.modal {
+  width: min(26rem, calc(100vw - #{$space-4} * 2));
+  display: flex;
+  flex-direction: column;
+  gap: $space-3;
+  padding: $space-5;
+  background-color: $color-bg;
+  border: 1px solid $color-border;
+  border-radius: $radius-lg;
+  box-shadow: $shadow-lg;
+}
+
+.modalTitle {
+  font-size: $text-xl;
+}
+
+.modalText {
+  margin: 0;
+  color: $color-text-muted;
+  line-height: $leading-snug;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: $space-2;
+  margin-top: $space-1;
+}
+
+@keyframes modalIn {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes backdropIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dialog[open],
+  .dialog[open]::backdrop {
+    animation: none;
+  }
+}

@@ -258,7 +258,9 @@
     "delete": {
       "submit": "Löschen",
       "pending": "Wird gelöscht…",
-      "confirm": "Diese Auktion wirklich löschen?",
+      "title": "Anzeige löschen?",
+      "confirm": "Diese Anzeige wird dauerhaft entfernt. Das lässt sich nicht rückgängig machen.",
+      "cancel": "Abbrechen",
       "errors": {
         "unauthorized": "Bitte melde dich an.",
         "notAllowed": "Löschen nicht möglich (kein Recht oder es liegen bereits Gebote vor).",

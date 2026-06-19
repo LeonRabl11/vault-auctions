@@ -134,6 +134,7 @@
     "title": "Dashboard",
     "welcome": "Willkommen, {name}!",
     "newAuction": "Anzeige erstellen",
+    "dismiss": "Aus Übersicht entfernen",
     "stats": {
       "activeAuctions": "Aktive Anzeigen",
       "activeBids": "Laufende Gebote",

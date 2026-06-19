@@ -134,6 +134,7 @@
     "title": "Dashboard",
     "welcome": "Welcome, {name}!",
     "newAuction": "Create listing",
+    "dismiss": "Remove from overview",
     "stats": {
       "activeAuctions": "Active listings",
       "activeBids": "Active bids",

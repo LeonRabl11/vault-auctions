@@ -1,15 +1,16 @@
 import type {ReactNode} from "react";
 import {headers} from "next/headers";
-import {desc, eq, sql} from "drizzle-orm";
+import {and, desc, eq, notExists, sql} from "drizzle-orm";
 import {
   getFormatter,
   getTranslations,
   setRequestLocale,
 } from "next-intl/server";
 import {auth} from "@/lib/auth";
-import {auctions, bids, db, orders} from "@/lib/db";
+import {auctions, bids, db, dismissals, orders} from "@/lib/db";
 import {Link, redirect} from "@/i18n/navigation";
 import PayButton from "@/components/PayButton";
+import DismissButton from "@/components/DismissButton";
 import styles from "./page.module.scss";
 
 type Props = {
@@ -114,6 +115,21 @@ export default async function DashboardPage({params}: Props) {
   const euro = (cents: number) =>
     format.number(cents / 100, {style: "currency", currency: "EUR"});
 
+  // Vom Nutzer im jeweiligen Bereich ausgeblendete Anzeigen herausfiltern.
+  const notDismissed = (section: "bidding" | "won") =>
+    notExists(
+      db
+        .select({one: sql`1`})
+        .from(dismissals)
+        .where(
+          and(
+            eq(dismissals.userId, userId),
+            eq(dismissals.auctionId, auctions.id),
+            eq(dismissals.section, section),
+          ),
+        ),
+    );
+
   // === Queries (je Bereich eine, Aggregate statt N+1) ===
 
   // 1. Meine Auktionen (Verkäufer): + Gebotsanzahl (count) + Order-Status (join)
@@ -148,7 +164,7 @@ export default async function DashboardPage({params}: Props) {
     })
     .from(bids)
     .innerJoin(auctions, eq(bids.auctionId, auctions.id))
-    .where(eq(bids.bidderId, userId))
+    .where(and(eq(bids.bidderId, userId), notDismissed("bidding")))
     .groupBy(auctions.id)
     .orderBy(desc(sql`max(${bids.createdAt})`));
 
@@ -165,7 +181,7 @@ export default async function DashboardPage({params}: Props) {
     })
     .from(orders)
     .innerJoin(auctions, eq(orders.auctionId, auctions.id))
-    .where(eq(orders.buyerId, userId))
+    .where(and(eq(orders.buyerId, userId), notDismissed("won")))
     .orderBy(desc(orders.createdAt));
 
   // === Status-Ableitung (server-seitig, status ist Quelle der Wahrheit) ===
@@ -334,6 +350,9 @@ export default async function DashboardPage({params}: Props) {
                     <span className={`${styles.badge} ${styles[s.badge]}`}>
                       {t(`bidding.status.${s.key}`)}
                     </span>
+                    {a.status !== "active" && (
+                      <DismissButton auctionId={a.id} section="bidding" />
+                    )}
                   </div>
                 </li>
               );
@@ -394,8 +413,10 @@ export default async function DashboardPage({params}: Props) {
                     <span className={`${styles.badge} ${styles[s.badge]}`}>
                       {t(`won.status.${s.key}`)}
                     </span>
-                    {o.orderStatus === "pending" && (
+                    {o.orderStatus === "pending" ? (
                       <PayButton orderId={o.orderId} />
+                    ) : (
+                      <DismissButton auctionId={o.auctionId} section="won" />
                     )}
                   </div>
                 </li>

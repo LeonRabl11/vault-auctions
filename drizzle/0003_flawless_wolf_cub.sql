@@ -1,0 +1,1 @@
+ALTER TABLE "auctions" ADD COLUMN "category" text DEFAULT 'sonstiges' NOT NULL;

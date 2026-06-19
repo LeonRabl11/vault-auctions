@@ -26,6 +26,9 @@ export const auctions = pgTable("auctions", {
   title: text("title").notNull(),
   description: text("description").notNull(),
   imageUrl: text("image_url").notNull(),
+  // Kategorie-Slug (siehe lib/categories.ts). Default 'sonstiges' backfillt
+  // bestehende Zeilen; serverseitig gegen die Slug-Liste validiert.
+  category: text("category").notNull().default("sonstiges"),
   // Auktionsteil — optional. Nur gesetzt, wenn die Anzeige eine Auktion ist.
   startPrice: integer("start_price"), // in Cent, null = keine Auktion
   currentPrice: integer("current_price"), // aktuelles Höchstgebot in Cent, null = keine Auktion

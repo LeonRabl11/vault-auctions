@@ -9,7 +9,9 @@ if (!databaseUrl) {
 }
 
 // prepare: false ist nötig für den Supabase Transaction-Pooler (PgBouncer).
-const client = postgres(databaseUrl, {prepare: false});
+// max: 5 hält den Verbrauch klein — der geteilte Pooler (Session-Mode) erlaubt
+// nur 15 Clients; mit dem Default (10) lief er regelmäßig voll.
+const client = postgres(databaseUrl, {prepare: false, max: 5});
 
 export const db = drizzle(client, {schema});
 

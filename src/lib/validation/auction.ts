@@ -1,4 +1,5 @@
 import {z} from "zod";
+import {CATEGORY_SLUGS} from "@/lib/categories";
 
 // Bild-Constraints (auch im Presign-Endpoint erzwungen)
 export const MAX_IMAGE_BYTES = 5 * 1024 * 1024; // 5 MB
@@ -21,6 +22,8 @@ const emptyToUndefined = (v: unknown) =>
 const listingFields = {
   title: z.string().trim().min(1, "titleRequired"),
   description: z.string().trim().min(1, "descriptionRequired"),
+  // Pflicht-Kategorie (Slug aus categories.ts). Leeres Feld -> categoryRequired.
+  category: z.enum(CATEGORY_SLUGS, {message: "categoryRequired"}),
   startPriceEur: z.preprocess(
     emptyToUndefined,
     z.coerce.number().positive("pricePositive").optional(),

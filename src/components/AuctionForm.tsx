@@ -4,6 +4,7 @@ import {useRef, useState} from "react";
 import {useTranslations} from "next-intl";
 import {useRouter} from "@/i18n/navigation";
 import {createAuction} from "@/lib/actions/auction";
+import {CATEGORIES} from "@/lib/categories";
 import {
   ALLOWED_IMAGE_TYPES,
   MAX_IMAGE_BYTES,
@@ -35,6 +36,7 @@ const UPLOAD_ICON = (
 
 export default function AuctionForm() {
   const t = useTranslations("Auctions");
+  const tc = useTranslations("Categories");
   const router = useRouter();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [file, setFile] = useState<File | null>(null);
@@ -87,6 +89,7 @@ export default function AuctionForm() {
     const input = {
       title: String(form.get("title") ?? ""),
       description: String(form.get("description") ?? ""),
+      category: String(form.get("category") ?? ""),
       startPriceEur: String(form.get("startPrice") ?? ""),
       endsAt: String(form.get("endsAt") ?? ""),
       buyNowPriceEur: String(form.get("buyNowPrice") ?? ""),
@@ -164,6 +167,25 @@ export default function AuctionForm() {
       <label className={styles.field}>
         <span className={styles.label}>{t("fields.description")}</span>
         <textarea className="input" name="description" rows={4} required />
+      </label>
+
+      <label className={styles.field}>
+        <span className={styles.label}>{t("fields.category")}</span>
+        <select
+          className={`input ${styles.select}`}
+          name="category"
+          defaultValue=""
+          required
+        >
+          <option value="" disabled>
+            {t("fields.categoryPlaceholder")}
+          </option>
+          {CATEGORIES.map((c) => (
+            <option key={c.slug} value={c.slug}>
+              {tc(c.labelKey)}
+            </option>
+          ))}
+        </select>
       </label>
 
       {/* === Auktion (optional) === */}

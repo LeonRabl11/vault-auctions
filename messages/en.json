@@ -81,6 +81,22 @@
     "label": "Language",
     "locale": "{locale, select, de {German} en {English} other {Unknown}}"
   },
+  "Categories": {
+    "bar": "Categories",
+    "all": "All",
+    "prev": "Previous",
+    "next": "Next",
+    "autos_motorraeder": "Cars & Motorcycles",
+    "muenzen_briefmarken": "Coins & Stamps",
+    "schmuck": "Jewelry",
+    "einrichtung": "Furniture",
+    "kunst": "Art",
+    "mode": "Fashion",
+    "elektronik": "Electronics",
+    "buecher_geschichte": "Books & History",
+    "pflanzen": "Plants",
+    "sonstiges": "Other"
+  },
   "Auth": {
     "login": {
       "title": "Sign in",
@@ -281,6 +297,8 @@
       "title": "Title",
       "description": "Description",
       "image": "Image",
+      "category": "Category",
+      "categoryPlaceholder": "Choose a category",
       "startPrice": "Starting price (€)",
       "endsAt": "End date",
       "buyNowPrice": "Buy-now price (€)"
@@ -291,6 +309,7 @@
     "errors": {
       "titleRequired": "Please enter a title.",
       "descriptionRequired": "Please enter a description.",
+      "categoryRequired": "Please choose a category.",
       "pricePositive": "The price must be greater than 0.",
       "endInFuture": "The end date must be in the future.",
       "auctionIncomplete": "For an auction, please provide both a starting price and an end date.",

@@ -18,6 +18,12 @@
   color: $color-text;
 }
 
+// Native Select, am .input-Look orientiert
+.select {
+  cursor: pointer;
+  appearance: none;
+}
+
 .hint {
   font-size: $text-xs;
   color: $color-text-muted;

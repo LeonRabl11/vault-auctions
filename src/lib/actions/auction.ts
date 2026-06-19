@@ -31,8 +31,15 @@ export async function createAuction(
     return {ok: false, error: parsed.error.issues[0]?.message ?? "generic"};
   }
 
-  const {title, description, startPriceEur, endsAt, buyNowPriceEur, imageUrl} =
-    parsed.data;
+  const {
+    title,
+    description,
+    category,
+    startPriceEur,
+    endsAt,
+    buyNowPriceEur,
+    imageUrl,
+  } = parsed.data;
 
   // Bild-URL muss aus unserem Bucket stammen (keine Fremd-URLs speichern)
   const {bucket, region} = getS3Config();
@@ -54,6 +61,7 @@ export async function createAuction(
       sellerId: session.user.id,
       title,
       description,
+      category,
       imageUrl,
       startPrice,
       currentPrice: startPrice, // Startgebot = Startpreis (null ohne Auktion)

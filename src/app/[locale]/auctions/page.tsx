@@ -1,4 +1,4 @@
-import {and, desc, eq, gt, sql} from "drizzle-orm";
+import {and, desc, eq, gt, isNull, or, sql} from "drizzle-orm";
 import {getTranslations, setRequestLocale} from "next-intl/server";
 import {auctions, bids, db} from "@/lib/db";
 import AuctionCard from "@/components/AuctionCard";
@@ -14,7 +14,8 @@ export default async function AuctionsPage({params}: Props) {
 
   const t = await getTranslations("Auctions");
 
-  // Nur aktive, noch nicht abgelaufene Auktionen, neueste zuerst
+  // Aktive Anzeigen, neueste zuerst. Auktionen nur, solange nicht abgelaufen;
+  // reine Festpreis-Anzeigen (endsAt == null) laufen nie ab und bleiben sichtbar.
   const list = await db
     .select({
       id: auctions.id,
@@ -22,12 +23,18 @@ export default async function AuctionsPage({params}: Props) {
       imageUrl: auctions.imageUrl,
       currentPrice: auctions.currentPrice,
       endsAt: auctions.endsAt,
+      buyNowPrice: auctions.buyNowPrice,
       status: auctions.status,
       bidCount: sql<number>`count(${bids.id})::int`,
     })
     .from(auctions)
     .leftJoin(bids, eq(bids.auctionId, auctions.id))
-    .where(and(eq(auctions.status, "active"), gt(auctions.endsAt, new Date())))
+    .where(
+      and(
+        eq(auctions.status, "active"),
+        or(isNull(auctions.endsAt), gt(auctions.endsAt, new Date())),
+      ),
+    )
     .groupBy(auctions.id)
     .orderBy(desc(auctions.createdAt));
 

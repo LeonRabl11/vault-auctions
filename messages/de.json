@@ -192,6 +192,8 @@
     },
     "card": {
       "currentBid": "Höchstgebot",
+      "buyNow": "Sofort-Kauf",
+      "buyNowBadge": "Sofort kaufen",
       "bids": "{count, plural, =0 {Noch keine Gebote} one {# Gebot} other {# Gebote}}",
       "endingSoon": "Endet bald"
     },

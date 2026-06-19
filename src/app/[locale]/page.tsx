@@ -1,4 +1,4 @@
-import {and, desc, eq, gt, sql} from "drizzle-orm";
+import {and, desc, eq, gt, isNull, or, sql} from "drizzle-orm";
 import {getTranslations, setRequestLocale} from "next-intl/server";
 import {auctions, bids, db} from "@/lib/db";
 import {Link} from "@/i18n/navigation";
@@ -63,7 +63,8 @@ export default async function Home({params}: Props) {
 
   const t = await getTranslations("HomePage");
 
-  // Neueste aktive, noch laufende Auktionen (wie die Übersicht, limitiert)
+  // Neueste aktive Anzeigen (wie die Übersicht, limitiert). Auktionen nur solange
+  // laufend; reine Festpreis-Anzeigen (endsAt == null) bleiben sichtbar.
   const latest = await db
     .select({
       id: auctions.id,
@@ -71,12 +72,18 @@ export default async function Home({params}: Props) {
       imageUrl: auctions.imageUrl,
       currentPrice: auctions.currentPrice,
       endsAt: auctions.endsAt,
+      buyNowPrice: auctions.buyNowPrice,
       status: auctions.status,
       bidCount: sql<number>`count(${bids.id})::int`,
     })
     .from(auctions)
     .leftJoin(bids, eq(bids.auctionId, auctions.id))
-    .where(and(eq(auctions.status, "active"), gt(auctions.endsAt, new Date())))
+    .where(
+      and(
+        eq(auctions.status, "active"),
+        or(isNull(auctions.endsAt), gt(auctions.endsAt, new Date())),
+      ),
+    )
     .groupBy(auctions.id)
     .orderBy(desc(auctions.createdAt))
     .limit(6);

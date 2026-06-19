@@ -79,3 +79,13 @@
   font-weight: $weight-semibold;
   color: $color-text-muted;
 }
+
+// "Sofort kaufen"-Hinweis bei reinen Festpreis-Anzeigen
+.buyNowBadge {
+  padding: $space-1 $space-2;
+  border-radius: $radius-full;
+  background-color: $color-primary-soft;
+  color: $color-primary;
+  font-size: $text-xs;
+  font-weight: $weight-semibold;
+}

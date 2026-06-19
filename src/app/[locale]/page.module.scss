@@ -111,8 +111,9 @@
   margin: 0;
   max-width: 36rem;
   font-size: $text-lg;
+  font-weight: $weight-medium;
   line-height: $leading-snug;
-  color: rgba($color-bg, 0.85);
+  color: $color-bg; // reines Weiß
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
 }
 

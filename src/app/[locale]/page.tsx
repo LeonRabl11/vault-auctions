@@ -107,10 +107,10 @@ export default async function Home({params}: Props) {
           <h1 className={styles.headline}>{t("hero.headline")}</h1>
           <p className={styles.subline}>{t("hero.subline")}</p>
           <div className={styles.ctas}>
-            <Link href="/auctions" className="btn btn--primary">
+            <Link href="/marktplatz" className="btn btn--primary">
               {t("hero.ctaPrimary")}
             </Link>
-            <Link href="/auctions/new" className={`btn ${styles.secondaryBtn}`}>
+            <Link href="/marktplatz/new" className={`btn ${styles.secondaryBtn}`}>
               {t("hero.ctaSecondary")}
             </Link>
           </div>
@@ -125,7 +125,7 @@ export default async function Home({params}: Props) {
               <p className={styles.eyebrow}>{t("auctions.eyebrow")}</p>
               <h2 className={styles.title}>{t("auctions.title")}</h2>
             </div>
-            <Link href="/auctions" className={styles.viewAll}>
+            <Link href="/marktplatz" className={styles.viewAll}>
               {t("auctions.viewAll")} →
             </Link>
           </header>

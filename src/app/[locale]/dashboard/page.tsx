@@ -225,7 +225,7 @@ export default async function DashboardPage({params}: Props) {
             {t("welcome", {name: session.user.name})}
           </p>
         </div>
-        <Link href="/auctions/new" className="btn btn--primary">
+        <Link href="/marktplatz/new" className="btn btn--primary">
           {t("newAuction")}
         </Link>
       </header>
@@ -250,7 +250,7 @@ export default async function DashboardPage({params}: Props) {
           <EmptyState
             icon={EMPTY_ICONS.selling}
             text={t("selling.empty")}
-            href="/auctions/new"
+            href="/marktplatz/new"
             cta={t("selling.emptyCta")}
           />
         ) : (
@@ -268,7 +268,7 @@ export default async function DashboardPage({params}: Props) {
                     {initial(a.title)}
                   </span>
                   <div className={styles.main}>
-                    <Link href={`/auctions/${a.id}`} className={styles.rowTitle}>
+                    <Link href={`/marktplatz/${a.id}`} className={styles.rowTitle}>
                       {a.title}
                     </Link>
                     <p className={styles.meta}>
@@ -303,7 +303,7 @@ export default async function DashboardPage({params}: Props) {
           <EmptyState
             icon={EMPTY_ICONS.bidding}
             text={t("bidding.empty")}
-            href="/auctions"
+            href="/marktplatz"
             cta={t("bidding.emptyCta")}
           />
         ) : (
@@ -316,7 +316,7 @@ export default async function DashboardPage({params}: Props) {
                     {initial(a.title)}
                   </span>
                   <div className={styles.main}>
-                    <Link href={`/auctions/${a.id}`} className={styles.rowTitle}>
+                    <Link href={`/marktplatz/${a.id}`} className={styles.rowTitle}>
                       {a.title}
                     </Link>
                     <p className={styles.meta}>
@@ -352,7 +352,7 @@ export default async function DashboardPage({params}: Props) {
           <EmptyState
             icon={EMPTY_ICONS.won}
             text={t("won.empty")}
-            href="/auctions"
+            href="/marktplatz"
             cta={t("won.emptyCta")}
           />
         ) : (
@@ -366,7 +366,7 @@ export default async function DashboardPage({params}: Props) {
                   </span>
                   <div className={styles.main}>
                     <Link
-                      href={`/auctions/${o.auctionId}`}
+                      href={`/marktplatz/${o.auctionId}`}
                       className={styles.rowTitle}
                     >
                       {o.title}

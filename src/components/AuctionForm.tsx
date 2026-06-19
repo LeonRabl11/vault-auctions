@@ -145,7 +145,7 @@ export default function AuctionForm() {
         return;
       }
 
-      router.push("/auctions");
+      router.push("/marktplatz");
       router.refresh();
     } catch {
       setError("generic");

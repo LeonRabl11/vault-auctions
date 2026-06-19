@@ -6,11 +6,11 @@ export function baseUrl(): string {
   return process.env.BETTER_AUTH_URL ?? "http://localhost:3000";
 }
 
-// Absolute URL zur Auktions-Detailseite. de (Default) ohne Prefix, en unter /en.
+// Absolute URL zur Anzeigen-Detailseite. de (Default) ohne Prefix, en unter /en.
 export function auctionUrl(
   id: string,
   locale: string = routing.defaultLocale,
 ): string {
   const prefix = locale === routing.defaultLocale ? "" : `/${locale}`;
-  return `${baseUrl()}${prefix}/auctions/${id}`;
+  return `${baseUrl()}${prefix}/marktplatz/${id}`;
 }

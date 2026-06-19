@@ -18,17 +18,17 @@ export default function Nav({isAuthed}: Props) {
 
   // Primäre Navigation (zusätzliche Links nur für eingeloggte Nutzer)
   const links = [
-    {href: "/auctions", label: t("auctions")},
+    {href: "/marktplatz", label: t("auctions")},
     ...(isAuthed
       ? [
-          {href: "/auctions/new", label: t("createAuction")},
+          {href: "/marktplatz/new", label: t("createAuction")},
           {href: "/dashboard", label: t("dashboard")},
         ]
       : []),
   ];
 
-  // Aktiver Link = längster passender Prefix (so ist /auctions/new eindeutig
-  // aktiv, nicht zugleich /auctions).
+  // Aktiver Link = längster passender Prefix (so ist /marktplatz/new eindeutig
+  // aktiv, nicht zugleich /marktplatz).
   const activeHref = links
     .map((l) => l.href)
     .filter((h) => pathname === h || pathname.startsWith(`${h}/`))

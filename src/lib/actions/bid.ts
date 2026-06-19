@@ -84,7 +84,7 @@ export async function placeBid(input: unknown): Promise<PlaceBidResult> {
 
     if (result.ok) {
       // Detailseite neu rendern (neuer Preis + Historie)
-      revalidatePath("/[locale]/auctions/[id]", "page");
+      revalidatePath("/[locale]/marktplatz/[id]", "page");
 
       // Überboten-Mail NACH dem Commit, außerhalb der Transaktion, tolerant.
       // Nur wenn es einen vorherigen, anderen Höchstbieter gab.

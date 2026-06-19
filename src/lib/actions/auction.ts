@@ -63,9 +63,9 @@ export async function createAuction(
     })
     .returning({id: auctions.id});
 
-  // Liste vorab revalidieren, damit die neue Auktion (createdAt DESC -> oben)
-  // sofort erscheint, wenn der Client gleich auf /auctions weiterleitet.
-  revalidatePath("/[locale]/auctions", "page");
+  // Liste vorab revalidieren, damit die neue Anzeige (createdAt DESC -> oben)
+  // sofort erscheint, wenn der Client gleich auf /marktplatz weiterleitet.
+  revalidatePath("/[locale]/marktplatz", "page");
 
   return {ok: true, id: created.id};
 }
@@ -131,8 +131,8 @@ export async function deleteAuction(id: unknown): Promise<DeleteAuctionResult> {
     console.error("[s3] image delete failed", e);
   }
 
-  // Liste + Dashboard revalidieren (Auktion verschwindet überall)
-  revalidatePath("/[locale]/auctions", "page");
+  // Liste + Dashboard revalidieren (Anzeige verschwindet überall)
+  revalidatePath("/[locale]/marktplatz", "page");
   revalidatePath("/[locale]/dashboard", "page");
 
   return {ok: true};

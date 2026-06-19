@@ -12,8 +12,8 @@ export default async function Footer() {
     {
       title: t("platform.title"),
       links: [
-        {href: "/auctions", label: t("platform.auctions")},
-        {href: "/auctions/new", label: t("platform.createAuction")},
+        {href: "/marktplatz", label: t("platform.auctions")},
+        {href: "/marktplatz/new", label: t("platform.createAuction")},
         {href: "/dashboard", label: t("platform.dashboard")},
       ],
     },

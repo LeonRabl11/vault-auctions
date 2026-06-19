@@ -38,7 +38,7 @@ export default async function AuctionCard({auction}: Props) {
     format.number(cents / 100, {style: "currency", currency: "EUR"});
 
   return (
-    <Link href={`/auctions/${auction.id}`} className={`card ${styles.card}`}>
+    <Link href={`/marktplatz/${auction.id}`} className={`card ${styles.card}`}>
       <div className={styles.imageWrap}>
         <Image
           src={auction.imageUrl}

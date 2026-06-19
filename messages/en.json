@@ -117,15 +117,15 @@
   "Dashboard": {
     "title": "Dashboard",
     "welcome": "Welcome, {name}!",
-    "newAuction": "Create auction",
+    "newAuction": "Create listing",
     "stats": {
-      "activeAuctions": "Active auctions",
+      "activeAuctions": "Active listings",
       "activeBids": "Active bids",
-      "wonItems": "Items won"
+      "wonItems": "Purchases & wins"
     },
     "selling": {
-      "title": "My auctions",
-      "empty": "You haven't listed any auctions yet.",
+      "title": "My listings",
+      "empty": "You haven't listed anything yet.",
       "emptyCta": "Create one now",
       "bids": "{count, plural, =0 {No bids} one {# bid} other {# bids}}",
       "status": {
@@ -149,9 +149,9 @@
       }
     },
     "won": {
-      "title": "Won items",
-      "empty": "You haven't won any auction yet.",
-      "emptyCta": "Explore auctions",
+      "title": "Purchases & wins",
+      "empty": "You haven't won or bought anything yet.",
+      "emptyCta": "Browse marketplace",
       "amount": "Amount",
       "payBy": "Please pay by {date}.",
       "status": {

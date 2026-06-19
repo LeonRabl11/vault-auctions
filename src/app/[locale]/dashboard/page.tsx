@@ -123,6 +123,8 @@ export default async function DashboardPage({params}: Props) {
       title: auctions.title,
       status: auctions.status,
       currentPrice: auctions.currentPrice,
+      buyNowPrice: auctions.buyNowPrice,
+      endsAt: auctions.endsAt,
       winnerId: auctions.winnerId,
       orderStatus: orders.status,
       bidCount: sql<number>`count(${bids.id})::int`,
@@ -255,6 +257,11 @@ export default async function DashboardPage({params}: Props) {
           <ul className={styles.list}>
             {selling.map((a) => {
               const s = sellingStatus(a);
+              // Auktion -> aktuelles Höchstgebot; reine Festpreis-Anzeige -> Festpreis
+              const isAuction = a.endsAt != null;
+              const price = isAuction
+                ? (a.currentPrice ?? 0)
+                : (a.buyNowPrice ?? 0);
               return (
                 <li key={a.id} className={`card ${styles.row}`}>
                   <span className={styles.thumb} aria-hidden>
@@ -265,9 +272,13 @@ export default async function DashboardPage({params}: Props) {
                       {a.title}
                     </Link>
                     <p className={styles.meta}>
-                      <span>{euro(a.currentPrice ?? 0)}</span>
-                      <span className={styles.dot}>·</span>
-                      <span>{t("selling.bids", {count: a.bidCount})}</span>
+                      <span>{euro(price)}</span>
+                      {isAuction && (
+                        <>
+                          <span className={styles.dot}>·</span>
+                          <span>{t("selling.bids", {count: a.bidCount})}</span>
+                        </>
+                      )}
                     </p>
                   </div>
                   <div className={styles.trailing}>

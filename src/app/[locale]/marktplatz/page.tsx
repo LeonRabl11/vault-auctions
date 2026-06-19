@@ -1,18 +1,24 @@
 import {and, desc, eq, gt, isNull, or, sql} from "drizzle-orm";
 import {getTranslations, setRequestLocale} from "next-intl/server";
 import {auctions, bids, db} from "@/lib/db";
+import {isCategorySlug} from "@/lib/categories";
 import AuctionCard from "@/components/AuctionCard";
 import styles from "./page.module.scss";
 
 type Props = {
   params: Promise<{locale: string}>;
+  searchParams: Promise<{kategorie?: string}>;
 };
 
-export default async function AuctionsPage({params}: Props) {
+export default async function AuctionsPage({params, searchParams}: Props) {
   const {locale} = await params;
+  const {kategorie} = await searchParams;
   setRequestLocale(locale);
 
   const t = await getTranslations("Auctions");
+
+  // Optionaler Kategorie-Filter aus dem Search-Param (ungültige Slugs ignorieren)
+  const category = isCategorySlug(kategorie) ? kategorie : null;
 
   // Aktive Anzeigen, neueste zuerst. Auktionen nur, solange nicht abgelaufen;
   // reine Festpreis-Anzeigen (endsAt == null) laufen nie ab und bleiben sichtbar.
@@ -33,6 +39,7 @@ export default async function AuctionsPage({params}: Props) {
       and(
         eq(auctions.status, "active"),
         or(isNull(auctions.endsAt), gt(auctions.endsAt, new Date())),
+        category ? eq(auctions.category, category) : undefined,
       ),
     )
     .groupBy(auctions.id)

@@ -31,7 +31,8 @@ export async function createAuction(
     return {ok: false, error: parsed.error.issues[0]?.message ?? "generic"};
   }
 
-  const {title, description, startPriceEur, endsAt, imageUrl} = parsed.data;
+  const {title, description, startPriceEur, endsAt, buyNowPriceEur, imageUrl} =
+    parsed.data;
 
   // Bild-URL muss aus unserem Bucket stammen (keine Fremd-URLs speichern)
   const {bucket, region} = getS3Config();
@@ -40,8 +41,12 @@ export async function createAuction(
     return {ok: false, error: "generic"};
   }
 
-  // € -> Cent (Beträge laut Konvention immer als Integer in Cent)
-  const startPrice = Math.round(startPriceEur * 100);
+  // € -> Cent (Beträge laut Konvention immer als Integer in Cent).
+  // Auktions- und Festpreis-Block sind je optional (Schema erzwingt: mind. einer).
+  const startPrice =
+    startPriceEur != null ? Math.round(startPriceEur * 100) : null;
+  const buyNowPrice =
+    buyNowPriceEur != null ? Math.round(buyNowPriceEur * 100) : null;
 
   const [created] = await db
     .insert(auctions)
@@ -51,8 +56,9 @@ export async function createAuction(
       description,
       imageUrl,
       startPrice,
-      currentPrice: startPrice, // Startgebot = Startpreis
-      endsAt,
+      currentPrice: startPrice, // Startgebot = Startpreis (null ohne Auktion)
+      endsAt: endsAt ?? null, // null = reine Festpreis-Anzeige, kein Auto-Ende
+      buyNowPrice,
       // status: 'active' kommt aus dem Schema-Default
     })
     .returning({id: auctions.id});

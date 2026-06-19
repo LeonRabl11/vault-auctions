@@ -33,7 +33,10 @@ export async function finalizeAuction(id: string): Promise<boolean> {
       .limit(1);
 
     if (!auction || auction.status !== "active") return false;
-    if (auction.endsAt.getTime() >= Date.now()) return false;
+    // Reine Festpreis-Anzeigen (endsAt == null) laufen nie ab und werden hier
+    // nie finalisiert — nur Auktionen mit verstrichener Laufzeit.
+    if (auction.endsAt == null || auction.endsAt.getTime() >= Date.now())
+      return false;
 
     const [top] = await tx
       .select({bidderId: bids.bidderId})
@@ -57,7 +60,7 @@ export async function finalizeAuction(id: string): Promise<boolean> {
         .values({
           auctionId: id,
           buyerId: winnerId,
-          amount: auction.currentPrice,
+          amount: auction.currentPrice ?? 0, // bei Gewinner stets gesetzt
           status: "pending",
           paymentDueAt: new Date(Date.now() + PAYMENT_WINDOW_MS),
         })

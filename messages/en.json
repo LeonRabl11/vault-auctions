@@ -180,6 +180,12 @@
       "change": "Change",
       "remove": "Remove"
     },
+    "sections": {
+      "auction": "Auction",
+      "auctionHint": "Optional: set a starting price and duration so people can bid.",
+      "buyNow": "Fixed price / Buy now",
+      "buyNowHint": "Optional: a fixed price at which the listing can be bought instantly."
+    },
     "list": {
       "title": "Auctions",
       "empty": "There are no active auctions right now. Check back later!"
@@ -261,7 +267,8 @@
       "description": "Description",
       "image": "Image",
       "startPrice": "Starting price (€)",
-      "endsAt": "End date"
+      "endsAt": "End date",
+      "buyNowPrice": "Buy-now price (€)"
     },
     "hints": {
       "image": "JPG, PNG, WebP or GIF — max. 5 MB."
@@ -269,8 +276,10 @@
     "errors": {
       "titleRequired": "Please enter a title.",
       "descriptionRequired": "Please enter a description.",
-      "pricePositive": "The starting price must be greater than 0.",
+      "pricePositive": "The price must be greater than 0.",
       "endInFuture": "The end date must be in the future.",
+      "auctionIncomplete": "For an auction, please provide both a starting price and an end date.",
+      "atLeastOne": "Please provide an auction or a buy-now price.",
       "imageRequired": "Please select an image.",
       "imageType": "Only image files are allowed (JPG, PNG, WebP, GIF).",
       "imageTooLarge": "The image must be at most 5 MB.",

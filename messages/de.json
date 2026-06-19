@@ -180,6 +180,12 @@
       "change": "Ändern",
       "remove": "Entfernen"
     },
+    "sections": {
+      "auction": "Auktion",
+      "auctionHint": "Optional: Startpreis und Laufzeit festlegen, damit geboten werden kann.",
+      "buyNow": "Festpreis / Sofort-Kauf",
+      "buyNowHint": "Optional: Festpreis, zu dem die Anzeige sofort gekauft werden kann."
+    },
     "list": {
       "title": "Auktionen",
       "empty": "Aktuell gibt es keine aktiven Auktionen. Schau später wieder vorbei!"
@@ -261,7 +267,8 @@
       "description": "Beschreibung",
       "image": "Bild",
       "startPrice": "Startpreis (€)",
-      "endsAt": "Enddatum"
+      "endsAt": "Enddatum",
+      "buyNowPrice": "Sofort-Kauf-Preis (€)"
     },
     "hints": {
       "image": "JPG, PNG, WebP oder GIF — max. 5 MB."
@@ -269,8 +276,10 @@
     "errors": {
       "titleRequired": "Bitte einen Titel eingeben.",
       "descriptionRequired": "Bitte eine Beschreibung eingeben.",
-      "pricePositive": "Der Startpreis muss größer als 0 sein.",
+      "pricePositive": "Der Preis muss größer als 0 sein.",
       "endInFuture": "Das Enddatum muss in der Zukunft liegen.",
+      "auctionIncomplete": "Für eine Auktion bitte Startpreis und Enddatum angeben.",
+      "atLeastOne": "Bitte eine Auktion oder einen Sofort-Kauf-Preis angeben.",
       "imageRequired": "Bitte ein Bild auswählen.",
       "imageType": "Nur Bilddateien sind erlaubt (JPG, PNG, WebP, GIF).",
       "imageTooLarge": "Das Bild darf maximal 5 MB groß sein.",

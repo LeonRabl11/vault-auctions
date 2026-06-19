@@ -61,9 +61,11 @@ export default async function AuctionDetailPage({params, searchParams}: Props) {
     notFound();
   }
 
-  // Lazy Expiration: abgelaufene aktive Auktion abschließen, dann neu laden
+  // Lazy Expiration: abgelaufene aktive Auktion abschließen, dann neu laden.
+  // Reine Festpreis-Anzeigen (endsAt == null) laufen nie ab.
   if (
     auction.status === "active" &&
+    auction.endsAt != null &&
     auction.endsAt.getTime() < new Date().getTime()
   ) {
     await finalizeAuctionAndNotify(id);
@@ -112,8 +114,11 @@ export default async function AuctionDetailPage({params, searchParams}: Props) {
 
   const session = await auth.api.getSession({headers: await headers()});
 
+  // Auktion = Laufzeit gesetzt; reine Festpreis-Anzeige hat endsAt == null
+  const isAuction = auction.endsAt != null;
   const isActive =
     auction.status === "active" &&
+    auction.endsAt != null &&
     auction.endsAt.getTime() > new Date().getTime();
   const isSeller = session?.user.id === auction.sellerId;
   const isViewerBuyer = Boolean(
@@ -147,31 +152,38 @@ export default async function AuctionDetailPage({params, searchParams}: Props) {
             {t("detail.seller", {name: auction.sellerName})}
           </p>
 
-          <p className={styles.price}>
-            <span className={styles.priceLabel}>{t("detail.currentBid")}</span>
-            <span className={styles.priceValue}>
-              {format.number(auction.currentPrice / 100, {
-                style: "currency",
-                currency: "EUR",
-              })}
-            </span>
-          </p>
+          {/* Auktionsdaten nur bei Auktionen (Festpreis-Anzeige hat keine) */}
+          {isAuction && auction.endsAt != null && (
+            <>
+              <p className={styles.price}>
+                <span className={styles.priceLabel}>
+                  {t("detail.currentBid")}
+                </span>
+                <span className={styles.priceValue}>
+                  {format.number((auction.currentPrice ?? 0) / 100, {
+                    style: "currency",
+                    currency: "EUR",
+                  })}
+                </span>
+              </p>
 
-          <div className={styles.countdown}>
-            <span className={styles.countdownLabel}>
-              {t("detail.timeLeft")}
-            </span>
-            <Countdown endsAt={auction.endsAt.toISOString()} />
-          </div>
+              <div className={styles.countdown}>
+                <span className={styles.countdownLabel}>
+                  {t("detail.timeLeft")}
+                </span>
+                <Countdown endsAt={auction.endsAt.toISOString()} />
+              </div>
 
-          <p className={styles.endsAt}>
-            {t("detail.endsAt", {
-              date: format.dateTime(auction.endsAt, {
-                dateStyle: "medium",
-                timeStyle: "short",
-              }),
-            })}
-          </p>
+              <p className={styles.endsAt}>
+                {t("detail.endsAt", {
+                  date: format.dateTime(auction.endsAt, {
+                    dateStyle: "medium",
+                    timeStyle: "short",
+                  }),
+                })}
+              </p>
+            </>
+          )}
 
           <div className={`card ${styles.bidBox}`}>
             {isActive ? (
@@ -182,7 +194,7 @@ export default async function AuctionDetailPage({params, searchParams}: Props) {
                 ) : (
                   <BidForm
                     auctionId={auction.id}
-                    currentPrice={auction.currentPrice}
+                    currentPrice={auction.currentPrice ?? 0}
                   />
                 )
               ) : (

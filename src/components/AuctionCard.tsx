@@ -9,8 +9,8 @@ type Props = {
     id: string;
     title: string;
     imageUrl: string;
-    currentPrice: number; // in Cent
-    endsAt: Date;
+    currentPrice: number | null; // in Cent, null = keine Auktion
+    endsAt: Date | null; // null = reine Festpreis-Anzeige
     status: string;
     bidCount: number;
   };
@@ -23,8 +23,11 @@ export default async function AuctionCard({auction}: Props) {
   const t = await getTranslations("Auctions");
   const format = await getFormatter();
 
-  const msLeft = auction.endsAt.getTime() - new Date().getTime();
-  const isLive = auction.status === "active" && msLeft > 0;
+  const msLeft = auction.endsAt
+    ? auction.endsAt.getTime() - new Date().getTime()
+    : 0;
+  const isLive =
+    auction.status === "active" && auction.endsAt != null && msLeft > 0;
   const endingSoon = isLive && msLeft <= ENDING_SOON_MS;
 
   return (
@@ -46,14 +49,19 @@ export default async function AuctionCard({auction}: Props) {
         <p className={styles.price}>
           {t("card.currentBid")}{" "}
           <strong>
-            {format.number(auction.currentPrice / 100, {
+            {format.number((auction.currentPrice ?? 0) / 100, {
               style: "currency",
               currency: "EUR",
             })}
           </strong>
         </p>
         <div className={styles.footer}>
-          <Countdown endsAt={auction.endsAt.toISOString()} variant="compact" />
+          {auction.endsAt && (
+            <Countdown
+              endsAt={auction.endsAt.toISOString()}
+              variant="compact"
+            />
+          )}
           <span className={styles.bids}>
             {t("card.bids", {count: auction.bidCount})}
           </span>

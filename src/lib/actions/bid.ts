@@ -44,16 +44,19 @@ export async function placeBid(input: unknown): Promise<PlaceBidResult> {
       if (auction.sellerId === userId) {
         return {ok: false, error: "ownAuction"} as const;
       }
-      // Auktion muss aktiv und nicht abgelaufen sein
+      // Auktion muss aktiv und nicht abgelaufen sein. endsAt == null bedeutet
+      // reine Festpreis-Anzeige (keine Auktion) -> kein Bieten möglich.
       if (
         auction.status !== "active" ||
+        auction.endsAt == null ||
         auction.endsAt.getTime() <= Date.now()
       ) {
         return {ok: false, error: "auctionEnded"} as const;
       }
       // Gebot muss das aktuelle Höchstgebot übersteigen (innerhalb des Locks
-      // geprüft -> kein Gebot kann durch ein gleichzeitiges verloren gehen)
-      if (amount <= auction.currentPrice) {
+      // geprüft -> kein Gebot kann durch ein gleichzeitiges verloren gehen).
+      // currentPrice ist bei Auktionen gesetzt; ?? 0 nur fürs Typing.
+      if (amount <= (auction.currentPrice ?? 0)) {
         return {ok: false, error: "tooLow"} as const;
       }
 

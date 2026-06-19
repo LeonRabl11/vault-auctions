@@ -89,6 +89,7 @@ export default function AuctionForm() {
       description: String(form.get("description") ?? ""),
       startPriceEur: String(form.get("startPrice") ?? ""),
       endsAt: String(form.get("endsAt") ?? ""),
+      buyNowPriceEur: String(form.get("buyNowPrice") ?? ""),
     };
 
     // 1. Felder validieren (gleiche Zod-Schemas wie auf dem Server)
@@ -165,23 +166,46 @@ export default function AuctionForm() {
         <textarea className="input" name="description" rows={4} required />
       </label>
 
-      <label className={styles.field}>
-        <span className={styles.label}>{t("fields.startPrice")}</span>
-        <input
-          className="input"
-          type="number"
-          name="startPrice"
-          min="0.01"
-          step="0.01"
-          inputMode="decimal"
-          required
-        />
-      </label>
+      {/* === Auktion (optional) === */}
+      <fieldset className={styles.section}>
+        <legend className={styles.sectionTitle}>{t("sections.auction")}</legend>
+        <p className={styles.sectionHint}>{t("sections.auctionHint")}</p>
 
-      <label className={styles.field}>
-        <span className={styles.label}>{t("fields.endsAt")}</span>
-        <input className="input" type="datetime-local" name="endsAt" required />
-      </label>
+        <label className={styles.field}>
+          <span className={styles.label}>{t("fields.startPrice")}</span>
+          <input
+            className="input"
+            type="number"
+            name="startPrice"
+            min="0.01"
+            step="0.01"
+            inputMode="decimal"
+          />
+        </label>
+
+        <label className={styles.field}>
+          <span className={styles.label}>{t("fields.endsAt")}</span>
+          <input className="input" type="datetime-local" name="endsAt" />
+        </label>
+      </fieldset>
+
+      {/* === Festpreis / Sofort-Kauf (optional) === */}
+      <fieldset className={styles.section}>
+        <legend className={styles.sectionTitle}>{t("sections.buyNow")}</legend>
+        <p className={styles.sectionHint}>{t("sections.buyNowHint")}</p>
+
+        <label className={styles.field}>
+          <span className={styles.label}>{t("fields.buyNowPrice")}</span>
+          <input
+            className="input"
+            type="number"
+            name="buyNowPrice"
+            min="0.01"
+            step="0.01"
+            inputMode="decimal"
+          />
+        </label>
+      </fieldset>
 
       {/* === Bild-Upload als Dropzone === */}
       <div className={styles.field}>

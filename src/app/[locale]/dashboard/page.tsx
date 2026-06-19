@@ -185,8 +185,8 @@ export default async function DashboardPage({params}: Props) {
     badge: Badge;
   } {
     if (a.status === "active") {
-      // currentPrice = Betrag des aktuell höchsten Gebots
-      return a.myHighest >= a.currentPrice
+      // currentPrice = Betrag des aktuell höchsten Gebots (bei Auktionen gesetzt)
+      return a.myHighest >= (a.currentPrice ?? 0)
         ? {key: "leading", badge: "success"}
         : {key: "outbid", badge: "warning"};
     }
@@ -265,7 +265,7 @@ export default async function DashboardPage({params}: Props) {
                       {a.title}
                     </Link>
                     <p className={styles.meta}>
-                      <span>{euro(a.currentPrice)}</span>
+                      <span>{euro(a.currentPrice ?? 0)}</span>
                       <span className={styles.dot}>·</span>
                       <span>{t("selling.bids", {count: a.bidCount})}</span>
                     </p>
@@ -315,7 +315,7 @@ export default async function DashboardPage({params}: Props) {
                       </span>
                       <span className={styles.dot}>·</span>
                       <span>
-                        {t("bidding.currentBid")}: {euro(a.currentPrice)}
+                        {t("bidding.currentBid")}: {euro(a.currentPrice ?? 0)}
                       </span>
                     </p>
                   </div>

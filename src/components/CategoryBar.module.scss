@@ -1,0 +1,129 @@
+@use "../styles/variables" as *;
+
+.bar {
+  width: 100%;
+  background-color: $color-bg;
+  border-bottom: 1px solid $color-border;
+}
+
+.inner {
+  position: relative;
+  width: 100%;
+  max-width: $container-max;
+  margin-inline: auto;
+  padding-inline: $space-4;
+  display: flex;
+  align-items: center;
+}
+
+// Horizontaler Scroll-Container; native Scrollbar ausgeblendet.
+.scroller {
+  display: flex;
+  align-items: flex-start;
+  // "safe center": zentriert, fällt bei Überlauf auf den Anfang zurück (kein Clip)
+  justify-content: safe center;
+  gap: $space-2;
+  flex: 1;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  padding-block: $space-3;
+  scrollbar-width: none; // Firefox
+  -ms-overflow-style: none; // alte Edge
+
+  &::-webkit-scrollbar {
+    display: none; // WebKit
+  }
+}
+
+// Eine Kategorie: Icon oben, Label zentriert darunter.
+.item {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: $space-1;
+  min-width: 4.5rem;
+  padding: $space-2;
+  border-radius: $radius;
+  color: $color-text-muted;
+  text-decoration: none;
+  transition:
+    color 0.15s ease,
+    background-color 0.15s ease;
+
+  &:hover {
+    color: $color-text;
+    background-color: $color-surface;
+    text-decoration: none;
+  }
+}
+
+.icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: inherit;
+}
+
+.label {
+  font-size: $text-xs;
+  line-height: $leading-snug;
+  text-align: center;
+  white-space: nowrap;
+}
+
+// Aktive Kategorie hervorheben.
+.active {
+  color: $color-primary;
+
+  .label {
+    font-weight: $weight-semibold;
+  }
+
+  &:hover {
+    color: $color-primary;
+  }
+}
+
+// Runde Scroll-Buttons, über den Items an den Rändern schwebend.
+.chevron {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border: 1px solid $color-border;
+  border-radius: $radius-full;
+  background-color: $color-bg;
+  color: $color-text-muted;
+  box-shadow: $shadow-sm;
+  cursor: pointer;
+  opacity: 1;
+  transition:
+    opacity 0.15s ease,
+    color 0.15s ease,
+    border-color 0.15s ease;
+
+  &:hover {
+    color: $color-text;
+    border-color: $color-border-strong;
+  }
+
+  // Ausgeblendet, wenn in diese Richtung nichts zu scrollen ist.
+  &[data-visible="false"] {
+    opacity: 0;
+    pointer-events: none;
+  }
+}
+
+.left {
+  left: $space-3;
+}
+
+.right {
+  right: $space-3;
+}

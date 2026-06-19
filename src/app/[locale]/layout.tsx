@@ -1,10 +1,12 @@
 import type {Metadata} from "next";
+import {Suspense} from "react";
 import {Inter} from "next/font/google";
 import {notFound} from "next/navigation";
 import {hasLocale, NextIntlClientProvider} from "next-intl";
 import {getTranslations, setRequestLocale} from "next-intl/server";
 import {routing} from "@/i18n/routing";
 import Header from "@/components/Header";
+import CategoryBar from "@/components/CategoryBar";
 import Footer from "@/components/Footer";
 import "@/styles/globals.scss";
 
@@ -54,6 +56,9 @@ export default async function LocaleLayout({children, params}: Props) {
       <body>
         <NextIntlClientProvider>
           <Header />
+          <Suspense>
+            <CategoryBar />
+          </Suspense>
           <main className="container">{children}</main>
           <Footer />
         </NextIntlClientProvider>

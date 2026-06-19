@@ -10,6 +10,7 @@ Phasen-Roadmap: **docs/KONZEPT.md** (Langfassung — nicht hierher kopieren).
 - **Next.js 16.2.9** (App Router, Turbopack) + **React 19.2.4**
 - **TypeScript** (strict), Pfad-Alias `@/*` → `./src/*`
 - **Styling: SCSS** (Next.js built-in Sass, `sass ^1.100.0`) — **kein Tailwind**
+- **Icons: lucide-react** (Outline, tree-shakeable)
 - **ESLint 9** (Flat Config: `eslint-config-next` core-web-vitals + typescript)
 - **pnpm** (Package Manager)
 - **i18n: next-intl 4** (`de` default ohne Prefix, `en` unter `/en`)
@@ -33,8 +34,11 @@ Phasen-Roadmap: **docs/KONZEPT.md** (Langfassung — nicht hierher kopieren).
 - `i18n/` — next-intl-Config (`routing.ts`, `request.ts`, `navigation.ts`)
 - `lib/db/` — Drizzle: `schema.ts` (Domain-Tabellen), `auth-schema.ts` (Better-Auth-Tabellen, generiert), `index.ts` (Connection `db`)
 - `lib/auth.ts` — Better-Auth-Server-Instanz; `lib/auth-client.ts` — Client (`authClient`)
+- `lib/categories.ts` — Single Source of Truth für Kategorien (`slug`/`icon`/`labelKey`)
 - `app/api/auth/[...all]/` — Better-Auth-Route-Handler
+- `app/[locale]/marktplatz/` — Anzeigen: Liste (Index, Kategorie-Filter via `?kategorie=`), `[id]` (Detail), `new` (erstellen)
 - `app/[locale]/{login,register,dashboard}/` — Auth-Seiten (dashboard ist geschützt)
+- `components/CategoryBar.tsx` — Kategorie-Leiste unter dem Header (filtert den Marktplatz)
 - `lib/` — sonstige Utilities / Server-Logik (Validierung, Helpers)
 - `styles/` — `_variables.scss` (Partial), `globals.scss` (global)
 - `proxy.ts` — next-intl Locale-Routing **+** Better-Auth-Schutz (Next-16-Konvention statt `middleware.ts`)

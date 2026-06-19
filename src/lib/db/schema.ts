@@ -1,5 +1,13 @@
 import {relations} from "drizzle-orm";
-import {integer, pgEnum, pgTable, text, timestamp, uuid} from "drizzle-orm/pg-core";
+import {
+  integer,
+  pgEnum,
+  pgTable,
+  text,
+  timestamp,
+  unique,
+  uuid,
+} from "drizzle-orm/pg-core";
 import {user} from "./auth-schema";
 
 // Better Auth verwaltet user/session/account/verification (siehe auth-schema.ts)
@@ -16,6 +24,8 @@ export const orderStatus = pgEnum("order_status", [
   "paid",
   "expired",
 ]);
+// Dashboard-Bereiche, aus denen ein Nutzer einen Eintrag ausblenden kann
+export const dismissalSection = pgEnum("dismissal_section", ["bidding", "won"]);
 
 // Auction — Beträge immer als Integer in Cent, FKs auf Better Auths user.id (text)
 export const auctions = pgTable("auctions", {
@@ -77,6 +87,27 @@ export const orders = pgTable("orders", {
     .notNull()
     .defaultNow(),
 });
+
+// Dismissal — blendet eine Anzeige für EINEN Nutzer aus einem Dashboard-Bereich
+// aus. Reine View-Einstellung; Gebote/Orders bleiben unangetastet. Eindeutig je
+// (Nutzer, Anzeige, Bereich), damit derselbe Eintrag nicht doppelt entsteht.
+export const dismissals = pgTable(
+  "dismissals",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    userId: text("user_id")
+      .notNull()
+      .references(() => user.id, {onDelete: "cascade"}),
+    auctionId: uuid("auction_id")
+      .notNull()
+      .references(() => auctions.id, {onDelete: "cascade"}),
+    section: dismissalSection("section").notNull(),
+    createdAt: timestamp("created_at", {withTimezone: true})
+      .notNull()
+      .defaultNow(),
+  },
+  (t) => [unique().on(t.userId, t.auctionId, t.section)],
+);
 
 // Relations: nur die one-Seite zu user (userRelations bleibt in auth-schema.ts)
 export const auctionsRelations = relations(auctions, ({one, many}) => ({

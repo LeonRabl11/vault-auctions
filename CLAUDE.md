@@ -94,7 +94,10 @@ Look erben:
   Lock serialisiert konkurrierende Käufe (nur der erste gewinnt).
 - **Auktionsende**: Lazy Expiration (MVP) — beim Laden der Seite prüfen, ob abgelaufen,
   dann `status='ended'` + `winnerId` setzen. Cron-Job finalisiert nur Anzeigen mit
-  `endsAt` (reine Festpreis-Anzeigen laufen nie ab).
+  `endsAt` (reine Festpreis-Anzeigen laufen nie ab). **Ausnahme** (kombinierte Anzeige
+  ohne Gebote): Lief sie als Auktion *und* Festpreis und gehen keine Gebote ein, wird
+  sie statt beendet zur reinen Festpreis-Anzeige degradiert (`endsAt`/`currentPrice` →
+  `null`, `status` bleibt `active`) und bleibt kaufbar.
 - **Status-Fluss**: `active → ended → paid`. Details siehe docs/KONZEPT.md.
 
 ## Nicht im Scope

@@ -16,6 +16,11 @@ const PAYMENT_WINDOW_MS = 48 * 60 * 60 * 1000; // 48 Stunden
  * Gewinner = Bieter des höchsten Gebots (Gleichstand kann nicht auftreten, da
  * jedes Gebot das vorige übersteigen muss). Ohne Gebote bleibt winnerId null.
  *
+ * Sonderfall „kombinierte Anzeige ohne Gebote": Lief die Anzeige als Auktion UND
+ * Festpreis und gehen keine Gebote ein, wird sie nicht beendet, sondern zur
+ * reinen Festpreis-Anzeige degradiert (endsAt/currentPrice → null, status bleibt
+ * 'active'). Sie bleibt damit kaufbar, statt unverkauft zu verschwinden.
+ *
  * Gibt true zurück, wenn diese Aufruf die Auktion abgeschlossen hat, sonst false
  * (z. B. bereits beendet oder noch nicht abgelaufen).
  */
@@ -26,6 +31,7 @@ export async function finalizeAuction(id: string): Promise<boolean> {
         status: auctions.status,
         endsAt: auctions.endsAt,
         currentPrice: auctions.currentPrice,
+        buyNowPrice: auctions.buyNowPrice,
       })
       .from(auctions)
       .where(eq(auctions.id, id))
@@ -46,6 +52,17 @@ export async function finalizeAuction(id: string): Promise<boolean> {
       .limit(1);
 
     const winnerId = top?.bidderId ?? null;
+
+    // Keine Gebote, aber Festpreis vorhanden: Auktionsteil entfällt, die Anzeige
+    // läuft als reine Festpreis-Anzeige weiter (kein Gewinner, keine Order, kein
+    // Mailversand). Folge-Finalisierungen greifen nicht mehr (endsAt == null).
+    if (winnerId == null && auction.buyNowPrice != null) {
+      await tx
+        .update(auctions)
+        .set({endsAt: null, currentPrice: null})
+        .where(eq(auctions.id, id));
+      return true;
+    }
 
     await tx
       .update(auctions)

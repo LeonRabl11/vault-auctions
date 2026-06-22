@@ -4,7 +4,10 @@
   display: flex;
   flex-direction: column;
   gap: $space-2;
-  align-items: flex-start;
+  // Trigger-Button auf volle Breite strecken (gleiche Größe wie der
+  // Speichern-Button darüber). Die Modal-Buttons liegen in .actions und sind
+  // davon nicht betroffen.
+  align-items: stretch;
 }
 
 // Dezenter Danger-Button: roter Rahmen/Text, beim Hover gefüllt.

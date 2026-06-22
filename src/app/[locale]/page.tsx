@@ -1,4 +1,4 @@
-import {and, desc, eq, gt, isNull, or, sql} from "drizzle-orm";
+import {and, eq, gt, isNull, or, sql} from "drizzle-orm";
 import {getTranslations, setRequestLocale} from "next-intl/server";
 import {auctions, bids, db} from "@/lib/db";
 import {Link} from "@/i18n/navigation";
@@ -6,6 +6,10 @@ import AuctionCard from "@/components/AuctionCard";
 import CategoryShowcase from "@/components/CategoryShowcase";
 import Reveal from "@/components/Reveal";
 import styles from "./page.module.scss";
+
+// Pro Aufruf neu rendern, damit die zufällige Anzeigen-Auswahl unten bei jedem
+// Besuch neu gemischt wird (sonst würde eine gecachte Seite sie einfrieren).
+export const dynamic = "force-dynamic";
 
 type Props = {
   params: Promise<{locale: string}>;
@@ -64,8 +68,8 @@ export default async function Home({params}: Props) {
 
   const t = await getTranslations("HomePage");
 
-  // Neueste aktive Anzeigen (wie die Übersicht, limitiert). Auktionen nur solange
-  // laufend; reine Festpreis-Anzeigen (endsAt == null) bleiben sichtbar.
+  // Zufällige Auswahl aktiver Anzeigen (bei jedem Aufruf neu gemischt). Auktionen
+  // nur solange laufend; reine Festpreis-Anzeigen (endsAt == null) bleiben sichtbar.
   const latest = await db
     .select({
       id: auctions.id,
@@ -87,7 +91,7 @@ export default async function Home({params}: Props) {
       ),
     )
     .groupBy(auctions.id)
-    .orderBy(desc(auctions.createdAt))
+    .orderBy(sql`random()`)
     .limit(6);
 
   const steps = [0, 1, 2].map((i) => ({

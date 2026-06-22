@@ -52,10 +52,26 @@ export default function CategoryBar() {
     el.addEventListener("scroll", updateChevrons, {passive: true});
     el.addEventListener("wheel", onWheel, {passive: false});
     window.addEventListener("resize", updateChevrons);
+
+    // Pfeile auch dann neu berechnen, wenn sich die Größe von Leiste ODER Inhalt
+    // nachträglich ändert (Layout-Settling, responsive Breite, nachgeladene
+    // Web-Fonts ändern die Label-Breiten). Sonst bleibt z. B. der rechte Pfeil
+    // ausgeblendet, obwohl Inhalt zum Scrollen vorhanden ist ("teilweise nicht
+    // angezeigt"). ResizeObserver auf Container UND Items abonnieren.
+    const ro = new ResizeObserver(() => updateChevrons());
+    ro.observe(el);
+    for (const child of Array.from(el.children)) ro.observe(child);
+
+    // Web-Fonts laden asynchron -> nach dem Laden noch einmal messen.
+    if (document.fonts) {
+      document.fonts.ready.then(updateChevrons).catch(() => {});
+    }
+
     return () => {
       el.removeEventListener("scroll", updateChevrons);
       el.removeEventListener("wheel", onWheel);
       window.removeEventListener("resize", updateChevrons);
+      ro.disconnect();
     };
   }, [updateChevrons]);
 

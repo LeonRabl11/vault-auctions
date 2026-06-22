@@ -3,7 +3,7 @@
 import {useRef, useState} from "react";
 import {useTranslations} from "next-intl";
 import {useRouter} from "@/i18n/navigation";
-import {createAuction} from "@/lib/actions/auction";
+import {createAuction, updateAuction} from "@/lib/actions/auction";
 import {CATEGORIES} from "@/lib/categories";
 import {
   ALLOWED_IMAGE_TYPES,
@@ -13,6 +13,36 @@ import {
 import styles from "./AuctionForm.module.scss";
 
 const ACCEPT = ALLOWED_IMAGE_TYPES.join(",");
+
+// Vorbefüllte Werte für den Edit-Modus (Preise als Euro-Strings, endsAt als ISO).
+export type AuctionFormInitial = {
+  title: string;
+  description: string;
+  category: string;
+  startPriceEur: string;
+  endsAtIso: string | null;
+  buyNowPriceEur: string;
+  imageUrl: string | null;
+};
+
+type Props = {
+  mode?: "create" | "edit";
+  auctionId?: string;
+  initial?: AuctionFormInitial;
+  // Bei Auktionen mit Geboten: Preis/Laufzeit/Festpreis sperren (UI-Hinweis;
+  // serverseitig zusätzlich erzwungen).
+  pricingLocked?: boolean;
+};
+
+// ISO-Zeit -> Wert für <input type="datetime-local"> in lokaler Zeit (YYYY-MM-DDTHH:mm).
+function toLocalInput(iso: string | null | undefined): string {
+  if (!iso) return "";
+  const d = new Date(iso);
+  const pad = (n: number) => String(n).padStart(2, "0");
+  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(
+    d.getHours(),
+  )}:${pad(d.getMinutes())}`;
+}
 
 // Upload-Icon (Pfeil in Ablage) — inline, kein Icon-Paket.
 const UPLOAD_ICON = (
@@ -34,16 +64,29 @@ const UPLOAD_ICON = (
   </svg>
 );
 
-export default function AuctionForm() {
+export default function AuctionForm({
+  mode = "create",
+  auctionId,
+  initial,
+  pricingLocked = false,
+}: Props) {
   const t = useTranslations("Auctions");
   const tc = useTranslations("Categories");
   const router = useRouter();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [file, setFile] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
+  // Bereits gespeichertes Bild (Edit). null = (noch) kein Bild bzw. entfernt.
+  const [existingImageUrl, setExistingImageUrl] = useState<string | null>(
+    initial?.imageUrl ?? null,
+  );
   const [dragActive, setDragActive] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [pending, setPending] = useState(false);
+
+  const isEdit = mode === "edit";
+  const hasImage = Boolean(file || existingImageUrl);
+  const previewSrc = preview ?? existingImageUrl ?? "";
 
   // Datei übernehmen + lokale Vorschau (Blob-URL) erzeugen; alte URL freigeben.
   function selectFile(f: File) {
@@ -55,12 +98,14 @@ export default function AuctionForm() {
     setError(null);
   }
 
+  // Bild komplett entfernen (Datei + Vorschau + ggf. vorhandenes Bild).
   function removeFile() {
     setPreview((prev) => {
       if (prev) URL.revokeObjectURL(prev);
       return null;
     });
     setFile(null);
+    setExistingImageUrl(null);
     if (fileInputRef.current) fileInputRef.current.value = "";
   }
 
@@ -95,14 +140,14 @@ export default function AuctionForm() {
       buyNowPriceEur: String(form.get("buyNowPrice") ?? ""),
     };
 
-    // 1. Felder validieren (gleiche Zod-Schemas wie auf dem Server)
+    // 1. Felder validieren (gleiches Zod-Schema wie auf dem Server)
     const parsed = auctionInputSchema.safeParse(input);
     if (!parsed.success) {
       setError(parsed.error.issues[0]?.message ?? "generic");
       return;
     }
 
-    // 2. Bild ist optional. Nur wenn eine Datei gewählt wurde, Typ/Größe prüfen.
+    // 2. Bild ist optional. Nur wenn eine NEUE Datei gewählt wurde, Typ/Größe prüfen.
     if (file) {
       if (!(ALLOWED_IMAGE_TYPES as readonly string[]).includes(file.type)) {
         setError("imageType");
@@ -116,8 +161,8 @@ export default function AuctionForm() {
 
     setPending(true);
     try {
-      // 3. Bild (falls vorhanden) hochladen: Presign holen + direkt zu S3 laden
-      let imageUrl: string | null = null;
+      // 3. Neues Bild (falls gewählt) hochladen; sonst vorhandenes behalten/entfernen.
+      let imageUrl: string | null = existingImageUrl;
       if (file) {
         const presignRes = await fetch("/api/uploads/presign", {
           method: "POST",
@@ -142,14 +187,16 @@ export default function AuctionForm() {
         imageUrl = publicUrl;
       }
 
-      // 4. Anzeige serverseitig anlegen
-      const result = await createAuction({...parsed.data, imageUrl});
+      // 4. Anlegen oder aktualisieren (gleiche serverseitige Validierung).
+      const result = isEdit
+        ? await updateAuction({...parsed.data, id: auctionId, imageUrl})
+        : await createAuction({...parsed.data, imageUrl});
       if (!result.ok) {
         setError(result.error);
         return;
       }
 
-      router.push("/marktplatz");
+      router.push(isEdit ? `/marktplatz/${auctionId}` : "/marktplatz");
       router.refresh();
     } catch {
       setError("generic");
@@ -162,12 +209,24 @@ export default function AuctionForm() {
     <form className={styles.form} onSubmit={onSubmit}>
       <label className={styles.field}>
         <span className={styles.label}>{t("fields.title")}</span>
-        <input className="input" type="text" name="title" required />
+        <input
+          className="input"
+          type="text"
+          name="title"
+          defaultValue={initial?.title ?? ""}
+          required
+        />
       </label>
 
       <label className={styles.field}>
         <span className={styles.label}>{t("fields.description")}</span>
-        <textarea className="input" name="description" rows={4} required />
+        <textarea
+          className="input"
+          name="description"
+          rows={4}
+          defaultValue={initial?.description ?? ""}
+          required
+        />
       </label>
 
       <label className={styles.field}>
@@ -175,7 +234,7 @@ export default function AuctionForm() {
         <select
           className={`input ${styles.select}`}
           name="category"
-          defaultValue=""
+          defaultValue={initial?.category ?? ""}
           required
         >
           <option value="" disabled>
@@ -188,6 +247,10 @@ export default function AuctionForm() {
           ))}
         </select>
       </label>
+
+      {pricingLocked && (
+        <p className={styles.lockHint}>{t("edit.pricingLocked")}</p>
+      )}
 
       {/* === Auktion (optional) === */}
       <fieldset className={styles.section}>
@@ -203,12 +266,20 @@ export default function AuctionForm() {
             min="0.01"
             step="0.01"
             inputMode="decimal"
+            defaultValue={initial?.startPriceEur ?? ""}
+            readOnly={pricingLocked}
           />
         </label>
 
         <label className={styles.field}>
           <span className={styles.label}>{t("fields.endsAt")}</span>
-          <input className="input" type="datetime-local" name="endsAt" />
+          <input
+            className="input"
+            type="datetime-local"
+            name="endsAt"
+            defaultValue={toLocalInput(initial?.endsAtIso)}
+            readOnly={pricingLocked}
+          />
         </label>
       </fieldset>
 
@@ -226,6 +297,8 @@ export default function AuctionForm() {
             min="0.01"
             step="0.01"
             inputMode="decimal"
+            defaultValue={initial?.buyNowPriceEur ?? ""}
+            readOnly={pricingLocked}
           />
         </label>
       </fieldset>
@@ -235,15 +308,17 @@ export default function AuctionForm() {
         <span className={styles.label}>{t("fields.image")}</span>
         <span className={styles.hint}>{t("upload.optional")}</span>
 
-        {file ? (
+        {hasImage ? (
           <div className={styles.preview}>
             <div className={styles.previewMedia}>
-              {/* Lokale Vorschau (Blob-URL) — kein next/image nötig */}
+              {/* Lokale Vorschau (Blob-URL) oder vorhandene S3-URL — kein next/image */}
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img className={styles.previewImg} src={preview ?? ""} alt="" />
+              <img className={styles.previewImg} src={previewSrc} alt="" />
             </div>
             <div className={styles.previewBar}>
-              <span className={styles.fileName}>{file.name}</span>
+              <span className={styles.fileName}>
+                {file ? file.name : t("upload.current")}
+              </span>
               <div className={styles.previewActions}>
                 <button
                   type="button"
@@ -333,7 +408,13 @@ export default function AuctionForm() {
         type="submit"
         disabled={pending}
       >
-        {pending ? t("new.uploading") : t("new.submit")}
+        {pending
+          ? isEdit
+            ? t("edit.pending")
+            : t("new.uploading")
+          : isEdit
+            ? t("edit.submit")
+            : t("new.submit")}
       </button>
     </form>
   );

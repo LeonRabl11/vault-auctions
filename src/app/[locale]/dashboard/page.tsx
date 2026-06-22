@@ -301,6 +301,14 @@ export default async function DashboardPage({params}: Props) {
                     <span className={`${styles.badge} ${styles[s.badge]}`}>
                       {t(`selling.status.${s.key}`)}
                     </span>
+                    {a.status === "active" && (
+                      <Link
+                        href={`/marktplatz/${a.id}/edit`}
+                        className={styles.editLink}
+                      >
+                        {t("selling.edit")}
+                      </Link>
+                    )}
                   </div>
                 </li>
               );

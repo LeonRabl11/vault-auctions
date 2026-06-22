@@ -177,6 +177,17 @@
 }
 
 /* === Fehler-Alert (klar, aber nicht schrill) === */
+// Hinweis im Edit-Modus, wenn Preis/Laufzeit wegen vorliegender Gebote gesperrt sind.
+.lockHint {
+  margin: 0;
+  padding: $space-3;
+  font-size: $text-sm;
+  color: $color-warning;
+  background-color: $color-warning-soft;
+  border: 1px solid rgba($color-warning, 0.2);
+  border-radius: $radius;
+}
+
 .error {
   display: flex;
   align-items: flex-start;

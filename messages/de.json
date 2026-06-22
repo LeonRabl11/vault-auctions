@@ -192,6 +192,7 @@
       "title": "Meine Anzeigen",
       "empty": "Du hast noch keine Anzeigen eingestellt.",
       "emptyCta": "Jetzt erstellen",
+      "edit": "Bearbeiten",
       "bids": "{count, plural, =0 {Keine Gebote} one {# Gebot} other {# Gebote}}",
       "status": {
         "active": "Aktiv",
@@ -240,11 +241,20 @@
       "submit": "Anzeige einstellen",
       "uploading": "Wird hochgeladen…"
     },
+    "edit": {
+      "title": "Anzeige bearbeiten",
+      "subline": "Aktualisiere die Angaben deiner Anzeige.",
+      "submit": "Änderungen speichern",
+      "pending": "Wird gespeichert…",
+      "cta": "Bearbeiten",
+      "pricingLocked": "Es liegen bereits Gebote vor — Startpreis, Laufzeit und Festpreis sind gesperrt. Du kannst weiterhin Titel, Beschreibung, Kategorie und Bild ändern."
+    },
     "upload": {
       "cta": "Bild hierher ziehen oder klicken zum Auswählen",
       "change": "Ändern",
       "remove": "Entfernen",
-      "optional": "Optional — ohne Bild wird ein Platzhalter angezeigt."
+      "optional": "Optional — ohne Bild wird ein Platzhalter angezeigt.",
+      "current": "Aktuelles Bild"
     },
     "sections": {
       "auction": "Auktion",
@@ -371,6 +381,10 @@
       "imageTooLarge": "Das Bild darf maximal 5 MB groß sein.",
       "uploadFailed": "Der Upload ist fehlgeschlagen. Bitte erneut versuchen.",
       "unauthorized": "Bitte melde dich an.",
+      "forbidden": "Du darfst diese Anzeige nicht bearbeiten.",
+      "notEditable": "Diese Anzeige kann nicht mehr bearbeitet werden.",
+      "notFound": "Anzeige nicht gefunden.",
+      "invalid": "Ungültige Eingabe.",
       "generic": "Etwas ist schiefgelaufen. Bitte erneut versuchen."
     }
   }

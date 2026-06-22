@@ -162,6 +162,14 @@
   margin-left: auto;
 }
 
+// "Bearbeiten"-Link bei aktiven eigenen Anzeigen.
+.editLink {
+  font-size: $text-sm;
+  font-weight: $weight-medium;
+  color: $color-primary;
+  white-space: nowrap;
+}
+
 /* === Status-Badges (Pills) === */
 .badge {
   display: inline-flex;

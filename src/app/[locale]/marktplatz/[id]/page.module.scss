@@ -123,6 +123,11 @@
   gap: $space-2;
 }
 
+// "Bearbeiten" (Eigentümer) — nicht über die volle Breite strecken.
+.editLink {
+  align-self: flex-start;
+}
+
 @media (min-width: 768px) {
   .detail {
     grid-template-columns: 1fr 1fr;

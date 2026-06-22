@@ -262,6 +262,17 @@ export default async function AuctionDetailPage({params, searchParams}: Props) {
             )}
           </div>
 
+          {/* Eigentümer kann eine aktive Anzeige bearbeiten (bei Geboten sind
+              Preis/Laufzeit gesperrt — serverseitig erzwungen). */}
+          {isSeller && auction.status === "active" && (
+            <Link
+              href={`/marktplatz/${auction.id}/edit`}
+              className={`btn ${styles.editLink}`}
+            >
+              {t("edit.cta")}
+            </Link>
+          )}
+
           {/* Verkäufer darf die eigene Auktion löschen, solange kein Gebot
               vorliegt (serverseitig nochmals abgesichert). */}
           {isSeller && bidList.length === 0 && (

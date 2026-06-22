@@ -26,6 +26,8 @@ export type CreateAuctionResult =
   | {ok: true; id: string}
   | {ok: false; error: string};
 
+export type UpdateAuctionResult = {ok: true} | {ok: false; error: string};
+
 export type DeleteAuctionResult = {ok: true} | {ok: false; error: string};
 
 export async function createAuction(
@@ -74,6 +76,125 @@ export async function createAuction(
   revalidatePath("/[locale]/marktplatz", "page");
 
   return {ok: true, id: created.id};
+}
+
+/**
+ * Eigene Anzeige bearbeiten. Nur der Verkäufer (sonst "forbidden") und nur bei
+ * status='active' (sonst "notEditable"). Liegt bereits mindestens ein Gebot vor,
+ * werden Preis-/Laufzeit-/Typ-Felder serverseitig ignoriert — nur Titel,
+ * Beschreibung, Kategorie und Bild ändern sich. Alles in einer Transaktion mit
+ * Row-Lock (FOR UPDATE). Wechselt das Bild, wird das alte S3-Objekt best-effort
+ * gelöscht.
+ */
+export async function updateAuction(
+  input: unknown,
+): Promise<UpdateAuctionResult> {
+  const session = await auth.api.getSession({headers: await headers()});
+  if (!session) {
+    return {ok: false, error: "unauthorized"};
+  }
+
+  const idParsed = z.string().uuid().safeParse((input as {id?: unknown}).id);
+  if (!idParsed.success) {
+    return {ok: false, error: "invalid"};
+  }
+  const auctionId = idParsed.data;
+
+  // Gleiche Feld-Validierung wie beim Erstellen (geteiltes Schema).
+  const parsed = auctionInputSchema.safeParse(input);
+  if (!parsed.success) {
+    return {ok: false, error: parsed.error.issues[0]?.message ?? "generic"};
+  }
+
+  // Bild optional; null = entfernen. Fremd-URLs ablehnen.
+  const image = normalizeImageUrl((input as {imageUrl?: unknown}).imageUrl);
+  if (!image.ok) {
+    return {ok: false, error: "generic"};
+  }
+
+  const {title, description, category, startPriceEur, endsAt, buyNowPriceEur} =
+    parsed.data;
+
+  let oldImageUrl: string | null = null;
+  let result: UpdateAuctionResult = {ok: false, error: "generic"};
+
+  await db.transaction(async (tx) => {
+    const [a] = await tx
+      .select({
+        sellerId: auctions.sellerId,
+        status: auctions.status,
+        imageUrl: auctions.imageUrl,
+      })
+      .from(auctions)
+      .where(eq(auctions.id, auctionId))
+      .for("update")
+      .limit(1);
+
+    if (!a) {
+      result = {ok: false, error: "notFound"};
+      return;
+    }
+    if (a.sellerId !== session.user.id) {
+      result = {ok: false, error: "forbidden"};
+      return;
+    }
+    if (a.status !== "active") {
+      result = {ok: false, error: "notEditable"};
+      return;
+    }
+
+    // Gebote vorhanden? Dann Preis/Laufzeit/Typ sperren (serverseitig erzwungen).
+    const [bid] = await tx
+      .select({one: sql`1`})
+      .from(bids)
+      .where(eq(bids.auctionId, auctionId))
+      .limit(1);
+    const hasBids = Boolean(bid);
+
+    // Beschreibende Felder sind immer änderbar.
+    const descriptive = {title, description, category, imageUrl: image.url};
+
+    if (hasBids) {
+      await tx
+        .update(auctions)
+        .set(descriptive)
+        .where(eq(auctions.id, auctionId));
+    } else {
+      const startPrice = toCents(startPriceEur);
+      await tx
+        .update(auctions)
+        .set({
+          ...descriptive,
+          startPrice,
+          currentPrice: startPrice, // ohne Gebote = Startpreis (null = keine Auktion)
+          endsAt: endsAt ?? null,
+          buyNowPrice: toCents(buyNowPriceEur),
+        })
+        .where(eq(auctions.id, auctionId));
+    }
+
+    oldImageUrl = a.imageUrl;
+    result = {ok: true};
+  });
+
+  if (!result.ok) {
+    return result;
+  }
+
+  // Altes Bild best-effort entfernen, wenn es ersetzt/gelöscht wurde.
+  if (oldImageUrl && oldImageUrl !== image.url) {
+    try {
+      await deleteObjectByUrl(oldImageUrl);
+    } catch (e) {
+      console.error("[s3] image delete failed", e);
+    }
+  }
+
+  revalidatePath("/[locale]/marktplatz", "page");
+  revalidatePath("/[locale]/marktplatz/[id]", "page");
+  revalidatePath("/[locale]/dashboard", "page");
+
+  return {ok: true};
 }
 
 /**

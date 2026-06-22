@@ -192,6 +192,7 @@
       "title": "My listings",
       "empty": "You haven't listed anything yet.",
       "emptyCta": "Create one now",
+      "edit": "Edit",
       "bids": "{count, plural, =0 {No bids} one {# bid} other {# bids}}",
       "status": {
         "active": "Active",
@@ -240,11 +241,20 @@
       "submit": "Publish listing",
       "uploading": "Uploading…"
     },
+    "edit": {
+      "title": "Edit listing",
+      "subline": "Update the details of your listing.",
+      "submit": "Save changes",
+      "pending": "Saving…",
+      "cta": "Edit",
+      "pricingLocked": "This listing already has bids — start price, duration and fixed price are locked. You can still change the title, description, category and image."
+    },
     "upload": {
       "cta": "Drag an image here or click to choose",
       "change": "Change",
       "remove": "Remove",
-      "optional": "Optional — a placeholder is shown when no image is set."
+      "optional": "Optional — a placeholder is shown when no image is set.",
+      "current": "Current image"
     },
     "sections": {
       "auction": "Auction",
@@ -371,6 +381,10 @@
       "imageTooLarge": "The image must be at most 5 MB.",
       "uploadFailed": "The upload failed. Please try again.",
       "unauthorized": "Please sign in.",
+      "forbidden": "You're not allowed to edit this listing.",
+      "notEditable": "This listing can no longer be edited.",
+      "notFound": "Listing not found.",
+      "invalid": "Invalid input.",
       "generic": "Something went wrong. Please try again."
     }
   }

@@ -7,6 +7,7 @@
 }
 
 .detail {
+  position: relative; // Bezug für das Bearbeiten-Overlay oben rechts
   display: grid;
   grid-template-columns: 1fr;
   gap: $space-4;
@@ -123,13 +124,13 @@
   gap: $space-2;
 }
 
-// "Bearbeiten" (Eigentümer) — Overlay oben rechts über dem Anzeigenbild.
-// Blau mit weißer Schrift, gut lesbar auf jedem Motiv.
+// "Bearbeiten" (Eigentümer) — oben rechts über dem Titel, höher als das Bild.
+// Blau mit weißer Schrift. Sitzt leicht über dem oberen Rand des Artikels.
 .editOverlay {
   position: absolute;
-  top: $space-3;
-  right: $space-3;
-  z-index: 1;
+  top: -$space-3;
+  right: 0;
+  z-index: 2;
   display: inline-flex;
   align-items: center;
   gap: $space-1;

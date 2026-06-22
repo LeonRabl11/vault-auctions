@@ -140,6 +140,17 @@ export default async function AuctionDetailPage({params, searchParams}: Props) {
       )}
 
       <article className={styles.detail}>
+        {/* Eigentümer einer aktiven Anzeige: Bearbeiten oben rechts über dem
+            Titel, höher als das Bild (Overlay relativ zum Artikel). */}
+        {isSeller && auction.status === "active" && (
+          <Link
+            href={`/marktplatz/${auction.id}/edit`}
+            className={styles.editOverlay}
+          >
+            {t("edit.cta")}
+          </Link>
+        )}
+
         <div className={styles.imageWrap}>
           {auction.imageUrl ? (
             <Image
@@ -152,18 +163,6 @@ export default async function AuctionDetailPage({params, searchParams}: Props) {
             />
           ) : (
             <ImagePlaceholder category={auction.category} />
-          )}
-
-          {/* Eigentümer einer aktiven Anzeige: Bearbeiten als Overlay oben rechts
-              (Löschen liegt auf der Bearbeiten-Seite; bei Geboten sind dort
-              Preis/Laufzeit serverseitig gesperrt). */}
-          {isSeller && auction.status === "active" && (
-            <Link
-              href={`/marktplatz/${auction.id}/edit`}
-              className={styles.editOverlay}
-            >
-              {t("edit.cta")}
-            </Link>
           )}
         </div>
 

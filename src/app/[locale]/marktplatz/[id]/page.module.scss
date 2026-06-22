@@ -123,9 +123,30 @@
   gap: $space-2;
 }
 
-// "Bearbeiten" (Eigentümer) — nicht über die volle Breite strecken.
-.editLink {
-  align-self: flex-start;
+// "Bearbeiten" (Eigentümer) — Overlay oben rechts über dem Anzeigenbild.
+// Blau mit weißer Schrift, gut lesbar auf jedem Motiv.
+.editOverlay {
+  position: absolute;
+  top: $space-3;
+  right: $space-3;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: $space-1;
+  padding: $space-1 $space-3;
+  border-radius: $radius-full;
+  background-color: $color-primary;
+  color: $color-primary-fg;
+  box-shadow: $shadow-sm;
+  font-size: $text-sm;
+  font-weight: $weight-semibold;
+  text-decoration: none;
+
+  &:hover {
+    background-color: $color-primary-hover;
+    color: $color-primary-fg;
+    text-decoration: none;
+  }
 }
 
 @media (min-width: 768px) {

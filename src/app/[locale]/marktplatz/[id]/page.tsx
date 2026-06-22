@@ -153,6 +153,18 @@ export default async function AuctionDetailPage({params, searchParams}: Props) {
           ) : (
             <ImagePlaceholder category={auction.category} />
           )}
+
+          {/* Eigentümer einer aktiven Anzeige: Bearbeiten als Overlay oben rechts
+              (Löschen liegt auf der Bearbeiten-Seite; bei Geboten sind dort
+              Preis/Laufzeit serverseitig gesperrt). */}
+          {isSeller && auction.status === "active" && (
+            <Link
+              href={`/marktplatz/${auction.id}/edit`}
+              className={styles.editOverlay}
+            >
+              {t("edit.cta")}
+            </Link>
+          )}
         </div>
 
         <div className={styles.info}>
@@ -260,18 +272,6 @@ export default async function AuctionDetailPage({params, searchParams}: Props) {
               <p className={styles.bidNote}>{t("result.noBids")}</p>
             )}
           </div>
-
-          {/* Eigentümer kann eine aktive Anzeige bearbeiten (Löschen liegt jetzt
-              auf der Bearbeiten-Seite). Bei Geboten sind Preis/Laufzeit dort
-              gesperrt — serverseitig erzwungen. */}
-          {isSeller && auction.status === "active" && (
-            <Link
-              href={`/marktplatz/${auction.id}/edit`}
-              className={`btn ${styles.editLink}`}
-            >
-              {t("edit.cta")}
-            </Link>
-          )}
 
           <div className={styles.description}>
             <h2>{t("detail.description")}</h2>

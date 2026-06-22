@@ -2,13 +2,15 @@ import Image from "next/image";
 import {getFormatter, getTranslations} from "next-intl/server";
 import {Link} from "@/i18n/navigation";
 import Countdown from "./Countdown";
+import ImagePlaceholder from "./ImagePlaceholder";
 import styles from "./AuctionCard.module.scss";
 
 type Props = {
   auction: {
     id: string;
     title: string;
-    imageUrl: string;
+    imageUrl: string | null; // null = kein Bild -> Platzhalter
+    category: string;
     currentPrice: number | null; // in Cent, null = keine Auktion
     endsAt: Date | null; // null = reine Festpreis-Anzeige
     buyNowPrice: number | null; // in Cent, null = kein Sofort-Kauf
@@ -40,13 +42,17 @@ export default async function AuctionCard({auction}: Props) {
   return (
     <Link href={`/marktplatz/${auction.id}`} className={`card ${styles.card}`}>
       <div className={styles.imageWrap}>
-        <Image
-          src={auction.imageUrl}
-          alt={auction.title}
-          fill
-          sizes="(min-width: 900px) 33vw, (min-width: 640px) 50vw, 100vw"
-          className={styles.image}
-        />
+        {auction.imageUrl ? (
+          <Image
+            src={auction.imageUrl}
+            alt={auction.title}
+            fill
+            sizes="(min-width: 900px) 33vw, (min-width: 640px) 50vw, 100vw"
+            className={styles.image}
+          />
+        ) : (
+          <ImagePlaceholder category={auction.category} />
+        )}
         {endingSoon && (
           <span className={styles.endingSoon}>{t("card.endingSoon")}</span>
         )}

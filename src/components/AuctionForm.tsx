@@ -102,47 +102,48 @@ export default function AuctionForm() {
       return;
     }
 
-    // 2. Bild prüfen (Datei aus dem State der Dropzone)
-    if (!file || file.size === 0) {
-      setError("imageRequired");
-      return;
-    }
-    if (!(ALLOWED_IMAGE_TYPES as readonly string[]).includes(file.type)) {
-      setError("imageType");
-      return;
-    }
-    if (file.size > MAX_IMAGE_BYTES) {
-      setError("imageTooLarge");
-      return;
+    // 2. Bild ist optional. Nur wenn eine Datei gewählt wurde, Typ/Größe prüfen.
+    if (file) {
+      if (!(ALLOWED_IMAGE_TYPES as readonly string[]).includes(file.type)) {
+        setError("imageType");
+        return;
+      }
+      if (file.size > MAX_IMAGE_BYTES) {
+        setError("imageTooLarge");
+        return;
+      }
     }
 
     setPending(true);
     try {
-      // 3. Presigned PUT-URL holen
-      const presignRes = await fetch("/api/uploads/presign", {
-        method: "POST",
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({contentType: file.type, size: file.size}),
-      });
-      if (!presignRes.ok) {
-        setError(presignRes.status === 401 ? "unauthorized" : "uploadFailed");
-        return;
-      }
-      const {uploadUrl, publicUrl} = await presignRes.json();
+      // 3. Bild (falls vorhanden) hochladen: Presign holen + direkt zu S3 laden
+      let imageUrl: string | null = null;
+      if (file) {
+        const presignRes = await fetch("/api/uploads/presign", {
+          method: "POST",
+          headers: {"Content-Type": "application/json"},
+          body: JSON.stringify({contentType: file.type, size: file.size}),
+        });
+        if (!presignRes.ok) {
+          setError(presignRes.status === 401 ? "unauthorized" : "uploadFailed");
+          return;
+        }
+        const {uploadUrl, publicUrl} = await presignRes.json();
 
-      // 4. Bild direkt zu S3 hochladen
-      const putRes = await fetch(uploadUrl, {
-        method: "PUT",
-        headers: {"Content-Type": file.type},
-        body: file,
-      });
-      if (!putRes.ok) {
-        setError("uploadFailed");
-        return;
+        const putRes = await fetch(uploadUrl, {
+          method: "PUT",
+          headers: {"Content-Type": file.type},
+          body: file,
+        });
+        if (!putRes.ok) {
+          setError("uploadFailed");
+          return;
+        }
+        imageUrl = publicUrl;
       }
 
-      // 5. Auktion serverseitig anlegen
-      const result = await createAuction({...parsed.data, imageUrl: publicUrl});
+      // 4. Anzeige serverseitig anlegen
+      const result = await createAuction({...parsed.data, imageUrl});
       if (!result.ok) {
         setError(result.error);
         return;
@@ -229,9 +230,10 @@ export default function AuctionForm() {
         </label>
       </fieldset>
 
-      {/* === Bild-Upload als Dropzone === */}
+      {/* === Bild-Upload als Dropzone (optional) === */}
       <div className={styles.field}>
         <span className={styles.label}>{t("fields.image")}</span>
+        <span className={styles.hint}>{t("upload.optional")}</span>
 
         {file ? (
           <div className={styles.preview}>

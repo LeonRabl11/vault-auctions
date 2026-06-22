@@ -59,15 +59,11 @@ const hasAtLeastOneBlock = (d: ListingDraft) =>
 const incomplete = {message: "auctionIncomplete", path: ["startPriceEur"]};
 const missing = {message: "atLeastOne", path: ["startPriceEur"]};
 
-// Formular-Eingabe (Preise in Euro, wie im Feld eingegeben)
+// Geteiltes Schema für Anzeige-Felder (Preise in Euro). Client UND Server
+// (createAuction/updateAuction) validieren damit dieselben Regeln. Das Bild ist
+// optional und wird separat behandelt (eigener Upload-Flow, S3-URL).
 export const auctionInputSchema = z
   .object(listingFields)
-  .refine(auctionBlockComplete, incomplete)
-  .refine(hasAtLeastOneBlock, missing);
-
-// Server-Schema: zusätzlich die fertige S3-Bild-URL
-export const createAuctionSchema = z
-  .object({...listingFields, imageUrl: z.string().url()})
   .refine(auctionBlockComplete, incomplete)
   .refine(hasAtLeastOneBlock, missing);
 

@@ -2,13 +2,25 @@
 
 import {revalidatePath} from "next/cache";
 import {headers} from "next/headers";
-import {DeleteObjectCommand} from "@aws-sdk/client-s3";
 import {and, eq, notExists, sql} from "drizzle-orm";
 import {z} from "zod";
 import {auth} from "@/lib/auth";
 import {auctions, bids, db} from "@/lib/db";
-import {getS3Client, getS3Config} from "@/lib/s3";
-import {createAuctionSchema} from "@/lib/validation/auction";
+import {deleteObjectByUrl, isOwnBucketUrl} from "@/lib/s3";
+import {auctionInputSchema} from "@/lib/validation/auction";
+
+// Optionale Bild-URL prüfen: leer/fehlend -> null (kein Bild), sonst muss sie aus
+// unserem Bucket stammen. Gibt {ok:false} bei einer Fremd-URL zurück.
+function normalizeImageUrl(
+  value: unknown,
+): {ok: true; url: string | null} | {ok: false} {
+  if (value == null || value === "") return {ok: true, url: null};
+  if (typeof value !== "string" || !isOwnBucketUrl(value)) return {ok: false};
+  return {ok: true, url: value};
+}
+
+// € -> Cent (Beträge laut Konvention immer als Integer in Cent).
+const toCents = (eur?: number) => (eur != null ? Math.round(eur * 100) : null);
 
 export type CreateAuctionResult =
   | {ok: true; id: string}
@@ -25,35 +37,21 @@ export async function createAuction(
     return {ok: false, error: "unauthorized"};
   }
 
-  // Serverseitige Validierung (Frontend-Checks sind nur UX)
-  const parsed = createAuctionSchema.safeParse(input);
+  // Serverseitige Validierung der Felder (Frontend-Checks sind nur UX)
+  const parsed = auctionInputSchema.safeParse(input);
   if (!parsed.success) {
     return {ok: false, error: parsed.error.issues[0]?.message ?? "generic"};
   }
 
-  const {
-    title,
-    description,
-    category,
-    startPriceEur,
-    endsAt,
-    buyNowPriceEur,
-    imageUrl,
-  } = parsed.data;
-
-  // Bild-URL muss aus unserem Bucket stammen (keine Fremd-URLs speichern)
-  const {bucket, region} = getS3Config();
-  const expectedPrefix = `https://${bucket}.s3.${region}.amazonaws.com/`;
-  if (!imageUrl.startsWith(expectedPrefix)) {
+  // Bild optional — leer erlaubt, sonst muss die URL aus unserem Bucket stammen.
+  const image = normalizeImageUrl((input as {imageUrl?: unknown}).imageUrl);
+  if (!image.ok) {
     return {ok: false, error: "generic"};
   }
 
-  // € -> Cent (Beträge laut Konvention immer als Integer in Cent).
-  // Auktions- und Festpreis-Block sind je optional (Schema erzwingt: mind. einer).
-  const startPrice =
-    startPriceEur != null ? Math.round(startPriceEur * 100) : null;
-  const buyNowPrice =
-    buyNowPriceEur != null ? Math.round(buyNowPriceEur * 100) : null;
+  const {title, description, category, startPriceEur, endsAt, buyNowPriceEur} =
+    parsed.data;
+  const startPrice = toCents(startPriceEur);
 
   const [created] = await db
     .insert(auctions)
@@ -62,11 +60,11 @@ export async function createAuction(
       title,
       description,
       category,
-      imageUrl,
+      imageUrl: image.url,
       startPrice,
       currentPrice: startPrice, // Startgebot = Startpreis (null ohne Auktion)
       endsAt: endsAt ?? null, // null = reine Festpreis-Anzeige, kein Auto-Ende
-      buyNowPrice,
+      buyNowPrice: toCents(buyNowPriceEur),
       // status: 'active' kommt aus dem Schema-Default
     })
     .returning({id: auctions.id});
@@ -126,17 +124,12 @@ export async function deleteAuction(id: unknown): Promise<DeleteAuctionResult> {
   }
 
   // Bild aus S3 mitlöschen (Best-Effort — Fehler darf den Flow nicht kippen).
-  try {
-    const {bucket, region} = getS3Config();
-    const prefix = `https://${bucket}.s3.${region}.amazonaws.com/`;
-    if (deletedImageUrl.startsWith(prefix)) {
-      const key = deletedImageUrl.slice(prefix.length);
-      await getS3Client().send(
-        new DeleteObjectCommand({Bucket: bucket, Key: key}),
-      );
+  if (deletedImageUrl) {
+    try {
+      await deleteObjectByUrl(deletedImageUrl);
+    } catch (e) {
+      console.error("[s3] image delete failed", e);
     }
-  } catch (e) {
-    console.error("[s3] image delete failed", e);
   }
 
   // Liste + Dashboard revalidieren (Anzeige verschwindet überall)

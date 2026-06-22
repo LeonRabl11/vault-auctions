@@ -17,6 +17,7 @@ import BuyNowButton from "@/components/BuyNowButton";
 import BidHistory from "@/components/BidHistory";
 import PayButton from "@/components/PayButton";
 import DeleteAuctionButton from "@/components/DeleteAuctionButton";
+import ImagePlaceholder from "@/components/ImagePlaceholder";
 import styles from "./page.module.scss";
 
 type Props = {
@@ -34,6 +35,7 @@ function loadAuction(id: string) {
       title: auctions.title,
       description: auctions.description,
       imageUrl: auctions.imageUrl,
+      category: auctions.category,
       currentPrice: auctions.currentPrice,
       endsAt: auctions.endsAt,
       buyNowPrice: auctions.buyNowPrice,
@@ -140,14 +142,18 @@ export default async function AuctionDetailPage({params, searchParams}: Props) {
 
       <article className={styles.detail}>
         <div className={styles.imageWrap}>
-          <Image
-            src={auction.imageUrl}
-            alt={auction.title}
-            fill
-            sizes="(min-width: 768px) 50vw, 100vw"
-            className={styles.image}
-            priority
-          />
+          {auction.imageUrl ? (
+            <Image
+              src={auction.imageUrl}
+              alt={auction.title}
+              fill
+              sizes="(min-width: 768px) 50vw, 100vw"
+              className={styles.image}
+              priority
+            />
+          ) : (
+            <ImagePlaceholder category={auction.category} />
+          )}
         </div>
 
         <div className={styles.info}>

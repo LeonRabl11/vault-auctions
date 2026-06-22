@@ -243,7 +243,8 @@
     "upload": {
       "cta": "Bild hierher ziehen oder klicken zum Auswählen",
       "change": "Ändern",
-      "remove": "Entfernen"
+      "remove": "Entfernen",
+      "optional": "Optional — ohne Bild wird ein Platzhalter angezeigt."
     },
     "sections": {
       "auction": "Auktion",

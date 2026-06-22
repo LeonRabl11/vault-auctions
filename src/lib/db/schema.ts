@@ -35,7 +35,7 @@ export const auctions = pgTable("auctions", {
     .references(() => user.id, {onDelete: "cascade"}),
   title: text("title").notNull(),
   description: text("description").notNull(),
-  imageUrl: text("image_url").notNull(),
+  imageUrl: text("image_url"), // null = kein Bild (Platzhalter wird angezeigt)
   // Kategorie-Slug (siehe lib/categories.ts). Default 'sonstiges' backfillt
   // bestehende Zeilen; serverseitig gegen die Slug-Liste validiert.
   category: text("category").notNull().default("sonstiges"),

@@ -27,6 +27,7 @@ export default async function AuctionsPage({params, searchParams}: Props) {
       id: auctions.id,
       title: auctions.title,
       imageUrl: auctions.imageUrl,
+      category: auctions.category,
       currentPrice: auctions.currentPrice,
       endsAt: auctions.endsAt,
       buyNowPrice: auctions.buyNowPrice,

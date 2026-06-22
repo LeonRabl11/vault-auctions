@@ -243,7 +243,8 @@
     "upload": {
       "cta": "Drag an image here or click to choose",
       "change": "Change",
-      "remove": "Remove"
+      "remove": "Remove",
+      "optional": "Optional — a placeholder is shown when no image is set."
     },
     "sections": {
       "auction": "Auction",

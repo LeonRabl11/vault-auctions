@@ -60,3 +60,6 @@ export function isCategorySlug(value: unknown): value is CategorySlug {
     (CATEGORY_SLUGS as readonly string[]).includes(value)
   );
 }
+
+// Fallback-Icon für unbekannte/fehlende Kategorie (Platzhalter ohne Bild).
+export const FALLBACK_CATEGORY_ICON = Package;

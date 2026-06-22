@@ -1,0 +1,18 @@
+@use "../styles/variables" as *;
+
+// Füllt den umgebenden imageWrap (aspect-ratio + position: relative).
+.placeholder {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: $color-surface;
+}
+
+.icon {
+  width: 28%;
+  height: auto;
+  max-width: 4rem;
+  color: $color-border-strong;
+}

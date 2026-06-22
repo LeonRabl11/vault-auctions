@@ -13,6 +13,36 @@
   padding-inline: $space-4;
   display: flex;
   align-items: center;
+
+  // Dezenter Fade an den Rändern als Hinweis auf mehr Inhalt. Nur sichtbar,
+  // wenn in die jeweilige Richtung tatsächlich gescrollt werden kann.
+  &::before,
+  &::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: $space-6;
+    z-index: 1;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.15s ease;
+  }
+
+  &::before {
+    left: 0;
+    background: linear-gradient(to right, $color-bg, rgba($color-bg, 0));
+  }
+
+  &::after {
+    right: 0;
+    background: linear-gradient(to left, $color-bg, rgba($color-bg, 0));
+  }
+
+  &[data-fade-left="true"]::before,
+  &[data-fade-right="true"]::after {
+    opacity: 1;
+  }
 }
 
 // Horizontaler Scroll-Container; native Scrollbar ausgeblendet.
@@ -25,7 +55,15 @@
   flex: 1;
   overflow-x: auto;
   scroll-behavior: smooth;
+  // Trägheits-/sanftes Scrollen auf Touch-Geräten.
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: contain;
+  cursor: grab;
   padding-block: $space-3;
+
+  &:active {
+    cursor: grabbing;
+  }
   scrollbar-width: none; // Firefox
   -ms-overflow-style: none; // alte Edge
 
@@ -89,7 +127,7 @@
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  z-index: 1;
+  z-index: 2; // über dem Rand-Fade
   display: inline-flex;
   align-items: center;
   justify-content: center;

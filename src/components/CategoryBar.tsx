@@ -4,15 +4,20 @@ import {useCallback, useEffect, useRef, useState} from "react";
 import {useTranslations} from "next-intl";
 import {useSearchParams} from "next/navigation";
 import {ChevronLeft, ChevronRight, LayoutGrid} from "lucide-react";
-import {Link} from "@/i18n/navigation";
+import {Link, usePathname} from "@/i18n/navigation";
 import {CATEGORIES} from "@/lib/categories";
 import styles from "./CategoryBar.module.scss";
+
+// Leiste nur auf Startseite und Marktplatz-Übersicht zeigen (nicht im Dashboard,
+// beim Anzeige-Erstellen oder auf Auth-Seiten). usePathname ist locale-bereinigt.
+const VISIBLE_ON = ["/", "/marktplatz"];
 
 // Auswählbare Kategorie-Leiste direkt unter dem Header. Filtert den Marktplatz
 // über ?kategorie=<slug>; "Alle" setzt den Filter zurück. Aktive Kategorie wird
 // aus dem Search-Param abgeleitet.
 export default function CategoryBar() {
   const t = useTranslations("Categories");
+  const pathname = usePathname();
   const searchParams = useSearchParams();
   const active = searchParams.get("kategorie");
 
@@ -44,6 +49,8 @@ export default function CategoryBar() {
     if (!el) return;
     el.scrollBy({left: direction * el.clientWidth * 0.8, behavior: "smooth"});
   };
+
+  if (!VISIBLE_ON.includes(pathname)) return null;
 
   return (
     <nav className={styles.bar} aria-label={t("bar")}>

@@ -32,6 +32,54 @@
         "text": "As the highest bidder you win when it ends and pay securely."
       }
     },
+    "showcase": {
+      "eyebrow": "Discover",
+      "title": "What you'll find here",
+      "prev": "Previous",
+      "next": "Next",
+      "items": {
+        "schmuck": {
+          "label": "Jewelry",
+          "text": "Fine timepieces and sparkling rarities."
+        },
+        "kunst": {
+          "label": "Art",
+          "text": "Originals and sculptures with character."
+        },
+        "autos": {
+          "label": "Cars & Motorcycles",
+          "text": "Classics and dream machines on wheels."
+        },
+        "muenzen": {
+          "label": "Coins & Stamps",
+          "text": "Sought-after pieces for true collectors."
+        },
+        "buecher": {
+          "label": "Books & History",
+          "text": "Rare volumes with a past."
+        },
+        "einrichtung": {
+          "label": "Furnishings",
+          "text": "Design pieces that shape a room."
+        },
+        "moebel": {
+          "label": "Furniture",
+          "text": "Characterful furniture with a story."
+        },
+        "pflanzen": {
+          "label": "Plants",
+          "text": "Rare greenery for green thumbs."
+        },
+        "mode": {
+          "label": "Fashion",
+          "text": "Pieces with style and story."
+        },
+        "technik": {
+          "label": "Tech",
+          "text": "Retro treasures and smart tech."
+        }
+      }
+    },
     "features": {
       "eyebrow": "Why Vault",
       "title": "What you can rely on",

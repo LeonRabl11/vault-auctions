@@ -3,6 +3,7 @@ import {getTranslations, setRequestLocale} from "next-intl/server";
 import {auctions, bids, db} from "@/lib/db";
 import {Link} from "@/i18n/navigation";
 import AuctionCard from "@/components/AuctionCard";
+import CategoryShowcase from "@/components/CategoryShowcase";
 import Reveal from "@/components/Reveal";
 import styles from "./page.module.scss";
 
@@ -160,6 +161,11 @@ export default async function Home({params}: Props) {
             ))}
           </ol>
         </section>
+      </Reveal>
+
+      {/* 3b. Kategorie-Showcase — anklickbare Slides in den gefilterten Marktplatz */}
+      <Reveal>
+        <CategoryShowcase />
       </Reveal>
 
       {/* 4. Stärken / Info (rein informativ, kein CTA) */}

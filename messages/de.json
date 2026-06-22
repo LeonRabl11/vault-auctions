@@ -32,6 +32,54 @@
         "text": "Als Höchstbietender gewinnst du bei Ablauf und bezahlst sicher."
       }
     },
+    "showcase": {
+      "eyebrow": "Entdecken",
+      "title": "Das findest du bei uns",
+      "prev": "Zurück",
+      "next": "Weiter",
+      "items": {
+        "schmuck": {
+          "label": "Schmuck",
+          "text": "Edle Zeitmesser und funkelnde Raritäten."
+        },
+        "kunst": {
+          "label": "Kunst",
+          "text": "Originale und Skulpturen mit Charakter."
+        },
+        "autos": {
+          "label": "Autos & Motorräder",
+          "text": "Klassiker und Träume auf Rädern."
+        },
+        "muenzen": {
+          "label": "Münzen & Briefmarken",
+          "text": "Gesuchte Stücke für echte Sammler."
+        },
+        "buecher": {
+          "label": "Bücher & Geschichte",
+          "text": "Seltene Bände mit Vergangenheit."
+        },
+        "einrichtung": {
+          "label": "Einrichtung",
+          "text": "Designstücke, die Räume prägen."
+        },
+        "moebel": {
+          "label": "Möbel",
+          "text": "Möbel mit Charakter und Geschichte."
+        },
+        "pflanzen": {
+          "label": "Pflanzen",
+          "text": "Seltene Gewächse für grüne Daumen."
+        },
+        "mode": {
+          "label": "Mode",
+          "text": "Stücke mit Stil und Geschichte."
+        },
+        "technik": {
+          "label": "Technik",
+          "text": "Retro-Schätze und smarte Technik."
+        }
+      }
+    },
     "features": {
       "eyebrow": "Warum Vault",
       "title": "Worauf du dich verlassen kannst",

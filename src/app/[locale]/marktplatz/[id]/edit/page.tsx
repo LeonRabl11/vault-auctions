@@ -6,6 +6,7 @@ import {auctions, bids, db} from "@/lib/db";
 import {auth} from "@/lib/auth";
 import {redirect} from "@/i18n/navigation";
 import AuctionForm, {type AuctionFormInitial} from "@/components/AuctionForm";
+import DeleteAuctionButton from "@/components/DeleteAuctionButton";
 import styles from "./page.module.scss";
 
 type Props = {
@@ -88,7 +89,11 @@ export default async function EditAuctionPage({params}: Props) {
           auctionId={id}
           initial={initial}
           pricingLocked={row.bidCount > 0}
-        />
+        >
+          {/* Löschen nur ohne Gebote (serverseitig nochmals abgesichert) —
+              direkt unter dem Speichern-Button. */}
+          {row.bidCount === 0 && <DeleteAuctionButton auctionId={id} />}
+        </AuctionForm>
       </div>
     </div>
   );

@@ -32,6 +32,8 @@ type Props = {
   // Bei Auktionen mit Geboten: Preis/Laufzeit/Festpreis sperren (UI-Hinweis;
   // serverseitig zusätzlich erzwungen).
   pricingLocked?: boolean;
+  // Zusätzliche Aktionen direkt unter dem Submit-Button (z. B. Löschen im Edit).
+  children?: React.ReactNode;
 };
 
 // ISO-Zeit -> Wert für <input type="datetime-local"> in lokaler Zeit (YYYY-MM-DDTHH:mm).
@@ -69,6 +71,7 @@ export default function AuctionForm({
   auctionId,
   initial,
   pricingLocked = false,
+  children,
 }: Props) {
   const t = useTranslations("Auctions");
   const tc = useTranslations("Categories");
@@ -416,6 +419,9 @@ export default function AuctionForm({
             ? t("edit.submit")
             : t("new.submit")}
       </button>
+
+      {/* Zusätzliche Aktionen (z. B. Löschen) direkt unter dem Submit-Button. */}
+      {children}
     </form>
   );
 }

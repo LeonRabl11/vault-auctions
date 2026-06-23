@@ -267,7 +267,13 @@
     },
     "list": {
       "title": "Marketplace",
-      "empty": "There are no active listings right now. Check back later!"
+      "empty": "There are no active listings right now. Check back later!",
+      "emptyFiltered": "No listings found. Try adjusting your search or filters.",
+      "reset": "Reset filters"
+    },
+    "search": {
+      "placeholder": "Search listings…",
+      "clear": "Clear search"
     },
     "card": {
       "currentBid": "Top bid",

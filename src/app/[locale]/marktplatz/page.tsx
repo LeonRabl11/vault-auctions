@@ -1,15 +1,23 @@
 import type {Metadata} from "next";
-import {and, desc, eq, gt, isNull, or, sql} from "drizzle-orm";
+import {and, desc, eq, gt, ilike, isNull, or, sql} from "drizzle-orm";
 import {getTranslations, setRequestLocale} from "next-intl/server";
 import {auctions, bids, db} from "@/lib/db";
 import {isCategorySlug} from "@/lib/categories";
+import {Link} from "@/i18n/navigation";
 import AuctionCard from "@/components/AuctionCard";
+import SearchBar from "@/components/SearchBar";
 import styles from "./page.module.scss";
 
 type Props = {
   params: Promise<{locale: string}>;
-  searchParams: Promise<{kategorie?: string}>;
+  searchParams: Promise<{kategorie?: string; q?: string}>;
 };
+
+// LIKE-Sonderzeichen escapen, damit Nutzereingaben nicht als Wildcards wirken
+// (Standard-Escape-Zeichen \ von Postgres ILIKE).
+function escapeLike(value: string) {
+  return value.replace(/[\\%_]/g, (c) => `\\${c}`);
+}
 
 export async function generateMetadata({params}: Props): Promise<Metadata> {
   const {locale} = await params;
@@ -19,16 +27,20 @@ export async function generateMetadata({params}: Props): Promise<Metadata> {
 
 export default async function AuctionsPage({params, searchParams}: Props) {
   const {locale} = await params;
-  const {kategorie} = await searchParams;
+  const {kategorie, q} = await searchParams;
   setRequestLocale(locale);
 
   const t = await getTranslations("Auctions");
 
   // Optionaler Kategorie-Filter aus dem Search-Param (ungültige Slugs ignorieren)
   const category = isCategorySlug(kategorie) ? kategorie : null;
+  // Optionaler Suchbegriff (?q=) — case-insensitive auf Titel UND Beschreibung.
+  const query = q?.trim() ?? "";
+  const hasFilters = Boolean(category || query);
 
   // Aktive Anzeigen, neueste zuerst. Auktionen nur, solange nicht abgelaufen;
   // reine Festpreis-Anzeigen (endsAt == null) laufen nie ab und bleiben sichtbar.
+  // Kategorie- und Suchfilter werden UND-verknüpft.
   const list = await db
     .select({
       id: auctions.id,
@@ -48,6 +60,12 @@ export default async function AuctionsPage({params, searchParams}: Props) {
         eq(auctions.status, "active"),
         or(isNull(auctions.endsAt), gt(auctions.endsAt, new Date())),
         category ? eq(auctions.category, category) : undefined,
+        query
+          ? or(
+              ilike(auctions.title, `%${escapeLike(query)}%`),
+              ilike(auctions.description, `%${escapeLike(query)}%`),
+            )
+          : undefined,
       ),
     )
     .groupBy(auctions.id)
@@ -56,8 +74,18 @@ export default async function AuctionsPage({params, searchParams}: Props) {
   return (
     <div className={styles.page}>
       <h1>{t("list.title")}</h1>
+
+      <SearchBar />
+
       {list.length === 0 ? (
-        <p className={styles.empty}>{t("list.empty")}</p>
+        <div className={styles.empty}>
+          <p>{hasFilters ? t("list.emptyFiltered") : t("list.empty")}</p>
+          {hasFilters && (
+            <Link href="/marktplatz" className="btn">
+              {t("list.reset")}
+            </Link>
+          )}
+        </div>
       ) : (
         <div className={styles.grid}>
           {list.map((auction) => (

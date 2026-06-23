@@ -267,7 +267,13 @@
     },
     "list": {
       "title": "Marktplatz",
-      "empty": "Aktuell gibt es keine aktiven Anzeigen. Schau später wieder vorbei!"
+      "empty": "Aktuell gibt es keine aktiven Anzeigen. Schau später wieder vorbei!",
+      "emptyFiltered": "Keine Anzeigen gefunden. Passe deine Suche oder Filter an.",
+      "reset": "Filter zurücksetzen"
+    },
+    "search": {
+      "placeholder": "Anzeigen durchsuchen…",
+      "clear": "Suche löschen"
     },
     "card": {
       "currentBid": "Höchstgebot",

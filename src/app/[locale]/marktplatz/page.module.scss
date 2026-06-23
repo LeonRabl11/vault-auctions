@@ -12,7 +12,13 @@
   gap: $space-4;
 }
 
+// Freundlicher Leerzustand — trägt Text plus optionale Aktion (z. B. „Filter
+// zurücksetzen"). Bewusst flexibel gehalten für spätere Sortier-/Filter-Erweiterung.
 .empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: $space-4;
   margin: 0;
   padding: $space-6;
   text-align: center;

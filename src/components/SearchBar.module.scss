@@ -1,0 +1,45 @@
+@use "../styles/variables" as *;
+
+.wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.icon {
+  position: absolute;
+  left: $space-3;
+  color: $color-text-muted;
+  pointer-events: none;
+}
+
+// Erbt das globale .input-Primitive; hier nur Platz für die beiden Icons.
+.input {
+  padding-left: $space-7;
+  padding-right: $space-7;
+
+  // Natives Clear-Kreuz (type=search) ausblenden — eigener Button vorhanden.
+  &::-webkit-search-cancel-button {
+    -webkit-appearance: none;
+    appearance: none;
+  }
+}
+
+.clear {
+  position: absolute;
+  right: $space-2;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: $space-1;
+  border: none;
+  border-radius: $radius-sm;
+  background: transparent;
+  color: $color-text-muted;
+  cursor: pointer;
+  transition: color 0.15s ease;
+
+  &:hover {
+    color: $color-text;
+  }
+}

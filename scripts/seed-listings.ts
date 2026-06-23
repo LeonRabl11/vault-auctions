@@ -3,7 +3,7 @@
  * Account `leon-rabl@web.de`. Ausführen mit `pnpm db:seed`.
  *
  * - Alle Anzeigen: status='active', OHNE Bild (imageUrl null), kein Käufer/Gewinner.
- * - Auktionen laufen über ein halbes Jahr (endsAt ~6,5–10 Monate in der Zukunft).
+ * - Auktionen enden in ~1–10 Tagen, variiert (glaubwürdige, unterschiedliche Countdowns).
  * - Beträge werden in Cent gespeichert (Konvention).
  * - Idempotent: vorhandene Seed-Anzeigen (Marker in der Beschreibung) werden vor
  *   dem Neu-Anlegen entfernt, damit ein erneuter Lauf nicht dupliziert.
@@ -23,6 +23,7 @@ const SELLER_EMAIL = "leon-rabl@web.de";
 const MARKER = "Vault-Seed";
 
 const DAY = 24 * 60 * 60 * 1000;
+const HOUR = 60 * 60 * 1000;
 
 type Kind = "auction" | "fixed" | "both";
 type Item = {
@@ -362,8 +363,16 @@ async function main() {
         imageUrl: null, // bewusst ohne Bild
         startPrice,
         currentPrice: startPrice, // Startgebot = Startpreis (null ohne Auktion)
-        // Auktionen laufen über ein halbes Jahr (~6,5–10 Monate in der Zukunft).
-        endsAt: isAuction ? new Date(now + (195 + n * 4) * DAY) : null,
+        // Auktionen enden in ~1–10 Tagen, mit variierten Stunden/Minuten, damit
+        // die Countdowns glaubwürdig und unterschiedlich wirken.
+        endsAt: isAuction
+          ? new Date(
+              now +
+                (1 + (n % 10)) * DAY +
+                ((n * 7) % 24) * HOUR +
+                ((n * 13) % 60) * 60 * 1000,
+            )
+          : null,
         buyNowPrice,
         status: "active" as const,
       };

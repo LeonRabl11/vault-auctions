@@ -358,6 +358,7 @@
       "paid": "Verkauft — bezahlt.",
       "paidYou": "Bezahlt ✓ — vielen Dank!",
       "paidBanner": "Zahlung erfolgreich. Vielen Dank!",
+      "canceledBanner": "Zahlung abgebrochen. Deine Bestellung bleibt offen — du kannst unten jederzeit erneut bezahlen.",
       "expired": "Zahlungsfrist abgelaufen — die Auktion bleibt unverkauft.",
       "noBids": "Beendet — es gab keine Gebote.",
       "errors": {

@@ -57,6 +57,16 @@
   font-weight: 600;
 }
 
+// Abgebrochene/fehlgeschlagene Zahlung — ruhig und neutral, kein Alarm.
+.canceledBanner {
+  margin: 0;
+  padding: $space-3;
+  border: 1px solid $color-border-strong;
+  border-radius: $radius;
+  background-color: $color-surface;
+  color: $color-text-muted;
+}
+
 .imageWrap {
   position: relative;
   width: 100%;

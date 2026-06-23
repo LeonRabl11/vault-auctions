@@ -70,7 +70,9 @@ export async function startCheckout(input: unknown): Promise<CheckoutResult> {
       ],
       metadata: {orderId: order.id},
       success_url: `${detailUrl}?paid=1`,
-      cancel_url: detailUrl,
+      // Abbruch -> mit Marker zurück, damit die Detailseite eine ruhige Meldung
+      // statt eines kommentarlosen Zustands zeigt (Order bleibt pending/zahlbar).
+      cancel_url: `${detailUrl}?canceled=1`,
     });
 
     if (!checkout.url) {

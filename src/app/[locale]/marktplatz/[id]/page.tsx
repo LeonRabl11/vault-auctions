@@ -23,7 +23,7 @@ import styles from "./page.module.scss";
 
 type Props = {
   params: Promise<{locale: string; id: string}>;
-  searchParams: Promise<{paid?: string}>;
+  searchParams: Promise<{paid?: string; canceled?: string}>;
 };
 
 const UUID_RE =
@@ -95,7 +95,7 @@ export async function generateMetadata({params}: Props): Promise<Metadata> {
 
 export default async function AuctionDetailPage({params, searchParams}: Props) {
   const {locale, id} = await params;
-  const {paid} = await searchParams;
+  const {paid, canceled} = await searchParams;
   setRequestLocale(locale);
 
   // Ungültige IDs gar nicht erst an die DB geben
@@ -182,6 +182,14 @@ export default async function AuctionDetailPage({params, searchParams}: Props) {
       {paid === "1" && order?.status === "paid" && (
         <p className={styles.paidBanner}>{t("result.paidBanner")}</p>
       )}
+
+      {/* Zahlung abgebrochen/fehlgeschlagen: ruhige Meldung. Order bleibt
+          pending und ist über den Bezahl-Button unten erneut zahlbar. */}
+      {canceled === "1" &&
+        isViewerBuyer &&
+        order?.status === "pending" && (
+          <p className={styles.canceledBanner}>{t("result.canceledBanner")}</p>
+        )}
 
       <article className={styles.detail}>
         {/* Eigentümer einer aktiven Anzeige: Bearbeiten oben rechts über dem

@@ -1,0 +1,27 @@
+@use "../../../styles/variables" as *;
+
+// h1-Platzhalter (entspricht in etwa der Überschriftengröße).
+.title {
+  width: 14rem;
+  height: $space-5;
+}
+
+// Toolbar: Suchfeld wächst, Sortier-Select fest — wie im echten Layout.
+.search {
+  flex: 1 1 16rem;
+  min-width: 0;
+  height: 2.5rem;
+  border-radius: $radius;
+}
+
+.sort {
+  flex: 0 0 auto;
+  width: 11rem;
+  height: 2.5rem;
+  border-radius: $radius;
+}
+
+.count {
+  width: 7rem;
+  height: $space-3;
+}

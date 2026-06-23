@@ -358,6 +358,7 @@
       "paid": "Sold — paid.",
       "paidYou": "Paid ✓ — thank you!",
       "paidBanner": "Payment successful. Thank you!",
+      "canceledBanner": "Payment canceled. Your order is still open — you can pay again below at any time.",
       "expired": "Payment window expired — the auction remains unsold.",
       "noBids": "Ended — there were no bids.",
       "errors": {

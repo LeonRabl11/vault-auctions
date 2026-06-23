@@ -1,0 +1,34 @@
+@use "../styles/variables" as *;
+
+// Basis-Platzhalter: Flächenfarbe aus Tokens + sanfter Shimmer-Lauf.
+// Maße/Form setzt die aufrufende Klasse (width/height/border-radius).
+.skeleton {
+  display: block;
+  border-radius: $radius-sm;
+  background-color: $color-surface-2;
+  background-image: linear-gradient(
+    90deg,
+    $color-surface-2 0%,
+    $color-surface 50%,
+    $color-surface-2 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.4s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+// Bewegung reduzieren: statische Fläche ohne Lauf-Animation.
+@media (prefers-reduced-motion: reduce) {
+  .skeleton {
+    animation: none;
+    background-image: none;
+  }
+}

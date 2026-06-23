@@ -1,0 +1,56 @@
+@use "../../../../styles/variables" as *;
+
+// Füllt den 4:3-Bildbereich.
+.image {
+  width: 100%;
+  height: 100%;
+  border-radius: 0;
+}
+
+.heading {
+  width: 70%;
+  height: $space-5;
+}
+
+.seller {
+  width: 40%;
+  height: $space-3;
+}
+
+.price {
+  width: 50%;
+  height: $space-5;
+}
+
+.countdown {
+  width: 60%;
+  height: $space-4;
+}
+
+// Aktionsbox (entspricht der card-Hülle des Bietbereichs).
+.box {
+  display: flex;
+  flex-direction: column;
+}
+
+.button {
+  width: 100%;
+  height: 2.5rem;
+  border-radius: $radius;
+}
+
+.descTitle {
+  width: 8rem;
+  height: $space-4;
+  margin-top: $space-2;
+}
+
+.descLine {
+  width: 100%;
+  height: $space-3;
+}
+
+.descLineShort {
+  width: 65%;
+  height: $space-3;
+}

@@ -1,0 +1,57 @@
+@use "../../../styles/variables" as *;
+
+.headTitle {
+  width: 12rem;
+  height: $space-5;
+}
+
+.headSub {
+  width: 16rem;
+  height: $space-3;
+}
+
+.button {
+  width: 10rem;
+  height: 2.5rem;
+  border-radius: $radius;
+}
+
+// Kennzahl-Karten.
+.statValue {
+  width: 3rem;
+  height: $space-5;
+}
+
+.statLabel {
+  width: 7rem;
+  height: $space-3;
+}
+
+.sectionTitle {
+  width: 9rem;
+  height: $space-4;
+}
+
+// Listenzeile: quadratisches Thumbnail (wie .thumb, 3rem) + zwei Textzeilen.
+.thumb {
+  flex-shrink: 0;
+  width: 3rem;
+  height: 3rem;
+  border-radius: $radius;
+}
+
+.rowTitle {
+  width: 55%;
+  height: $space-3;
+}
+
+.rowMeta {
+  width: 35%;
+  height: $space-3;
+}
+
+.badge {
+  width: 5rem;
+  height: $space-4;
+  border-radius: $radius-full;
+}

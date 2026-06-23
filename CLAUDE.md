@@ -23,7 +23,8 @@ Phasen-Roadmap: **docs/KONZEPT.md** (Langfassung — nicht hierher kopieren).
 - `pnpm build` — Production-Build
 - `pnpm start` — Production-Server
 - `pnpm lint` — ESLint
-- `pnpm test` — Vitest (einmalig); `pnpm test:watch` — Watch-Modus
+- `pnpm test` — Vitest, schnelle Unit-Tests (einmalig); `pnpm test:watch` — Watch
+- `pnpm test:db` — Integrationstests gegen die Test-DB (braucht `TEST_DATABASE_URL`)
 - `pnpm db:generate` — Migration aus Schema generieren (offline)
 - `pnpm db:migrate` — Migrationen auf die DB anwenden (braucht `DATABASE_URL`)
 - `pnpm db:push` — Schema direkt pushen (Prototyping)
@@ -70,8 +71,13 @@ Phasen-Roadmap: **docs/KONZEPT.md** (Langfassung — nicht hierher kopieren).
 - Test-Dateien `*.test.ts` **neben** der getesteten Datei ablegen (z. B.
   `lib/money.ts` → `lib/money.test.ts`). Vitest läuft im Node-Environment, Alias
   `@/*` wie in tsconfig.
-- Vorerst nur reine Unit-Tests (keine DB/I/O, kein Stripe). Geld immer in Cent
-  über die reinen Helfer in `lib/money.ts` (`toCents`/`fromCents`/`formatEur`).
+- Reine Unit-Tests `*.test.ts` (keine I/O). Geld immer in Cent über die reinen
+  Helfer in `lib/money.ts` (`toCents`/`fromCents`/`formatEur`).
+- DB-Integrationstests `*.db.test.ts` laufen über `pnpm test:db` gegen eine
+  separate Supabase-**Test-DB** (`TEST_DATABASE_URL` in `.env.local`). Fehlt die
+  Variable oder ist sie = `DATABASE_URL`, werden sie übersprungen (nie gegen
+  Dev/Prod). `globalSetup` migriert die Test-DB automatisch (Migrationen aus
+  `drizzle/`); jeder Test legt eigene Daten an und räumt sie per ID wieder auf.
 
 ## Design
 Minimalistischer, heller Look — durchgängig über die ganze Seite. Damit Features denselben

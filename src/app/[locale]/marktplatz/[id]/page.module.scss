@@ -157,7 +157,7 @@
 // über dem Titelbereich. Liegt über dem Platzhalter und bleibt klickbar.
 .editButton {
   position: absolute;
-  top: 0;
+  top: -$space-4; // etwas über die Titel-Oberkante angehoben
   right: 0;
   z-index: 1;
   display: inline-flex;

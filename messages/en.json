@@ -269,11 +269,21 @@
       "title": "Marketplace",
       "empty": "There are no active listings right now. Check back later!",
       "emptyFiltered": "No listings found. Try adjusting your search or filters.",
-      "reset": "Reset filters"
+      "reset": "Reset filters",
+      "count": "{count, plural, one {# listing} other {# listings}}"
     },
     "search": {
       "placeholder": "Search listings…",
       "clear": "Clear search"
+    },
+    "sort": {
+      "label": "Sort by",
+      "options": {
+        "newest": "Newest",
+        "ending-soon": "Ending soon",
+        "price-asc": "Price ascending",
+        "price-desc": "Price descending"
+      }
     },
     "card": {
       "currentBid": "Top bid",

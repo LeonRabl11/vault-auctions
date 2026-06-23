@@ -1,0 +1,54 @@
+@use "../styles/variables" as *;
+
+.wrap {
+  display: inline-flex;
+  align-items: center;
+  gap: $space-2;
+  flex: 0 0 auto;
+}
+
+.label {
+  color: $color-text-muted;
+  font-size: $text-sm;
+  white-space: nowrap;
+}
+
+// Eigener Wrapper, damit der Chevron über dem nativen Select liegt.
+.field {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.select {
+  appearance: none;
+  padding: $space-2 $space-7 $space-2 $space-3;
+  border: 1px solid $color-border;
+  border-radius: $radius;
+  background-color: $color-bg;
+  color: $color-text;
+  font: inherit;
+  font-size: $text-sm;
+  line-height: 1.4;
+  cursor: pointer;
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.15s ease;
+
+  &:hover {
+    border-color: $color-border-strong;
+  }
+
+  &:focus {
+    outline: none;
+    border-color: $color-primary;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+  }
+}
+
+.icon {
+  position: absolute;
+  right: $space-3;
+  color: $color-text-muted;
+  pointer-events: none;
+}

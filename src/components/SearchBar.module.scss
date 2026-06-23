@@ -4,6 +4,9 @@
   position: relative;
   display: flex;
   align-items: center;
+  // In der Marktplatz-Toolbar den verfügbaren Platz neben der Sortierung füllen.
+  flex: 1 1 16rem;
+  min-width: 0;
 }
 
 .icon {

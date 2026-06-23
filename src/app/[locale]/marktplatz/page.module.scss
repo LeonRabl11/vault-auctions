@@ -6,6 +6,20 @@
   gap: $space-5;
 }
 
+// Toolbar: Suche (links, wächst) + Sortierung (rechts). Bricht bei Bedarf um.
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: $space-3;
+}
+
+.count {
+  margin: 0;
+  color: $color-text-muted;
+  font-size: $text-sm;
+}
+
 .grid {
   display: grid;
   grid-template-columns: 1fr;

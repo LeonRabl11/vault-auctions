@@ -269,11 +269,21 @@
       "title": "Marktplatz",
       "empty": "Aktuell gibt es keine aktiven Anzeigen. Schau später wieder vorbei!",
       "emptyFiltered": "Keine Anzeigen gefunden. Passe deine Suche oder Filter an.",
-      "reset": "Filter zurücksetzen"
+      "reset": "Filter zurücksetzen",
+      "count": "{count, plural, one {# Anzeige} other {# Anzeigen}}"
     },
     "search": {
       "placeholder": "Anzeigen durchsuchen…",
       "clear": "Suche löschen"
+    },
+    "sort": {
+      "label": "Sortieren",
+      "options": {
+        "newest": "Neueste",
+        "ending-soon": "Endet bald",
+        "price-asc": "Preis aufsteigend",
+        "price-desc": "Preis absteigend"
+      }
     },
     "card": {
       "currentBid": "Höchstgebot",

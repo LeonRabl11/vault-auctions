@@ -3,15 +3,33 @@ import {and, desc, eq, gt, ilike, isNull, or, sql} from "drizzle-orm";
 import {getTranslations, setRequestLocale} from "next-intl/server";
 import {auctions, bids, db} from "@/lib/db";
 import {isCategorySlug} from "@/lib/categories";
+import {DEFAULT_SORT, isSortKey, type SortKey} from "@/lib/marktplatz-sort";
 import {Link} from "@/i18n/navigation";
 import AuctionCard from "@/components/AuctionCard";
 import SearchBar from "@/components/SearchBar";
+import SortSelect from "@/components/SortSelect";
 import styles from "./page.module.scss";
 
 type Props = {
   params: Promise<{locale: string}>;
-  searchParams: Promise<{kategorie?: string; q?: string}>;
+  searchParams: Promise<{kategorie?: string; q?: string; sort?: string}>;
 };
+
+// orderBy-Klausel je Sortier-Option. Effektiver Preis = currentPrice (Auktion)
+// sonst buyNowPrice (Festpreis); "endet bald" stellt Festpreis-Anzeigen (kein
+// endsAt) ans Ende. createdAt dient als stabiler Tiebreaker.
+function orderByFor(sort: SortKey) {
+  switch (sort) {
+    case "ending-soon":
+      return [sql`${auctions.endsAt} asc nulls last`, desc(auctions.createdAt)];
+    case "price-asc":
+      return [sql`coalesce(${auctions.currentPrice}, ${auctions.buyNowPrice}) asc`];
+    case "price-desc":
+      return [sql`coalesce(${auctions.currentPrice}, ${auctions.buyNowPrice}) desc`];
+    default:
+      return [desc(auctions.createdAt)];
+  }
+}
 
 // LIKE-Sonderzeichen escapen, damit Nutzereingaben nicht als Wildcards wirken
 // (Standard-Escape-Zeichen \ von Postgres ILIKE).
@@ -27,7 +45,7 @@ export async function generateMetadata({params}: Props): Promise<Metadata> {
 
 export default async function AuctionsPage({params, searchParams}: Props) {
   const {locale} = await params;
-  const {kategorie, q} = await searchParams;
+  const {kategorie, q, sort} = await searchParams;
   setRequestLocale(locale);
 
   const t = await getTranslations("Auctions");
@@ -36,6 +54,8 @@ export default async function AuctionsPage({params, searchParams}: Props) {
   const category = isCategorySlug(kategorie) ? kategorie : null;
   // Optionaler Suchbegriff (?q=) — case-insensitive auf Titel UND Beschreibung.
   const query = q?.trim() ?? "";
+  // Sortierung aus ?sort= (ungültig/fehlend -> Standard "newest").
+  const sortKey = isSortKey(sort) ? sort : DEFAULT_SORT;
   const hasFilters = Boolean(category || query);
 
   // Aktive Anzeigen, neueste zuerst. Auktionen nur, solange nicht abgelaufen;
@@ -69,13 +89,16 @@ export default async function AuctionsPage({params, searchParams}: Props) {
       ),
     )
     .groupBy(auctions.id)
-    .orderBy(desc(auctions.createdAt));
+    .orderBy(...orderByFor(sortKey));
 
   return (
     <div className={styles.page}>
       <h1>{t("list.title")}</h1>
 
-      <SearchBar />
+      <div className={styles.toolbar}>
+        <SearchBar />
+        <SortSelect />
+      </div>
 
       {list.length === 0 ? (
         <div className={styles.empty}>
@@ -87,11 +110,16 @@ export default async function AuctionsPage({params, searchParams}: Props) {
           )}
         </div>
       ) : (
-        <div className={styles.grid}>
-          {list.map((auction) => (
-            <AuctionCard key={auction.id} auction={auction} />
-          ))}
-        </div>
+        <>
+          <p className={styles.count}>
+            {t("list.count", {count: list.length})}
+          </p>
+          <div className={styles.grid}>
+            {list.map((auction) => (
+              <AuctionCard key={auction.id} auction={auction} />
+            ))}
+          </div>
+        </>
       )}
     </div>
   );

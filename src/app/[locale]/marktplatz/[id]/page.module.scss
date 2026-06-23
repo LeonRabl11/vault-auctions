@@ -138,8 +138,11 @@
 // Blau mit weißer Schrift. Sitzt leicht über dem oberen Rand des Artikels.
 .editOverlay {
   position: absolute;
-  top: -$space-5;
+  // Unterkante an die Oberkante der Karte heften -> Button sitzt komplett
+  // darüber (kein Überlapp mit dem Titel), plus kleiner Abstand.
+  bottom: 100%;
   right: 0;
+  margin-bottom: $space-2;
   z-index: 2;
   display: inline-flex;
   align-items: center;

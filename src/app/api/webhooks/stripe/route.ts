@@ -4,6 +4,7 @@ import type Stripe from "stripe";
 import {stripe} from "@/lib/stripe";
 import {auctions, db, orders, user} from "@/lib/db";
 import {sendPaidEmail} from "@/lib/email";
+import {processCheckoutCompleted} from "@/lib/webhooks/stripe-checkout";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -28,50 +29,39 @@ export async function POST(request: Request) {
 
   if (event.type === "checkout.session.completed") {
     const checkout = event.data.object as Stripe.Checkout.Session;
-    const orderId = checkout.metadata?.orderId;
 
-    if (orderId) {
+    // Reale DB-/Mail-Abhängigkeiten injizieren; die idempotente Orchestrierung
+    // liegt in processCheckoutCompleted (separat unit-getestet).
+    await processCheckoutCompleted(checkout, {
       // Idempotent: nur eine noch offene Order wird auf 'paid' gesetzt.
-      // returning() verrät, ob WIRKLICH pending->paid gewechselt wurde — bei
-      // doppelten Events ist das Array leer, also keine zweite Mail.
-      const [paidOrder] = await db
-        .update(orders)
-        .set({status: "paid"})
-        .where(and(eq(orders.id, orderId), eq(orders.status, "pending")))
-        .returning({
-          buyerId: orders.buyerId,
-          auctionId: orders.auctionId,
-          amount: orders.amount,
-        });
-
-      // Bestätigungsmail NACH dem Commit, tolerant — Fehler darf den Webhook
-      // (sonst retryt Stripe) nicht in einen 500 kippen.
-      if (paidOrder) {
-        try {
-          const [info] = await db
-            .select({
-              email: user.email,
-              name: user.name,
-              title: auctions.title,
-            })
-            .from(user)
-            .innerJoin(auctions, eq(auctions.id, paidOrder.auctionId))
-            .where(eq(user.id, paidOrder.buyerId))
-            .limit(1);
-          if (info) {
-            await sendPaidEmail({
-              to: info.email,
-              name: info.name,
-              auctionTitle: info.title,
-              amount: paidOrder.amount,
-              auctionId: paidOrder.auctionId,
-            });
-          }
-        } catch (e) {
-          console.error("[email] paid notification failed", e);
-        }
-      }
-    }
+      // returning() ist leer, wenn der Wechsel schon erfolgt war (doppeltes Event).
+      markOrderPaidIfPending: async (orderId) => {
+        const [paidOrder] = await db
+          .update(orders)
+          .set({status: "paid"})
+          .where(and(eq(orders.id, orderId), eq(orders.status, "pending")))
+          .returning({
+            buyerId: orders.buyerId,
+            auctionId: orders.auctionId,
+            amount: orders.amount,
+          });
+        return paidOrder ?? null;
+      },
+      loadBuyerInfo: async (order) => {
+        const [info] = await db
+          .select({
+            email: user.email,
+            name: user.name,
+            title: auctions.title,
+          })
+          .from(user)
+          .innerJoin(auctions, eq(auctions.id, order.auctionId))
+          .where(eq(user.id, order.buyerId))
+          .limit(1);
+        return info ?? null;
+      },
+      sendPaidEmail,
+    });
   }
 
   return NextResponse.json({received: true});

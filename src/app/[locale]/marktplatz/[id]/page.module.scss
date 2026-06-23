@@ -133,25 +133,33 @@
   gap: $space-2;
 }
 
-// Titelzeile: Titel links (wächst, umbricht), Bearbeiten-Button rechts (oben
-// ausgerichtet). Der Titel bekommt min-width:0, damit er umbricht statt zu
-// überlaufen; der Button schrumpft nicht.
-.titleRow {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: $space-3;
+// Titel-Bereich: Bezugsrahmen für das absolute Bearbeiten-Overlay.
+.titleWrap {
+  position: relative;
 
   h1 {
-    min-width: 0;
     overflow-wrap: anywhere; // sehr lange Wörter notfalls umbrechen
   }
 }
 
-// "Bearbeiten" (Eigentümer, aktive Anzeige) — blaues Pill, oben rechts in der
-// Titelzeile. Schrumpft/umbricht nicht, überlappt den Titel daher nie.
+// Gefloateter Platzhalter am Titelanfang: hält nur in der/den ersten Zeile(n)
+// Platz für das Overlay frei (Buttonbreite + Abstand), danach läuft der Text
+// über die volle Breite weiter. Bewusst etwas breiter als der Button, damit der
+// Text in keiner Sprache darunter rutscht.
+.titleFloat {
+  float: right;
+  width: 8rem;
+  height: 2.25rem;
+  margin-left: $space-3;
+}
+
+// "Bearbeiten" (Eigentümer, aktive Anzeige) — blaues Pill, schwebt oben rechts
+// über dem Titelbereich. Liegt über dem Platzhalter und bleibt klickbar.
 .editButton {
-  flex-shrink: 0;
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 1;
   display: inline-flex;
   align-items: center;
   gap: $space-1;
@@ -168,6 +176,24 @@
     background-color: $color-primary-hover;
     color: $color-primary-fg;
     text-decoration: none;
+  }
+}
+
+// Sehr schmal: Overlay vermeiden — Button statisch über den Titel, Platzhalter aus.
+@media (max-width: 30rem) {
+  .titleWrap {
+    display: flex;
+    flex-direction: column-reverse;
+    gap: $space-2;
+  }
+
+  .titleFloat {
+    display: none;
+  }
+
+  .editButton {
+    position: static;
+    align-self: flex-start;
   }
 }
 

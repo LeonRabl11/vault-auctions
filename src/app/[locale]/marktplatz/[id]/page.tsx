@@ -171,6 +171,8 @@ export default async function AuctionDetailPage({params, searchParams}: Props) {
   // Sofort-Kauf möglich, solange die Anzeige aktiv ist (auch mit laufenden Geboten)
   const canBuyNow = auction.status === "active" && auction.buyNowPrice != null;
   const isSeller = session?.user.id === auction.sellerId;
+  // Eigentümer einer aktiven Anzeige darf bearbeiten (Button + Float-Platzhalter).
+  const canEdit = isSeller && auction.status === "active";
   const isViewerBuyer = Boolean(
     buyerOrWinnerId && session?.user.id === buyerOrWinnerId,
   );
@@ -209,12 +211,16 @@ export default async function AuctionDetailPage({params, searchParams}: Props) {
         </div>
 
         <div className={styles.info}>
-          {/* Titel + Bearbeiten (Eigentümer, aktive Anzeige) in einer Flex-Zeile:
-              Titel umbricht bei Bedarf, der Button schrumpft/umbricht nicht und
-              überlappt den Text daher nie. */}
-          <div className={styles.titleRow}>
-            <h1>{auction.title}</h1>
-            {isSeller && auction.status === "active" && (
+          {/* Bearbeiten (Eigentümer, aktive Anzeige) als Overlay oben rechts.
+              Der Titel nimmt die volle Breite; ein gefloateter Platzhalter am
+              Anfang des Titels hält nur in der/den ersten Zeile(n) Platz frei,
+              danach gewinnt der Text die volle Breite zurück. */}
+          <div className={styles.titleWrap}>
+            <h1>
+              {canEdit && <span className={styles.titleFloat} aria-hidden />}
+              {auction.title}
+            </h1>
+            {canEdit && (
               <Link
                 href={`/marktplatz/${auction.id}/edit`}
                 className={styles.editButton}

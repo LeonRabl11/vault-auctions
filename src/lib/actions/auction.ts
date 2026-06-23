@@ -7,6 +7,7 @@ import {z} from "zod";
 import {auth} from "@/lib/auth";
 import {auctions, bids, db} from "@/lib/db";
 import {deleteObjectByUrl, isOwnBucketUrl} from "@/lib/s3";
+import {toCents} from "@/lib/money";
 import {auctionInputSchema} from "@/lib/validation/auction";
 
 // Optionale Bild-URL prüfen: leer/fehlend -> null (kein Bild), sonst muss sie aus
@@ -19,8 +20,8 @@ function normalizeImageUrl(
   return {ok: true, url: value};
 }
 
-// € -> Cent (Beträge laut Konvention immer als Integer in Cent).
-const toCents = (eur?: number) => (eur != null ? Math.round(eur * 100) : null);
+// € -> Cent oder null (Auktions- bzw. Festpreis-Teil sind je optional).
+const toCentsOrNull = (eur?: number) => (eur != null ? toCents(eur) : null);
 
 export type CreateAuctionResult =
   | {ok: true; id: string}
@@ -53,7 +54,7 @@ export async function createAuction(
 
   const {title, description, category, startPriceEur, endsAt, buyNowPriceEur} =
     parsed.data;
-  const startPrice = toCents(startPriceEur);
+  const startPrice = toCentsOrNull(startPriceEur);
 
   const [created] = await db
     .insert(auctions)
@@ -66,7 +67,7 @@ export async function createAuction(
       startPrice,
       currentPrice: startPrice, // Startgebot = Startpreis (null ohne Auktion)
       endsAt: endsAt ?? null, // null = reine Festpreis-Anzeige, kein Auto-Ende
-      buyNowPrice: toCents(buyNowPriceEur),
+      buyNowPrice: toCentsOrNull(buyNowPriceEur),
       // status: 'active' kommt aus dem Schema-Default
     })
     .returning({id: auctions.id});
@@ -160,7 +161,7 @@ export async function updateAuction(
         .set(descriptive)
         .where(eq(auctions.id, auctionId));
     } else {
-      const startPrice = toCents(startPriceEur);
+      const startPrice = toCentsOrNull(startPriceEur);
       await tx
         .update(auctions)
         .set({
@@ -168,7 +169,7 @@ export async function updateAuction(
           startPrice,
           currentPrice: startPrice, // ohne Gebote = Startpreis (null = keine Auktion)
           endsAt: endsAt ?? null,
-          buyNowPrice: toCents(buyNowPriceEur),
+          buyNowPrice: toCentsOrNull(buyNowPriceEur),
         })
         .where(eq(auctions.id, auctionId));
     }

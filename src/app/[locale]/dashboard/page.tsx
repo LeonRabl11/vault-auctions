@@ -9,6 +9,7 @@ import {
 } from "next-intl/server";
 import {auth} from "@/lib/auth";
 import {auctions, bids, db, dismissals, orders} from "@/lib/db";
+import {formatEur} from "@/lib/money";
 import {Link, redirect} from "@/i18n/navigation";
 import PayButton from "@/components/PayButton";
 import DismissButton from "@/components/DismissButton";
@@ -119,8 +120,7 @@ export default async function DashboardPage({params}: Props) {
   const t = await getTranslations("Dashboard");
   const format = await getFormatter();
 
-  const euro = (cents: number) =>
-    format.number(cents / 100, {style: "currency", currency: "EUR"});
+  const euro = (cents: number) => formatEur(cents, locale);
 
   // Vom Nutzer im jeweiligen Bereich ausgeblendete Anzeigen herausfiltern.
   const notDismissed = (section: "bidding" | "won") =>

@@ -1,6 +1,7 @@
 import Image from "next/image";
-import {getFormatter, getTranslations} from "next-intl/server";
+import {getLocale, getTranslations} from "next-intl/server";
 import {Link} from "@/i18n/navigation";
+import {formatEur} from "@/lib/money";
 import Countdown from "./Countdown";
 import ImagePlaceholder from "./ImagePlaceholder";
 import styles from "./AuctionCard.module.scss";
@@ -24,7 +25,7 @@ const ENDING_SOON_MS = 60 * 60 * 1000;
 
 export default async function AuctionCard({auction}: Props) {
   const t = await getTranslations("Auctions");
-  const format = await getFormatter();
+  const locale = await getLocale();
 
   const isAuction = auction.endsAt != null;
   const hasBuyNow = auction.buyNowPrice != null;
@@ -36,8 +37,7 @@ export default async function AuctionCard({auction}: Props) {
     auction.status === "active" && auction.endsAt != null && msLeft > 0;
   const endingSoon = isLive && msLeft <= ENDING_SOON_MS;
 
-  const eur = (cents: number) =>
-    format.number(cents / 100, {style: "currency", currency: "EUR"});
+  const eur = (cents: number) => formatEur(cents, locale);
 
   return (
     <Link href={`/marktplatz/${auction.id}`} className={`card ${styles.card}`}>

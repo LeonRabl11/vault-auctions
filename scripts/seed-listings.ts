@@ -13,6 +13,7 @@
 import {config} from "dotenv";
 import {and, eq, like} from "drizzle-orm";
 import {auctions, user} from "../src/lib/db/schema";
+import {toCents} from "../src/lib/money";
 
 // .env.local laden, BEVOR die DB-Verbindung (src/lib/db) importiert wird —
 // diese liest DATABASE_URL beim Modul-Load und wirft sonst.
@@ -308,8 +309,6 @@ const CATALOG: {slug: string; items: [Item, Item, Item]}[] = [
   },
 ];
 
-const cents = (eur: number) => Math.round(eur * 100);
-
 async function main() {
   // DB-Verbindung erst hier laden (nach config()), damit DATABASE_URL gesetzt ist.
   const {db} = await import("../src/lib/db");
@@ -349,9 +348,9 @@ async function main() {
       n++;
       const isAuction = item.kind === "auction" || item.kind === "both";
       const hasBuyNow = item.kind === "fixed" || item.kind === "both";
-      const startPrice = isAuction ? cents(item.eur) : null;
+      const startPrice = isAuction ? toCents(item.eur) : null;
       const buyNowPrice = hasBuyNow
-        ? cents(item.kind === "both" ? item.buyNowEur! : item.eur)
+        ? toCents(item.kind === "both" ? item.buyNowEur! : item.eur)
         : null;
 
       return {

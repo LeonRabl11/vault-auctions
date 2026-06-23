@@ -1,4 +1,5 @@
-import {getFormatter, getTranslations} from "next-intl/server";
+import {getFormatter, getLocale, getTranslations} from "next-intl/server";
+import {formatEur} from "@/lib/money";
 import styles from "./BidHistory.module.scss";
 
 type Bid = {
@@ -15,6 +16,7 @@ type Props = {
 export default async function BidHistory({bids}: Props) {
   const t = await getTranslations("Auctions.history");
   const format = await getFormatter();
+  const locale = await getLocale();
 
   return (
     <section className={`card ${styles.history}`}>
@@ -26,10 +28,7 @@ export default async function BidHistory({bids}: Props) {
           {bids.map((bid) => (
             <li className={styles.item} key={bid.id}>
               <span className={styles.amount}>
-                {format.number(bid.amount / 100, {
-                  style: "currency",
-                  currency: "EUR",
-                })}
+                {formatEur(bid.amount, locale)}
               </span>
               <span className={styles.bidder}>{bid.bidderName}</span>
               <time

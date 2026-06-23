@@ -1,9 +1,10 @@
 "use client";
 
 import {useState} from "react";
-import {useFormatter, useTranslations} from "next-intl";
+import {useLocale, useTranslations} from "next-intl";
 import {useRouter} from "@/i18n/navigation";
 import {placeBid} from "@/lib/actions/bid";
+import {formatEur, toCents} from "@/lib/money";
 import styles from "./BidForm.module.scss";
 
 type Props = {
@@ -13,7 +14,7 @@ type Props = {
 
 export default function BidForm({auctionId, currentPrice}: Props) {
   const t = useTranslations("Auctions.bid");
-  const format = useFormatter();
+  const locale = useLocale();
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
   const [pending, setPending] = useState(false);
@@ -29,10 +30,7 @@ export default function BidForm({auctionId, currentPrice}: Props) {
     const amountEur = Number(new FormData(formEl).get("amount"));
 
     // Client-Vorabprüfung (Server validiert ohnehin nochmal)
-    if (
-      !Number.isFinite(amountEur) ||
-      Math.round(amountEur * 100) <= currentPrice
-    ) {
+    if (!Number.isFinite(amountEur) || toCents(amountEur) <= currentPrice) {
       setError("tooLow");
       return;
     }
@@ -54,12 +52,7 @@ export default function BidForm({auctionId, currentPrice}: Props) {
     <form className={styles.form} onSubmit={onSubmit}>
       <h2>{t("title")}</h2>
       <p className={styles.hint}>
-        {t("min", {
-          amount: format.number(currentPrice / 100, {
-            style: "currency",
-            currency: "EUR",
-          }),
-        })}
+        {t("min", {amount: formatEur(currentPrice, locale)})}
       </p>
       <div className={styles.row}>
         <input

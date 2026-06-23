@@ -1,8 +1,9 @@
 "use client";
 
 import {useState} from "react";
-import {useFormatter, useLocale, useTranslations} from "next-intl";
+import {useLocale, useTranslations} from "next-intl";
 import {buyNow} from "@/lib/actions/buy-now";
+import {formatEur} from "@/lib/money";
 import styles from "./BuyNowButton.module.scss";
 
 type Props = {
@@ -12,7 +13,6 @@ type Props = {
 
 export default function BuyNowButton({auctionId, price}: Props) {
   const t = useTranslations("Auctions.buyNow");
-  const format = useFormatter();
   const locale = useLocale();
   const [error, setError] = useState<string | null>(null);
   const [pending, setPending] = useState(false);
@@ -30,10 +30,7 @@ export default function BuyNowButton({auctionId, price}: Props) {
     window.location.href = result.url;
   }
 
-  const amount = format.number(price / 100, {
-    style: "currency",
-    currency: "EUR",
-  });
+  const amount = formatEur(price, locale);
 
   return (
     <div className={styles.wrap}>

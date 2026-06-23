@@ -12,6 +12,7 @@ import {
 import {auctions, bids, db, orders, user} from "@/lib/db";
 import {auth} from "@/lib/auth";
 import {finalizeAuctionAndNotify} from "@/lib/auctions";
+import {formatEur} from "@/lib/money";
 import {Link} from "@/i18n/navigation";
 import Countdown from "@/components/Countdown";
 import BidForm from "@/components/BidForm";
@@ -232,10 +233,7 @@ export default async function AuctionDetailPage({params, searchParams}: Props) {
                   {t("detail.currentBid")}
                 </span>
                 <span className={styles.priceValue}>
-                  {format.number((auction.currentPrice ?? 0) / 100, {
-                    style: "currency",
-                    currency: "EUR",
-                  })}
+                  {formatEur(auction.currentPrice ?? 0, locale)}
                 </span>
               </p>
 
@@ -271,10 +269,7 @@ export default async function AuctionDetailPage({params, searchParams}: Props) {
                   <div className={styles.actions}>
                     <Link href="/login" className="btn btn--primary">
                       {t("buyNow.label", {
-                        amount: format.number(auction.buyNowPrice / 100, {
-                          style: "currency",
-                          currency: "EUR",
-                        }),
+                        amount: formatEur(auction.buyNowPrice, locale),
                       })}
                     </Link>
                     <p className={styles.bidNote}>

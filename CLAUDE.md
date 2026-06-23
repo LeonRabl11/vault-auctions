@@ -23,6 +23,7 @@ Phasen-Roadmap: **docs/KONZEPT.md** (Langfassung — nicht hierher kopieren).
 - `pnpm build` — Production-Build
 - `pnpm start` — Production-Server
 - `pnpm lint` — ESLint
+- `pnpm test` — Vitest (einmalig); `pnpm test:watch` — Watch-Modus
 - `pnpm db:generate` — Migration aus Schema generieren (offline)
 - `pnpm db:migrate` — Migrationen auf die DB anwenden (braucht `DATABASE_URL`)
 - `pnpm db:push` — Schema direkt pushen (Prototyping)
@@ -64,6 +65,13 @@ Phasen-Roadmap: **docs/KONZEPT.md** (Langfassung — nicht hierher kopieren).
 
 **Dependencies**
 - Minimalistisch, wenig Code, keine unnötigen Pakete. Neue Dependencies vorher nennen.
+
+**Tests (Vitest)**
+- Test-Dateien `*.test.ts` **neben** der getesteten Datei ablegen (z. B.
+  `lib/money.ts` → `lib/money.test.ts`). Vitest läuft im Node-Environment, Alias
+  `@/*` wie in tsconfig.
+- Vorerst nur reine Unit-Tests (keine DB/I/O, kein Stripe). Geld immer in Cent
+  über die reinen Helfer in `lib/money.ts` (`toCents`/`fromCents`/`formatEur`).
 
 ## Design
 Minimalistischer, heller Look — durchgängig über die ganze Seite. Damit Features denselben

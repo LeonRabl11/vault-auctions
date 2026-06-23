@@ -7,7 +7,6 @@
 }
 
 .detail {
-  position: relative; // Bezug für das Bearbeiten-Overlay oben rechts
   display: grid;
   grid-template-columns: 1fr;
   gap: $space-4;
@@ -134,16 +133,25 @@
   gap: $space-2;
 }
 
-// "Bearbeiten" (Eigentümer) — oben rechts über dem Titel, höher als das Bild.
-// Blau mit weißer Schrift. Sitzt leicht über dem oberen Rand des Artikels.
-.editOverlay {
-  position: absolute;
-  // Unterkante an die Oberkante der Karte heften -> Button sitzt komplett
-  // darüber (kein Überlapp mit dem Titel), plus kleiner Abstand.
-  bottom: 100%;
-  right: 0;
-  margin-bottom: $space-2;
-  z-index: 2;
+// Titelzeile: Titel links (wächst, umbricht), Bearbeiten-Button rechts (oben
+// ausgerichtet). Der Titel bekommt min-width:0, damit er umbricht statt zu
+// überlaufen; der Button schrumpft nicht.
+.titleRow {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: $space-3;
+
+  h1 {
+    min-width: 0;
+    overflow-wrap: anywhere; // sehr lange Wörter notfalls umbrechen
+  }
+}
+
+// "Bearbeiten" (Eigentümer, aktive Anzeige) — blaues Pill, oben rechts in der
+// Titelzeile. Schrumpft/umbricht nicht, überlappt den Titel daher nie.
+.editButton {
+  flex-shrink: 0;
   display: inline-flex;
   align-items: center;
   gap: $space-1;

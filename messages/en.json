@@ -303,6 +303,7 @@
     "buyNow": {
       "label": "Buy now for {amount}",
       "pending": "Redirecting …",
+      "loginPrompt": "Sign in to buy.",
       "errors": {
         "notAvailable": "This listing is no longer available.",
         "ownAuction": "You cannot buy your own listing.",
@@ -352,10 +353,7 @@
       }
     },
     "countdown": {
-      "days": "Days",
-      "hours": "Hrs",
-      "minutes": "Min",
-      "seconds": "Sec",
+      "dayCount": "{count, plural, one {# day} other {# days}}",
       "ended": "Ended"
     },
     "fields": {

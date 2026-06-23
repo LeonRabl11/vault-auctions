@@ -81,6 +81,7 @@ export default async function AuctionCard({auction}: Props) {
             <>
               <Countdown
                 endsAt={auction.endsAt.toISOString()}
+                initialRemainingMs={msLeft}
                 variant="compact"
               />
               <span className={styles.bids}>

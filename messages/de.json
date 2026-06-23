@@ -303,6 +303,7 @@
     "buyNow": {
       "label": "Sofort kaufen für {amount}",
       "pending": "Weiterleitung …",
+      "loginPrompt": "Melde dich an, um zu kaufen.",
       "errors": {
         "notAvailable": "Diese Anzeige ist nicht mehr verfügbar.",
         "ownAuction": "Du kannst deine eigene Anzeige nicht kaufen.",
@@ -352,10 +353,7 @@
       }
     },
     "countdown": {
-      "days": "Tage",
-      "hours": "Std",
-      "minutes": "Min",
-      "seconds": "Sek",
+      "dayCount": "{count, plural, one {# Tag} other {# Tage}}",
       "ended": "Beendet"
     },
     "fields": {

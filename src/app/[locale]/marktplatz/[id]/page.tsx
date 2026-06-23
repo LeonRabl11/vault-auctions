@@ -235,7 +235,12 @@ export default async function AuctionDetailPage({params, searchParams}: Props) {
                 <span className={styles.countdownLabel}>
                   {t("detail.timeLeft")}
                 </span>
-                <Countdown endsAt={auction.endsAt.toISOString()} />
+                <Countdown
+                  endsAt={auction.endsAt.toISOString()}
+                  initialRemainingMs={
+                    auction.endsAt.getTime() - new Date().getTime()
+                  }
+                />
               </div>
 
               <p className={styles.endsAt}>
@@ -253,10 +258,28 @@ export default async function AuctionDetailPage({params, searchParams}: Props) {
             {auction.status === "active" ? (
               // Aktiv: bieten und/oder sofort kaufen (nur eingeloggt + nicht Verkäufer)
               !session ? (
-                <p className={styles.bidNote}>
-                  {t("bid.loginPrompt")}{" "}
-                  <Link href="/login">{t("bid.loginLink")}</Link>
-                </p>
+                // Ausgeloggt: Sofort-Kauf-Preis + Button sichtbar, leitet auf Login.
+                canBuyNow && auction.buyNowPrice != null ? (
+                  <div className={styles.actions}>
+                    <Link href="/login" className="btn btn--primary">
+                      {t("buyNow.label", {
+                        amount: format.number(auction.buyNowPrice / 100, {
+                          style: "currency",
+                          currency: "EUR",
+                        }),
+                      })}
+                    </Link>
+                    <p className={styles.bidNote}>
+                      {t("buyNow.loginPrompt")}{" "}
+                      <Link href="/login">{t("bid.loginLink")}</Link>
+                    </p>
+                  </div>
+                ) : (
+                  <p className={styles.bidNote}>
+                    {t("bid.loginPrompt")}{" "}
+                    <Link href="/login">{t("bid.loginLink")}</Link>
+                  </p>
+                )
               ) : isSeller ? (
                 <p className={styles.bidNote}>{t("bid.sellerHint")}</p>
               ) : (

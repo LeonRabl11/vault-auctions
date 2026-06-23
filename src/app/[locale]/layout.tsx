@@ -27,6 +27,15 @@ export function generateStaticParams() {
   return routing.locales.map((locale) => ({locale}));
 }
 
+// Basis-URL für absolute OG-/Canonical-Links (Fallback = Vercel-Deployment)
+const SITE_URL =
+  process.env.NEXT_PUBLIC_SITE_URL ?? "https://vault-auctions-app.vercel.app";
+
+// TODO: Eigenes OG-Bild (1200×630, Logo auf dunklem Hintergrund) unter
+// public/og-default.png hinterlegen und hier auf "/og-default.png" umstellen.
+// Bis dahin dient das Hintergrundbild als Platzhalter.
+const OG_IMAGE = "/background.jpg";
+
 export async function generateMetadata({
   params,
 }: {
@@ -34,10 +43,27 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const {locale} = await params;
   const t = await getTranslations({locale, namespace: "Metadata"});
+  const title = t("title");
+  const description = t("description");
 
   return {
-    title: t("title"),
-    description: t("description"),
+    metadataBase: new URL(SITE_URL),
+    title: {default: title, template: "%s | Vault"},
+    description,
+    openGraph: {
+      type: "website",
+      siteName: "Vault",
+      locale: locale === "en" ? "en_US" : "de_DE",
+      title,
+      description,
+      images: [OG_IMAGE],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: [OG_IMAGE],
+    },
   };
 }
 

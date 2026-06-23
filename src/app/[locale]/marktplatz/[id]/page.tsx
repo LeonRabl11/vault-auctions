@@ -1,3 +1,5 @@
+import type {Metadata} from "next";
+import {cache} from "react";
 import Image from "next/image";
 import {headers} from "next/headers";
 import {notFound} from "next/navigation";
@@ -27,7 +29,7 @@ type Props = {
 const UUID_RE =
   /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
-function loadAuction(id: string) {
+function queryAuction(id: string) {
   return db
     .select({
       id: auctions.id,
@@ -49,6 +51,48 @@ function loadAuction(id: string) {
     .limit(1);
 }
 
+// In React cache() gekapselt, damit Detailseite und generateMetadata sich pro
+// Request dieselbe DB-Abfrage teilen (kein doppelter Query). Nach dem Lazy-
+// Finalisieren wird bewusst queryAuction() direkt genutzt, um frische Daten zu
+// holen — der Cache würde sonst den alten Stand zurückgeben.
+const loadAuction = cache(async (id: string) => {
+  const [row] = await queryAuction(id);
+  return row ?? null;
+});
+
+// Beschreibung (Plain-Text-Spalte) auf ~160 Zeichen für die Meta-Description
+// kürzen; Whitespace normalisieren, ohne an der Struktur zu raten.
+function toMetaDescription(text: string): string {
+  const clean = text.replace(/\s+/g, " ").trim();
+  return clean.length > 160 ? `${clean.slice(0, 157).trimEnd()}…` : clean;
+}
+
+export async function generateMetadata({params}: Props): Promise<Metadata> {
+  const {id} = await params;
+  if (!UUID_RE.test(id)) {
+    return {};
+  }
+
+  const auction = await loadAuction(id);
+  if (!auction) {
+    // Layout-Default greift (Titel-Template + Standard-OG)
+    return {};
+  }
+
+  const description = toMetaDescription(auction.description);
+
+  return {
+    title: auction.title,
+    description,
+    openGraph: {
+      title: auction.title,
+      description,
+      // Erstes Anzeigenbild, falls vorhanden — sonst greift das Default-OG
+      ...(auction.imageUrl ? {images: [auction.imageUrl]} : {}),
+    },
+  };
+}
+
 export default async function AuctionDetailPage({params, searchParams}: Props) {
   const {locale, id} = await params;
   const {paid} = await searchParams;
@@ -59,7 +103,7 @@ export default async function AuctionDetailPage({params, searchParams}: Props) {
     notFound();
   }
 
-  let [auction] = await loadAuction(id);
+  let auction = await loadAuction(id);
   if (!auction) {
     notFound();
   }
@@ -72,7 +116,7 @@ export default async function AuctionDetailPage({params, searchParams}: Props) {
     auction.endsAt.getTime() < new Date().getTime()
   ) {
     await finalizeAuctionAndNotify(id);
-    [auction] = await loadAuction(id);
+    [auction] = await queryAuction(id);
     if (!auction) {
       notFound();
     }

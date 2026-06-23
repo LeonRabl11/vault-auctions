@@ -1,7 +1,10 @@
 {
   "Metadata": {
-    "title": "Auction Platform",
-    "description": "Auktionsplattform — Grundgerüst"
+    "title": "Vault — Online-Auktionen & Sofort-Kauf",
+    "description": "Ersteigere oder kaufe Einzelstücke, Sammlerstücke und Raritäten — von Schmuck über Kunst bis Oldtimer. Sicher bezahlen mit Stripe, fairer Auktionsschluss."
+  },
+  "Marktplatz": {
+    "title": "Marktplatz"
   },
   "HomePage": {
     "hero": {

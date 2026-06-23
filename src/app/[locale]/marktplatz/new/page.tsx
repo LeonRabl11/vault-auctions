@@ -1,3 +1,4 @@
+import type {Metadata} from "next";
 import {headers} from "next/headers";
 import {getTranslations, setRequestLocale} from "next-intl/server";
 import {auth} from "@/lib/auth";
@@ -8,6 +9,12 @@ import styles from "./page.module.scss";
 type Props = {
   params: Promise<{locale: string}>;
 };
+
+export async function generateMetadata({params}: Props): Promise<Metadata> {
+  const {locale} = await params;
+  const t = await getTranslations({locale, namespace: "Auctions"});
+  return {title: t("new.title")};
+}
 
 export default async function NewAuctionPage({params}: Props) {
   const {locale} = await params;

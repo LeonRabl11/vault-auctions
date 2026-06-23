@@ -1,3 +1,4 @@
+import type {Metadata} from "next";
 import {and, desc, eq, gt, isNull, or, sql} from "drizzle-orm";
 import {getTranslations, setRequestLocale} from "next-intl/server";
 import {auctions, bids, db} from "@/lib/db";
@@ -9,6 +10,12 @@ type Props = {
   params: Promise<{locale: string}>;
   searchParams: Promise<{kategorie?: string}>;
 };
+
+export async function generateMetadata({params}: Props): Promise<Metadata> {
+  const {locale} = await params;
+  const t = await getTranslations({locale, namespace: "Marktplatz"});
+  return {title: t("title")};
+}
 
 export default async function AuctionsPage({params, searchParams}: Props) {
   const {locale} = await params;

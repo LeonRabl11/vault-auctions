@@ -1,3 +1,4 @@
+import type {Metadata} from "next";
 import type {ReactNode} from "react";
 import {headers} from "next/headers";
 import {and, desc, eq, notExists, sql} from "drizzle-orm";
@@ -16,6 +17,12 @@ import styles from "./page.module.scss";
 type Props = {
   params: Promise<{locale: string}>;
 };
+
+export async function generateMetadata({params}: Props): Promise<Metadata> {
+  const {locale} = await params;
+  const t = await getTranslations({locale, namespace: "Dashboard"});
+  return {title: t("title")};
+}
 
 // Badge-Variante (Farbe) je Statuskategorie — Mapping an einer Stelle.
 type Badge = "success" | "danger" | "warning" | "accent" | "muted";

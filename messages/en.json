@@ -1,7 +1,10 @@
 {
   "Metadata": {
-    "title": "Auction Platform",
-    "description": "Auction platform — scaffold"
+    "title": "Vault — Online Auctions & Buy Now",
+    "description": "Bid on or buy unique items, collectibles and rarities — from jewellery and art to classic cars. Secure Stripe payments, fair auction close."
+  },
+  "Marktplatz": {
+    "title": "Marketplace"
   },
   "HomePage": {
     "hero": {

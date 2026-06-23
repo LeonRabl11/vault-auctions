@@ -11,7 +11,9 @@ Vault is an online marketplace for **auctions and instant "buy now" purchases** 
 
 ## Lighthouse
 
-**100 / 100 / 100 / 100 (Performance / Accessibility / Best Practices / SEO) on mobile.**
+**Perfect 100 for Accessibility, Best Practices and SEO across all pages; Performance 98–100 (mobile).**
+
+Performance per page: Home 99 · Marketplace 100 · Listing detail 98.
 
 | Home | Marketplace | Listing detail |
 | --- | --- | --- |

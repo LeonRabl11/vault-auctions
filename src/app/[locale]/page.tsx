@@ -1,3 +1,4 @@
+import Image from "next/image";
 import {and, eq, gt, isNull, or, sql} from "drizzle-orm";
 import {getTranslations, setRequestLocale} from "next-intl/server";
 import {auctions, bids, db} from "@/lib/db";
@@ -107,21 +108,30 @@ export default async function Home({params}: Props) {
 
   return (
     <div className={styles.page}>
-      {/* 1. Hero — klarer Einstieg mit Bild-Hintergrund + dunklem Scrim */}
-      <Reveal>
-        <section className={`${styles.section} ${styles.hero}`}>
-          <h1 className={styles.headline}>{t("hero.headline")}</h1>
-          <p className={styles.subline}>{t("hero.subline")}</p>
-          <div className={styles.ctas}>
-            <Link href="/marktplatz" className="btn btn--primary">
-              {t("hero.ctaPrimary")}
-            </Link>
-            <Link href="/marktplatz/new" className={`btn ${styles.secondaryBtn}`}>
-              {t("hero.ctaSecondary")}
-            </Link>
-          </div>
-        </section>
-      </Reveal>
+      {/* 1. Hero — LCP-Bild als priorisiertes next/image (früh entdeckt via
+          fetchPriority=high + Preload, AVIF/WebP, viewport-gerecht). Bewusst OHNE
+          Reveal, damit das LCP-Element nicht hinter einer Einblend-Animation
+          wartet. Bild ist dekorativ (Aussage trägt die Headline) -> alt="". */}
+      <section className={`${styles.section} ${styles.hero}`}>
+        <Image
+          src="/background.jpg"
+          alt=""
+          fill
+          priority
+          sizes="100vw"
+          className={styles.heroImage}
+        />
+        <h1 className={styles.headline}>{t("hero.headline")}</h1>
+        <p className={styles.subline}>{t("hero.subline")}</p>
+        <div className={styles.ctas}>
+          <Link href="/marktplatz" className="btn btn--primary">
+            {t("hero.ctaPrimary")}
+          </Link>
+          <Link href="/marktplatz/new" className={`btn ${styles.secondaryBtn}`}>
+            {t("hero.ctaSecondary")}
+          </Link>
+        </div>
+      </section>
 
       {/* 2. Aktuelle Auktionen — anschaulicher Kern */}
       <Reveal>

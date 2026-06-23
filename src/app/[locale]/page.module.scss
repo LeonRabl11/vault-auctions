@@ -78,9 +78,15 @@
   padding: $space-7 $space-4;
   border: 1px solid $color-border;
   border-radius: $radius-lg;
-  background-image: url("/background.jpg");
-  background-size: cover;
-  background-position: center;
+  overflow: hidden; // rundet das absolut gefüllte Bild mit
+}
+
+// LCP-Bild (next/image fill) — füllt das Hero, liegt ganz unten.
+// Höhere Spezifität als `.hero > *`, damit z-index:0 sicher greift.
+.hero .heroImage {
+  object-fit: cover;
+  object-position: center;
+  z-index: 0;
 }
 
 // Minimaler dunkler Scrim über dem Bild → nur so viel Kontrast wie nötig.
@@ -88,14 +94,14 @@
   content: "";
   position: absolute;
   inset: 0;
-  border-radius: inherit;
+  z-index: 1;
   background-color: rgba(0, 0, 0, 0.28);
 }
 
-// Inhalt über dem Scrim halten.
+// Inhalt über Bild und Scrim halten.
 .hero > * {
   position: relative;
-  z-index: 1;
+  z-index: 2;
 }
 
 .headline {

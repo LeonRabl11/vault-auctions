@@ -3,6 +3,9 @@ import createNextIntlPlugin from "next-intl/plugin";
 
 const nextConfig: NextConfig = {
   images: {
+    // Moderne Formate bevorzugt ausliefern (kleiner als JPEG/PNG) — gilt für alle
+    // next/image (Hero, Showcase, Karten). AVIF zuerst, WebP als Fallback.
+    formats: ["image/avif", "image/webp"],
     // S3-Bilder (Virtual-Hosted-Style: <bucket>.s3.<region>.amazonaws.com)
     remotePatterns: [{protocol: "https", hostname: "**.amazonaws.com"}],
   },

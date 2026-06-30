@@ -126,4 +126,3 @@ The app is hosted on **Vercel**. Auction finalization runs as an **AWS Lambda** 
 
 > Note: the seeded live content (listings) is in German, while the UI itself is fully localized in German and English.
 
-Built as a portfolio project.
